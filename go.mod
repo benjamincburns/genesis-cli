@@ -17,4 +17,5 @@ require (
 	github.com/whiteblock/definition v0.0.0-20191223224929-790324b2113d
 	github.com/whiteblock/genesis v1.8.21
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
+	gopkg.in/yaml.v2 v2.2.7
 )

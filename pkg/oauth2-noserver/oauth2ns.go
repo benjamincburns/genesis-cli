@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/whiteblock/genesis-cli/pkg/config"
+	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	"github.com/fatih/color"
 	rndm "github.com/nmrshll/rndm-go"
@@ -27,7 +28,7 @@ type AuthorizedClient struct {
 	Token *oauth2.Token
 }
 
-var conf = config.NewConfig()
+var gconf = config.NewConfig()
 
 const (
 
@@ -69,7 +70,7 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 
 	// Redirect user to consent page to ask for permission
 	// for the scopes specified above.
-	oauthConfig.RedirectURL = fmt.Sprintf("http://%s", conf.RedirectURL)
+	oauthConfig.RedirectURL = fmt.Sprintf("http://%s", gconf.RedirectURL)
 
 	// Some random string, random for each request
 	oauthStateString := rndm.String(8)
@@ -92,7 +93,7 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 	//urlString = fmt.Sprintf("%s&device_id=%s&device_name=%s", urlString, DEVICE_NAME, DEVICE_NAME)
 
 	clientChan, stopHTTPServerChan, cancelAuthentication := startHTTPServer(ctx, oauthConfig)
-	log.Println(color.CyanString("You will now be taken to your browser for authentication or open the url below in a browser."))
+	util.Print(color.CyanString("You will now be taken to your browser for authentication or open the url below in a browser."))
 	log.Println(color.CyanString(urlString))
 	log.Println(color.CyanString("If you are opening the url manually on a different machine you will need to curl the result url on this machine manually."))
 	time.Sleep(1000 * time.Millisecond)
@@ -104,7 +105,7 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 
 	// shutdown the server after timeout
 	go func() {
-		time.Sleep(conf.AuthTimeout)
+		time.Sleep(gconf.AuthTimeout)
 		stopHTTPServerChan <- struct{}{}
 	}()
 
@@ -128,13 +129,13 @@ func startHTTPServer(ctx context.Context, conf *oauth2.Config) (clientChan chan 
 	cancelAuthentication = make(chan struct{})
 
 	http.HandleFunc("/", callbackHandler(ctx, conf, clientChan))
-	srv := &http.Server{Addr: conf.RedirectURL}
+	srv := &http.Server{Addr: gconf.RedirectURL}
 
 	// handle server shutdown signal
 	go func() {
 		// wait for signal on stopHTTPServerChan
 		<-stopHTTPServerChan
-		log.Println("Shutting down server...")
+		log.Trace("Shutting down server...")
 
 		// give it 5 sec to shutdown gracefully, else quit program
 		d := time.Now().Add(5 * time.Second)

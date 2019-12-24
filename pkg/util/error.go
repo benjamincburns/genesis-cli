@@ -2,8 +2,11 @@ package util
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/fatih/color"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 const (
@@ -63,14 +66,6 @@ func CheckIntegerBounds(cmd *cobra.Command, name string, val int, min int, max i
 	}
 }
 
-func Printf(format string, a ...interface{}) {
-	Print(fmt.Sprintf(format, a...))
-}
-
-func Print(i interface{}) {
-	fmt.Printf("\033[97m%v\033[0m\n", i)
-}
-
 func MalformedUsageError(cmd *cobra.Command, err interface{}) {
 	fmt.Println(cmd.UsageString())
 	PrintErrorFatal(err)
@@ -92,7 +87,13 @@ func PrintErrorFatal(err interface{}) {
 }
 
 func PrintError(err interface{}) {
-	fmt.Printf("\033[31mError:\033[0m %s\n", fmt.Sprint(err))
+	out := fmt.Sprintf("Error: %v", err)
+
+	useColor := viper.GetBool("no-colors")
+	if useColor {
+		out = color.RedString(out)
+	}
+	fmt.Println(out)
 }
 
 func PrintErrorf(base string, args ...interface{}) {

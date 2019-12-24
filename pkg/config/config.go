@@ -11,12 +11,15 @@ import (
 // Config groups all of the global configuration parameters into
 // a single struct
 type Config struct {
-	AuthEndpoint string        `mapstructure:"authEndpoint"`
-	AuthPath     string        `mapstructure:"authPath"`
-	AuthTimeout  time.Duration `mapstructure:"authTimeout"`
-	TokenPath    string        `mapstructure:"tokenPath"`
-	Verbosity    string        `mapstructure:"verbosity"`
-	RedirectURL  string        `mapstructure:"redirectURL"`
+	AuthEndpoint       string        `mapstructure:"authEndpoint"`
+	AuthPath           string        `mapstructure:"authPath"`
+	AuthTimeout        time.Duration `mapstructure:"authTimeout"`
+	TokenPath          string        `mapstructure:"tokenPath"`
+	Verbosity          string        `mapstructure:"verbosity"`
+	RedirectURL        string        `mapstructure:"redirectURL"`
+	MultipathUploadURI string        `mapstructure:"multipathUploadURI"`
+	WBHost             string        `mapstructure:"wbHost"`
+	OrgID              string        `mapstructure:"orgID"`
 }
 
 //GetLogger gets a logger according to the config
@@ -38,6 +41,9 @@ func setViperEnvBindings() {
 	viper.BindEnv("verbosity", "VERBOSITY")
 	viper.BindEnv("redirectURL", "REDIRECT_URL")
 	viper.BindEnv("authTimeout", "AUTH_TIMEOUT")
+	viper.BindEnv("MultipathUploadURI", "MULTIPART_UPLOAD_URI")
+	viper.BindEnv("wbHost", "WB_HOST")
+	viper.BindEnv("orgID", "ORG_ID")
 }
 
 func setViperDefaults() {
@@ -45,8 +51,11 @@ func setViperDefaults() {
 	viper.SetDefault("authPath", "/auth/realms/wb/protocol/openid-connect/auth")
 	viper.SetDefault("tokenPath", "/auth/realms/wb/protocol/openid-connect/token")
 	viper.SetDefault("redirectURL", "localhost:56666")
-	viper.SetDefault("authTimeout", 120)
+	viper.SetDefault("authTimeout", 120*time.Second)
 	viper.SetDefault("verbosity", "INFO")
+	viper.SetDefault("multipathUploadURI", "/api/v1/testexecution/organizations/%s/files")
+	viper.SetDefault("wbHost", "www.infra.whiteblock.io")
+	viper.SetDefault("orgID", "")
 }
 
 func init() {
