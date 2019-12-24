@@ -30,7 +30,7 @@ const (
 	// IP is the ip of this machine that will be called back in the browser. It may not be a hostname.
 	// If IP is not 127.0.0.1 DEVICE_NAME must be set. It can be any short string.
 	IP          = "localhost"
-	DEVICE_NAME = ""
+	DEVICE_NAME = "foobar"
 	// PORT is the port that the temporary oauth server will listen on
 	PORT = 56666
 	// seconds to wait before giving up on auth and exiting
@@ -91,9 +91,9 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 		urlString = parsedURL.String()
 	}
 
-	/*if IP != "127.0.0.1" {
+	if IP != "127.0.0.1" {
 		urlString = fmt.Sprintf("%s&device_id=%s&device_name=%s", urlString, DEVICE_NAME, DEVICE_NAME)
-	}*/
+	}
 
 	clientChan, stopHTTPServerChan, cancelAuthentication := startHTTPServer(ctx, oauthConfig)
 	log.Println(color.CyanString("You will now be taken to your browser for authentication or open the url below in a browser."))
@@ -174,7 +174,7 @@ func callbackHandler(ctx context.Context, oauthConfig *oauth2.Config, clientChan
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 			return
 		}
-
+		//log.Printf("Form %+v",r.Form)
 		code := r.FormValue("code")
 		token, err := oauthConfig.Exchange(ctx, code)
 		if err != nil {

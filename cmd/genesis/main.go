@@ -8,13 +8,12 @@ import(
 	"golang.org/x/oauth2"
 )
 func main(){
-		conf := &oauth2.Config{
-		ClientID:     "cli",            // also known as client key sometimes
-		//ClientSecret: "___________________________", // also known as secret key
+	conf := &oauth2.Config{
+		ClientID:     "cli",
 		Scopes:       []string{"offline_access"},
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  "https://auth.infra.whiteblock.io/auth/realms/wb/protocol/openid-connect/auth",
-			TokenURL: "https://auth.infra.whiteblock.io/auth/realms/wb",
+			TokenURL: "https://auth.infra.whiteblock.io/auth/realms/wb/protocol/openid-connect/token",
 		},
 	}
 
@@ -23,6 +22,5 @@ func main(){
 		log.Fatal(err)
 	}
 
-	// use client.Get / client.Post for further requests, the token will automatically be there
-	_, _ = client.Get("/auth-protected-path")
+	log.Printf("token %s\n",*client.Token)
 }
