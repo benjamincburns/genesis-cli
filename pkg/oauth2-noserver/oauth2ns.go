@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/whiteblock/genesis-cli/pkg/config"
+	"github.com/whiteblock/genesis-cli/pkg/message"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	rndm "github.com/nmrshll/rndm-go"
@@ -29,7 +30,7 @@ type AuthorizedClient struct {
 
 var (
 	gconf            = config.NewConfig()
-	ErrAuthTimeout   = fmt.Errorf("authentication timed out and was cancelled")
+	ErrAuthTimeout   = fmt.Errorf(message.AuthenticationTimedOut)
 	ErrNilAuthConfig = stacktrace.NewError("oauthConfig can't be nil")
 )
 
@@ -92,16 +93,13 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 		urlString = parsedURL.String()
 	}
 
-	//urlString = fmt.Sprintf("%s&device_id=%s&device_name=%s", urlString, DEVICE_NAME, DEVICE_NAME)
-
 	clientChan, stopHTTPServerChan, cancelAuthentication := startHTTPServer(ctx, oauthConfig)
-	util.AuthPrint("You will now be taken to your browser for authentication " +
-		"or open the url below in a browser.")
+	util.AuthPrint(message.PreBrowserAuthShowURL)
 	util.AuthPrint(urlString)
 	time.Sleep(1000 * time.Millisecond)
 	err := open.Run(urlString)
 	if err != nil {
-		util.ErrorFatal("Failed to open browser, you MUST do the manual process.")
+		util.ErrorFatal(message.FailedToOpenBrowserTab)
 	}
 	time.Sleep(600 * time.Millisecond)
 
