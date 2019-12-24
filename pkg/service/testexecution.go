@@ -2,6 +2,7 @@ package service
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -16,6 +17,18 @@ import (
 )
 
 var conf = config.NewConfig()
+
+type Error struct {
+	Message string
+	Info    []string
+}
+
+type Response struct {
+	Data interface{} `json:"data"`
+
+	Error *Error   `json:"error,omitempty"`
+	Meta  struct{} `json:"meta"`
+}
 
 func TestExecute(filePath string, org string) (string, error) {
 	client, err := auth.GetClient()
@@ -45,11 +58,25 @@ func TestExecute(filePath string, org string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	if res.StatusCode != http.StatusOK {
 		return string(data), fmt.Errorf("got back a %s code", res.Status)
 	}
-	return string(data), nil
+
+	var resp Response
+	err = json.Unmarshal(data, &resp)
+	if err != nil {
+		return string(data), err
+	}
+
+	result, ok := resp.Data.(map[string]interface{})
+	if !ok {
+		return fmt.Sprint(resp), nil
+	}
+
+	out := fmt.Sprintf("%v\n", result["message"])
+	out += fmt.Sprintf("Definition: %v\n", result["definitionID"])
+
+	return out, nil
 }
 
 func buildRequest(dest string, filePath string) (*http.Request, error) {

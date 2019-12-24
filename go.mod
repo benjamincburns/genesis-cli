@@ -9,6 +9,7 @@ require (
 	github.com/nmrshll/oauth2-noserver v0.0.0-20190221200101-9bf017bef639
 	github.com/nmrshll/rndm-go v0.0.0-20170430161430-8da3024e53de
 	github.com/palantir/stacktrace v0.0.0-20161112013806-78658fd2d177
+	github.com/shibukawa/configdir v0.0.0-20170330084843-e180dbdc8da0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/skratchdot/open-golang v0.0.0-20190402232053-79abb63cd66e
 	github.com/spf13/cobra v0.0.5

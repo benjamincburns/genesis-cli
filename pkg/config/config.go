@@ -4,6 +4,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/shibukawa/configdir"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -20,6 +21,10 @@ type Config struct {
 	MultipathUploadURI string        `mapstructure:"multipathUploadURI"`
 	WBHost             string        `mapstructure:"wbHost"`
 	OrgID              string        `mapstructure:"orgID"`
+	TokenFile          string        `mapstructure:"tokenFile"`
+
+	Dir     configdir.ConfigDir `mapstructure:"-"`
+	UserDir *configdir.Config   `mapstructure:"-"`
 }
 
 //GetLogger gets a logger according to the config
@@ -44,6 +49,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("MultipathUploadURI", "MULTIPART_UPLOAD_URI")
 	viper.BindEnv("wbHost", "WB_HOST")
 	viper.BindEnv("orgID", "ORG_ID")
+	viper.BindEnv("tokenFile", "TOKEN_FILE")
 }
 
 func setViperDefaults() {
@@ -56,6 +62,7 @@ func setViperDefaults() {
 	viper.SetDefault("multipathUploadURI", "/api/v1/testexecution/organizations/%s/files")
 	viper.SetDefault("wbHost", "www.infra.whiteblock.io")
 	viper.SetDefault("orgID", "")
+	viper.SetDefault("tokenFile", ".auth_token")
 }
 
 func init() {
@@ -83,6 +90,9 @@ func NewConfig() Config {
 			panic(err)
 		}
 		conf.setupLogrus()
+		conf.Dir = configdir.New("whiteblock", "genesis-cli")
+		conf.UserDir = conf.Dir.QueryFolders(configdir.Global)[0]
+		conf.UserDir.MkdirAll()
 	})
 	return conf
 }

@@ -21,9 +21,9 @@ var runCmd = &cobra.Command{
 		}
 		res, err := service.TestExecute(args[0], org)
 		if err != nil {
-			util.PrintError(err)
+			util.Error(err)
 			if len(res) > 0 {
-				util.PrintErrorf("Response : %s", res)
+				util.Errorf("Response : %s", res)
 			}
 			os.Exit(1)
 		}

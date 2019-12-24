@@ -15,7 +15,6 @@ import (
 	"github.com/whiteblock/genesis-cli/pkg/config"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
-	"github.com/fatih/color"
 	rndm "github.com/nmrshll/rndm-go"
 	"github.com/palantir/stacktrace"
 	log "github.com/sirupsen/logrus"
@@ -28,11 +27,14 @@ type AuthorizedClient struct {
 	Token *oauth2.Token
 }
 
-var gconf = config.NewConfig()
+var (
+	gconf            = config.NewConfig()
+	ErrAuthTimeout   = fmt.Errorf("authentication timed out and was cancelled")
+	ErrNilAuthConfig = stacktrace.NewError("oauthConfig can't be nil")
+)
 
 const (
 
-	//DEVICE_NAME = "foobar"
 	// seconds to wait before giving up on auth and exiting
 	oauthStateStringContextKey = 987
 )
@@ -53,7 +55,7 @@ func WithAuthCallHTTPParams(values url.Values) AuthenticateUserOption {
 func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOption) (*AuthorizedClient, error) {
 	// validate params
 	if oauthConfig == nil {
-		return nil, stacktrace.NewError("oauthConfig can't be nil")
+		return nil, ErrNilAuthConfig
 	}
 	// read options
 	var optionsConfig AuthenticateUserFuncConfig
@@ -93,13 +95,13 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 	//urlString = fmt.Sprintf("%s&device_id=%s&device_name=%s", urlString, DEVICE_NAME, DEVICE_NAME)
 
 	clientChan, stopHTTPServerChan, cancelAuthentication := startHTTPServer(ctx, oauthConfig)
-	util.Print(color.CyanString("You will now be taken to your browser for authentication or open the url below in a browser."))
-	log.Println(color.CyanString(urlString))
-	log.Println(color.CyanString("If you are opening the url manually on a different machine you will need to curl the result url on this machine manually."))
+	util.AuthPrint("You will now be taken to your browser for authentication " +
+		"or open the url below in a browser.")
+	util.AuthPrint(urlString)
 	time.Sleep(1000 * time.Millisecond)
 	err := open.Run(urlString)
 	if err != nil {
-		log.Println(color.RedString("Failed to open browser, you MUST do the manual process."))
+		util.ErrorFatal("Failed to open browser, you MUST do the manual process.")
 	}
 	time.Sleep(600 * time.Millisecond)
 
@@ -118,11 +120,12 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 
 		// if authentication process is cancelled first return an error
 	case <-cancelAuthentication:
-		return nil, fmt.Errorf("authentication timed out and was cancelled")
+		return nil, ErrAuthTimeout
 	}
 }
 
-func startHTTPServer(ctx context.Context, conf *oauth2.Config) (clientChan chan *AuthorizedClient, stopHTTPServerChan chan struct{}, cancelAuthentication chan struct{}) {
+func startHTTPServer(ctx context.Context, conf *oauth2.Config) (clientChan chan *AuthorizedClient,
+	stopHTTPServerChan chan struct{}, cancelAuthentication chan struct{}) {
 	// init returns
 	clientChan = make(chan *AuthorizedClient)
 	stopHTTPServerChan = make(chan struct{})
@@ -143,7 +146,7 @@ func startHTTPServer(ctx context.Context, conf *oauth2.Config) (clientChan chan 
 		defer cancel()
 
 		if err := srv.Shutdown(ctx); err != nil {
-			log.Printf(color.RedString("Auth server could not shutdown gracefully: %v"), err)
+			util.Errorf("auth server could not shutdown gracefully: %v", err)
 		}
 
 		// after server is shutdown, quit program
@@ -153,7 +156,7 @@ func startHTTPServer(ctx context.Context, conf *oauth2.Config) (clientChan chan 
 	// handle callback request
 	go func() {
 		if err := srv.ListenAndServe(); err != http.ErrServerClosed {
-			log.Fatalf("listen: %s\n", err)
+			util.ErrorFatalf("listen: %s\n", err)
 		}
 		log.Debug("Server gracefully stopped")
 	}()
@@ -161,20 +164,22 @@ func startHTTPServer(ctx context.Context, conf *oauth2.Config) (clientChan chan 
 	return clientChan, stopHTTPServerChan, cancelAuthentication
 }
 
-func callbackHandler(ctx context.Context, oauthConfig *oauth2.Config, clientChan chan *AuthorizedClient) func(w http.ResponseWriter, r *http.Request) {
+func callbackHandler(ctx context.Context, oauthConfig *oauth2.Config,
+	clientChan chan *AuthorizedClient) func(w http.ResponseWriter, r *http.Request) {
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		requestStateString := ctx.Value(oauthStateStringContextKey).(string)
 		responseStateString := r.FormValue("state")
 		if responseStateString != requestStateString {
-			fmt.Printf("invalid oauth state, expected '%s', got '%s'\n", requestStateString, responseStateString)
+			util.Errorf("invalid oauth state, expected '%s', got '%s'\n",
+				requestStateString, responseStateString)
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 			return
 		}
-		//log.Printf("Form %+v",r.Form)
 		code := r.FormValue("code")
 		token, err := oauthConfig.Exchange(ctx, code)
 		if err != nil {
-			fmt.Printf("oauthoauthConfig.Exchange() failed with '%s'\n", err)
+			util.Errorf("oauthoauthConfig.Exchange() failed with '%s'\n", err)
 			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 			return
 		}

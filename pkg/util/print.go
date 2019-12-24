@@ -15,7 +15,22 @@ func Print(i interface{}) {
 
 	useColor := !viper.GetBool("no-colors")
 	if useColor {
-		out = color.WhiteString(out)
+		out = color.HiWhiteString(out)
+	}
+
+	fmt.Println(out)
+}
+
+func AuthPrintf(format string, a ...interface{}) {
+	AuthPrint(fmt.Sprintf(format, a...))
+}
+
+func AuthPrint(i interface{}) {
+	out := fmt.Sprint(i)
+
+	useColor := !viper.GetBool("no-colors")
+	if useColor {
+		out = color.CyanString(out)
 	}
 
 	fmt.Println(out)

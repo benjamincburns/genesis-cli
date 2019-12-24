@@ -24,7 +24,7 @@ func CheckArguments(cmd *cobra.Command, args []string, min int, max int) {
 		if min == 1 {
 			plural = ""
 		}
-		PrintErrorFatalf("Invalid number of arguments. "+
+		ErrorFatalf("Invalid number of arguments. "+
 			"Expected exactly %d argument%s. Given %d.", min, plural, len(args))
 	}
 	if len(args) < min {
@@ -33,7 +33,7 @@ func CheckArguments(cmd *cobra.Command, args []string, min int, max int) {
 		if min == 1 {
 			plural = ""
 		}
-		PrintErrorFatalf("Missing arguments. "+
+		ErrorFatalf("Missing arguments. "+
 			"Expected atleast %d argument%s. Given %d.", min, plural, len(args))
 	}
 	if max != NoMaxArgs && len(args) > max {
@@ -42,17 +42,17 @@ func CheckArguments(cmd *cobra.Command, args []string, min int, max int) {
 		if max == 1 {
 			plural = ""
 		}
-		PrintErrorFatalf("Too many arguments. "+
+		ErrorFatalf("Too many arguments. "+
 			"Expected atmost %d argument%s. Given %d.", max, plural, len(args))
 	}
 }
 
 func InvalidArgument(arg string) {
-	PrintErrorf("Invalid argument given: %s.", arg)
+	Errorf("Invalid argument given: %s.", arg)
 }
 
 func InvalidInteger(name string, value string, fatal bool) {
-	PrintErrorf("Invalid integer, given \"%s\" for %s.", value, name)
+	Errorf("Invalid integer, given \"%s\" for %s.", value, name)
 	if fatal {
 		os.Exit(1)
 	}
@@ -60,33 +60,33 @@ func InvalidInteger(name string, value string, fatal bool) {
 
 func CheckIntegerBounds(cmd *cobra.Command, name string, val int, min int, max int) {
 	if val < min {
-		PrintErrorFatalf("The value given for %s, %d cannot be less than %d.", name, val, min)
+		ErrorFatalf("The value given for %s, %d cannot be less than %d.", name, val, min)
 	} else if val > max {
-		PrintErrorFatalf("The value given for %s, %d cannot be greater than %d.", name, val, max)
+		ErrorFatalf("The value given for %s, %d cannot be greater than %d.", name, val, max)
 	}
 }
 
 func MalformedUsageError(cmd *cobra.Command, err interface{}) {
 	fmt.Println(cmd.UsageString())
-	PrintErrorFatal(err)
+	ErrorFatal(err)
 }
 
 func FlagNotProvidedError(cmd *cobra.Command, flagName string) {
 	fmt.Println(cmd.UsageString())
-	PrintErrorFatalf(`missing required flag: "%s"`, flagName)
+	ErrorFatalf(`missing required flag: "%s"`, flagName)
 }
 
-func PrintErrorFatalf(base string, args ...interface{}) {
-	PrintErrorFatal(fmt.Sprintf(base, args...))
+func ErrorFatalf(base string, args ...interface{}) {
+	ErrorFatal(fmt.Sprintf(base, args...))
 }
 
-func PrintErrorFatal(err interface{}) {
-	PrintError(err)
+func ErrorFatal(err interface{}) {
+	Error(err)
 	Print("If you believe this is a bug, please file a bug report")
 	os.Exit(1)
 }
 
-func PrintError(err interface{}) {
+func Error(err interface{}) {
 	out := fmt.Sprint(err)
 
 	useColor := !viper.GetBool("no-colors")
@@ -96,6 +96,6 @@ func PrintError(err interface{}) {
 	fmt.Println(out)
 }
 
-func PrintErrorf(base string, args ...interface{}) {
-	PrintError(fmt.Sprintf(base, args...))
+func Errorf(base string, args ...interface{}) {
+	Error(fmt.Sprintf(base, args...))
 }
