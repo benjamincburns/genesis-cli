@@ -6,7 +6,6 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 const (
@@ -67,12 +66,12 @@ func CheckIntegerBounds(cmd *cobra.Command, name string, val int, min int, max i
 }
 
 func MalformedUsageError(cmd *cobra.Command, err interface{}) {
-	fmt.Println(cmd.UsageString())
+	pprint(cmd.UsageString())
 	ErrorFatal(err)
 }
 
 func FlagNotProvidedError(cmd *cobra.Command, flagName string) {
-	fmt.Println(cmd.UsageString())
+	pprint(cmd.UsageString())
 	ErrorFatalf(`missing required flag: "%s"`, flagName)
 }
 
@@ -87,13 +86,7 @@ func ErrorFatal(err interface{}) {
 }
 
 func Error(err interface{}) {
-	out := fmt.Sprint(err)
-
-	useColor := !viper.GetBool("no-colors")
-	if useColor {
-		out = color.RedString(out)
-	}
-	fmt.Println(out)
+	pprint(fmt.Sprint(err), color.FgRed)
 }
 
 func Errorf(base string, args ...interface{}) {

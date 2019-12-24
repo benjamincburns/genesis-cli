@@ -2,23 +2,25 @@ package util
 
 import (
 	"fmt"
+
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
 )
+
+func pprint(subj string, attr ...color.Attribute) {
+	if viper.GetBool("no-colors") {
+		fmt.Println(subj)
+		return
+	}
+	fmt.Println(color.New(attr...).Sprint(subj))
+}
 
 func Printf(format string, a ...interface{}) {
 	Print(fmt.Sprintf(format, a...))
 }
 
 func Print(i interface{}) {
-	out := fmt.Sprint(i)
-
-	useColor := !viper.GetBool("no-colors")
-	if useColor {
-		out = color.HiWhiteString(out)
-	}
-
-	fmt.Println(out)
+	pprint(fmt.Sprint(i), color.FgHiWhite)
 }
 
 func AuthPrintf(format string, a ...interface{}) {
@@ -26,12 +28,5 @@ func AuthPrintf(format string, a ...interface{}) {
 }
 
 func AuthPrint(i interface{}) {
-	out := fmt.Sprint(i)
-
-	useColor := !viper.GetBool("no-colors")
-	if useColor {
-		out = color.CyanString(out)
-	}
-
-	fmt.Println(out)
+	pprint(fmt.Sprint(i), color.FgCyan)
 }
