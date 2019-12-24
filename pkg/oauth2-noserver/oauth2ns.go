@@ -8,15 +8,16 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
-	"strconv"
 	"time"
+
+	"github.com/whiteblock/genesis-cli/pkg/config"
 
 	"github.com/fatih/color"
 	rndm "github.com/nmrshll/rndm-go"
 	"github.com/palantir/stacktrace"
+	log "github.com/sirupsen/logrus"
 	"github.com/skratchdot/open-golang/open"
 	"golang.org/x/oauth2"
 )
@@ -26,15 +27,12 @@ type AuthorizedClient struct {
 	Token *oauth2.Token
 }
 
+var conf = config.NewConfig()
+
 const (
-	// IP is the ip of this machine that will be called back in the browser. It may not be a hostname.
-	// If IP is not 127.0.0.1 DEVICE_NAME must be set. It can be any short string.
-	IP          = "localhost"
-	DEVICE_NAME = "foobar"
-	// PORT is the port that the temporary oauth server will listen on
-	PORT = 56666
+
+	//DEVICE_NAME = "foobar"
 	// seconds to wait before giving up on auth and exiting
-	authTimeout                = 120
 	oauthStateStringContextKey = 987
 )
 
@@ -71,7 +69,7 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 
 	// Redirect user to consent page to ask for permission
 	// for the scopes specified above.
-	oauthConfig.RedirectURL = fmt.Sprintf("http://%s:%s", IP, strconv.Itoa(PORT))
+	oauthConfig.RedirectURL = fmt.Sprintf("http://%s", conf.RedirectURL)
 
 	// Some random string, random for each request
 	oauthStateString := rndm.String(8)
@@ -91,9 +89,7 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 		urlString = parsedURL.String()
 	}
 
-	if IP != "127.0.0.1" {
-		urlString = fmt.Sprintf("%s&device_id=%s&device_name=%s", urlString, DEVICE_NAME, DEVICE_NAME)
-	}
+	//urlString = fmt.Sprintf("%s&device_id=%s&device_name=%s", urlString, DEVICE_NAME, DEVICE_NAME)
 
 	clientChan, stopHTTPServerChan, cancelAuthentication := startHTTPServer(ctx, oauthConfig)
 	log.Println(color.CyanString("You will now be taken to your browser for authentication or open the url below in a browser."))
@@ -108,8 +104,7 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 
 	// shutdown the server after timeout
 	go func() {
-		log.Printf("Authentication will be cancelled in %s seconds", strconv.Itoa(authTimeout))
-		time.Sleep(authTimeout * time.Second)
+		time.Sleep(conf.AuthTimeout)
 		stopHTTPServerChan <- struct{}{}
 	}()
 
@@ -133,7 +128,7 @@ func startHTTPServer(ctx context.Context, conf *oauth2.Config) (clientChan chan 
 	cancelAuthentication = make(chan struct{})
 
 	http.HandleFunc("/", callbackHandler(ctx, conf, clientChan))
-	srv := &http.Server{Addr: ":" + strconv.Itoa(PORT)}
+	srv := &http.Server{Addr: conf.RedirectURL}
 
 	// handle server shutdown signal
 	go func() {
@@ -159,7 +154,7 @@ func startHTTPServer(ctx context.Context, conf *oauth2.Config) (clientChan chan 
 		if err := srv.ListenAndServe(); err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}
-		fmt.Println("Server gracefully stopped")
+		log.Debug("Server gracefully stopped")
 	}()
 
 	return clientChan, stopHTTPServerChan, cancelAuthentication
