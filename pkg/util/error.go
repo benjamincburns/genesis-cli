@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/whiteblock/genesis-cli/pkg/message"
+
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
@@ -81,7 +83,7 @@ func ErrorFatalf(base string, args ...interface{}) {
 
 func ErrorFatal(err interface{}) {
 	Error(err)
-	Print("If you believe this is a bug, please file a bug report")
+	Print(message.FatalErrorMessage)
 	os.Exit(1)
 }
 

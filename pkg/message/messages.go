@@ -8,4 +8,6 @@ const (
 	FailedToOpenBrowserTab = "Failed to open browser, you MUST do the manual process."
 
 	AuthenticationTimedOut = "authentication timed out and was cancelled"
+
+	FatalErrorMessage = "If you believe this is a bug, please file a bug report"
 )
