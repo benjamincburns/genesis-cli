@@ -1,10 +1,12 @@
 package cmds
 
 import (
-	"github.com/spf13/cobra"
+	"os"
 
 	"github.com/whiteblock/genesis-cli/pkg/service"
 	"github.com/whiteblock/genesis-cli/pkg/util"
+
+	"github.com/spf13/cobra"
 )
 
 var runCmd = &cobra.Command{
@@ -23,6 +25,7 @@ var runCmd = &cobra.Command{
 			if len(res) > 0 {
 				util.PrintErrorf("Response : %s", res)
 			}
+			os.Exit(1)
 		}
 		util.Print(res)
 	},

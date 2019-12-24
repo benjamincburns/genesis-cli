@@ -87,9 +87,9 @@ func PrintErrorFatal(err interface{}) {
 }
 
 func PrintError(err interface{}) {
-	out := fmt.Sprintf("Error: %v", err)
+	out := fmt.Sprint(err)
 
-	useColor := viper.GetBool("no-colors")
+	useColor := !viper.GetBool("no-colors")
 	if useColor {
 		out = color.RedString(out)
 	}
