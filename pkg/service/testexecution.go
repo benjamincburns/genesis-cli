@@ -64,7 +64,7 @@ func TestExecute(filePath string, org string) (string, error) {
 		return "", err
 	}
 	if res.StatusCode != http.StatusOK {
-		return string(data), fmt.Errorf("got back a %s code", res.Status)
+		return string(data), fmt.Errorf("server responsed with %s", res.Status)
 	}
 
 	var resp Response
