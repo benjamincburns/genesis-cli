@@ -1,6 +1,7 @@
 package cmds
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -53,7 +54,21 @@ var burnCmd = &cobra.Command{
 				counts[name]["storage"] += instance.Storage
 			}
 		}
-		out, _ := prettyjson.Marshal(counts)
+
+		humanizedCounts := map[string]map[string]string{}
+		for k, v := range counts {
+			humanizedCounts[k] = map[string]string{}
+			for k2, c := range v {
+				switch k2 {
+				case "cpus":
+					humanizedCounts[k][k2] = fmt.Sprintf("%d vCPUs", c)
+				default:
+					humanizedCounts[k][k2] = fmt.Sprintf("%d MB", c)
+				}
+
+			}
+		}
+		out, _ := prettyjson.Marshal(humanizedCounts)
 		util.Print(string(out))
 	},
 }
