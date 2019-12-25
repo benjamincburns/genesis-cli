@@ -13,6 +13,7 @@ import (
 
 	"github.com/whiteblock/genesis-cli/pkg/auth"
 	"github.com/whiteblock/genesis-cli/pkg/config"
+	"github.com/whiteblock/genesis-cli/pkg/message"
 	"github.com/whiteblock/genesis-cli/pkg/parser"
 )
 
@@ -38,6 +39,10 @@ func TestExecute(filePath string, org string) (string, error) {
 
 	if org == "" {
 		org = conf.OrgID
+	}
+
+	if org == "" {
+		return "", fmt.Errorf(message.MissingOrgID)
 	}
 
 	dest := conf.WBHost + fmt.Sprintf(conf.MultipathUploadURI, org)

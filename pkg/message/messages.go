@@ -10,4 +10,6 @@ const (
 	AuthenticationTimedOut = "authentication timed out and was cancelled"
 
 	FatalErrorMessage = "If you believe this is a bug, please file a bug report"
+
+	MissingOrgID = "please provide your organization"
 )
