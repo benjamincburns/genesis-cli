@@ -14,6 +14,7 @@ import (
 	"github.com/whiteblock/genesis-cli/pkg/auth"
 	"github.com/whiteblock/genesis-cli/pkg/config"
 	"github.com/whiteblock/genesis-cli/pkg/message"
+	organization "github.com/whiteblock/genesis-cli/pkg/org"
 	"github.com/whiteblock/genesis-cli/pkg/parser"
 )
 
@@ -40,6 +41,7 @@ func TestExecute(filePath string, org string) (string, error) {
 	if org == "" {
 		org = conf.OrgID
 	}
+	org = organization.Get(org)
 
 	if org == "" {
 		return "", fmt.Errorf(message.MissingOrgID)

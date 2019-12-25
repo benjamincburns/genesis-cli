@@ -22,6 +22,7 @@ type Config struct {
 	WBHost             string        `mapstructure:"wbHost"`
 	OrgID              string        `mapstructure:"orgID"`
 	TokenFile          string        `mapstructure:"tokenFile"`
+	OrgFile            string        `mapstructure:"orgFile"`
 
 	Dir     configdir.ConfigDir `mapstructure:"-"`
 	UserDir *configdir.Config   `mapstructure:"-"`
@@ -50,6 +51,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("wbHost", "WB_HOST")
 	viper.BindEnv("orgID", "ORG_ID")
 	viper.BindEnv("tokenFile", "TOKEN_FILE")
+	viper.BindEnv("orgFile", "ORG_FILE")
 }
 
 func setViperDefaults() {
@@ -63,6 +65,7 @@ func setViperDefaults() {
 	viper.SetDefault("wbHost", "www.infra.whiteblock.io")
 	viper.SetDefault("orgID", "")
 	viper.SetDefault("tokenFile", ".auth_token")
+	viper.SetDefault("orgFile", ".org_name")
 }
 
 func init() {
