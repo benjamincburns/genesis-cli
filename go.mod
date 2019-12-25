@@ -17,6 +17,7 @@ require (
 	github.com/whiteblock/amqp v1.0.5
 	github.com/whiteblock/definition v0.0.0-20191223224929-790324b2113d
 	github.com/whiteblock/genesis v1.8.21
+	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
 	gopkg.in/yaml.v2 v2.2.7
 )
