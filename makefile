@@ -17,6 +17,8 @@ genesis: | prep get
 prep:
 	@mkdir $(OUTPUT_DIR) 2>> /dev/null | true 
 
+install:
+	go install cmd/genesis/main.go
 
 test:
 	go test ./...
