@@ -68,7 +68,10 @@ var burnCmd = &cobra.Command{
 
 			}
 		}
-		out, _ := prettyjson.Marshal(humanizedCounts)
+		out, err := prettyjson.Marshal(humanizedCounts)
+		if err != nil {
+			util.ErrorFatal(err)
+		}
 		util.Print(string(out))
 	},
 }
