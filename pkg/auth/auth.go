@@ -48,15 +48,16 @@ func storeToken(client *oauth2ns.AuthorizedClient) error {
 	return conf.UserDir.WriteFile(conf.TokenFile, data)
 }
 
-func GetClient() (*oauth2ns.AuthorizedClient, error) {
-	authConf := &oauth2.Config{
-		ClientID: "cli",
-		Scopes:   []string{"offline_access"},
-		Endpoint: oauth2.Endpoint{
-			AuthURL:  fmt.Sprintf("https://%s%s", conf.AuthEndpoint, conf.AuthPath),
-			TokenURL: fmt.Sprintf("https://%s%s", conf.AuthEndpoint, conf.TokenPath),
-		},
+func Login() (*oauth2ns.AuthorizedClient, error) {
+	client, err := oauth2ns.AuthenticateUser(getAuthConf())
+	if err != nil {
+		return nil, err
 	}
+	return client, storeToken(client)
+}
+
+func GetClient() (*oauth2ns.AuthorizedClient, error) {
+	authConf := getAuthConf()
 
 	client := getClientFromLocalToken(authConf)
 	if client != nil {
@@ -73,4 +74,15 @@ func GetClient() (*oauth2ns.AuthorizedClient, error) {
 	}
 	return client, nil
 
+}
+
+func getAuthConf() *oauth2.Config {
+	return &oauth2.Config{
+		ClientID: "cli",
+		Scopes:   []string{"offline_access"},
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  fmt.Sprintf("https://%s%s", conf.AuthEndpoint, conf.AuthPath),
+			TokenURL: fmt.Sprintf("https://%s%s", conf.AuthEndpoint, conf.TokenPath),
+		},
+	}
 }
