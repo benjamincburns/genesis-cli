@@ -9,7 +9,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/whiteblock/genesis-cli/pkg/auth"
 	"github.com/whiteblock/genesis-cli/pkg/config"
@@ -47,10 +46,8 @@ func TestExecute(filePath string, org string) (string, error) {
 		return "", fmt.Errorf(message.MissingOrgID)
 	}
 
-	dest := conf.WBHost + fmt.Sprintf(conf.MultipathUploadURI, org)
-	if !strings.HasPrefix(dest, "http") {
-		dest = "https://" + dest
-	}
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, org)
+
 	req, err := buildRequest(dest, filePath)
 	if err != nil {
 		return "", err

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"net/http"
+	"strings"
 	"sync"
 	"time"
 
@@ -12,23 +14,41 @@ import (
 // Config groups all of the global configuration parameters into
 // a single struct
 type Config struct {
-	AuthEndpoint       string        `mapstructure:"authEndpoint"`
-	AuthPath           string        `mapstructure:"authPath"`
-	AuthTimeout        time.Duration `mapstructure:"authTimeout"`
-	TokenPath          string        `mapstructure:"tokenPath"`
-	Verbosity          string        `mapstructure:"verbosity"`
-	RedirectURL        string        `mapstructure:"redirectURL"`
+	AuthEndpoint string        `mapstructure:"authEndpoint"`
+	AuthPath     string        `mapstructure:"authPath"`
+	AuthTimeout  time.Duration `mapstructure:"authTimeout"`
+	TokenPath    string        `mapstructure:"tokenPath"`
+	RedirectURL  string        `mapstructure:"redirectURL"`
+
+	Verbosity string `mapstructure:"verbosity"`
+
 	MultipathUploadURI string        `mapstructure:"multipathUploadURI"`
+	SchemaURI          string        `mapstructure:"schemaURI"`
 	WBHost             string        `mapstructure:"wbHost"`
-	OrgID              string        `mapstructure:"orgID"`
-	TokenFile          string        `mapstructure:"tokenFile"`
-	OrgFile            string        `mapstructure:"orgFile"`
+	APITimeout         time.Duration `mapstructure:"apiTimeout"`
+
+	OrgID string `mapstructure:"orgID"`
+
+	TokenFile  string `mapstructure:"tokenFile"`
+	OrgFile    string `mapstructure:"orgFile"`
+	SchemaFile string `mapstructure:"schemaFile"`
 
 	Dir     configdir.ConfigDir `mapstructure:"-"`
 	UserDir *configdir.Config   `mapstructure:"-"`
 }
 
-//GetLogger gets a logger according to the config
+func (c Config) HTTPClient() *http.Client {
+	return &http.Client{Timeout: c.APITimeout}
+}
+
+func (c Config) APIEndpoint() string {
+	if !strings.HasPrefix(c.WBHost, "http") {
+		return "https://" + c.WBHost
+	}
+	return c.WBHost
+}
+
+// GetLogger gets a logger according to the config
 func (c Config) setupLogrus() {
 	lvl, err := logrus.ParseLevel(c.Verbosity)
 	if err != nil {
@@ -50,8 +70,12 @@ func setViperEnvBindings() {
 	viper.BindEnv("MultipathUploadURI", "MULTIPART_UPLOAD_URI")
 	viper.BindEnv("wbHost", "WB_HOST")
 	viper.BindEnv("orgID", "ORG_ID")
+	viper.BindEnv("schemaURI", "SCHEMA_URI")
+
+	viper.BindEnv("schemaFile", "SCHEMA_FILE")
 	viper.BindEnv("tokenFile", "TOKEN_FILE")
 	viper.BindEnv("orgFile", "ORG_FILE")
+	viper.BindEnv("apiTimeout", "API_TIMEOUT")
 }
 
 func setViperDefaults() {
@@ -66,6 +90,11 @@ func setViperDefaults() {
 	viper.SetDefault("orgID", "")
 	viper.SetDefault("tokenFile", ".auth_token")
 	viper.SetDefault("orgFile", ".org_name")
+
+	viper.SetDefault("schemaURI", "/schemas/test-definition-format")
+	viper.SetDefault("schemaFile", ".test-definition-format-schema")
+
+	viper.SetDefault("apiTimeout", 5*time.Second)
 }
 
 func init() {

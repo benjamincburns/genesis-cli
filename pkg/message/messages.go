@@ -12,4 +12,10 @@ const (
 	FatalErrorMessage = "If you believe this is a bug, please file a bug report"
 
 	MissingOrgID = "please provide your organization"
+
+	FilePassedValidation = "all checks passed"
+
+	UnknownFormat = "test definition is in an unknown format"
+
+	NoSchema = "unable to retrieve the schema"
 )
