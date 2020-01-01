@@ -3,6 +3,7 @@ module github.com/whiteblock/genesis-cli
 go 1.13
 
 require (
+	github.com/Pallinder/go-randomdata v1.2.0
 	github.com/fatih/color v1.7.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/joonix/log v0.0.0-20190524090622-13fe31bbdd7a

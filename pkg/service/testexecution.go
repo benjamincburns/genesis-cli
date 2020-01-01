@@ -19,6 +19,8 @@ import (
 
 var conf = config.NewConfig()
 
+const DNSHeader = "wbdns"
+
 type Error struct {
 	Message string
 	Info    []string
@@ -31,7 +33,7 @@ type Response struct {
 	Meta  struct{} `json:"meta"`
 }
 
-func TestExecute(filePath string, org string) (string, error) {
+func TestExecute(filePath string, org string, dns []string) (string, error) {
 	client, err := auth.GetClient()
 	if err != nil {
 		return "", err
@@ -48,7 +50,7 @@ func TestExecute(filePath string, org string) (string, error) {
 
 	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, org)
 
-	req, err := buildRequest(dest, filePath)
+	req, err := buildRequest(dest, filePath, dns)
 	if err != nil {
 		return "", err
 	}
@@ -83,7 +85,7 @@ func TestExecute(filePath string, org string) (string, error) {
 	return out, nil
 }
 
-func buildRequest(dest string, filePath string) (*http.Request, error) {
+func buildRequest(dest string, filePath string, dns []string) (*http.Request, error) {
 	b := bytes.Buffer{}
 	w := multipart.NewWriter(&b)
 	files, err := parser.ExtractFiles(filePath)
@@ -131,5 +133,8 @@ func buildRequest(dest string, filePath string) (*http.Request, error) {
 		return nil, err
 	}
 	req.Header.Set("Content-Type", w.FormDataContentType())
+	for i := range dns {
+		req.Header.Set(DNSHeader, dns[i])
+	}
 	return req, nil
 }
