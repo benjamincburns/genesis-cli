@@ -50,10 +50,10 @@ pipeline {
             sh """
               gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
               docker build . -t ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest -f binaries.Dockerfile
-              docker run -v ${PWD}/bin:/opt/genesis ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest
-              gsutil cp ./bin/linux/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/linux/amd64/
-              gsutil cp ./bin/mac/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/mac/amd64/
-              gsutil cp ./bin/windows/genesis.exe gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/windows/amd64/
+              docker run -u \$(id -u) -v ${PWD}/bin:/opt/genesis ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest
+              gsutil cp ${PWD}/bin/linux/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/linux/amd64/
+              gsutil cp ${PWD}/bin/mac/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/mac/amd64/
+              gsutil cp ${PWD}/bin/windows/genesis.exe gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/windows/amd64/
             """
           }
         }
