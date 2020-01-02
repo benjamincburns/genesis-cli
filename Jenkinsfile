@@ -50,7 +50,7 @@ pipeline {
             docker.build("${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest")
             sh """
               gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
-              docker run -v ${PWD}/bin:/opt/genesis" ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest
+              docker run -v ${PWD}/bin:/opt/genesis ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest
               gsutil cp ./bin/linux/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/linux/amd64/
               gsutil cp ./bin/mac/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/mac/amd64/
               gsutil cp ./bin/windows/genesis.exe gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/windows/amd64/
@@ -78,7 +78,7 @@ pipeline {
                     channel: "${SLACK_CHANNEL}",
                     token: "${SLACK_TOKEN}",
                     color: 'danger',
-                    message: "@channel ALARM! \n *FAILED*: Job *${env.JOB_NAME}*. \n <${env.RUN_DISPLAY_URL}|*Build Log [${env.BUILD_NUMBER}]*>"
+                    message: " To be enabled later, ALARM! \n *FAILED*: Job *${env.JOB_NAME}*. \n <${env.RUN_DISPLAY_URL}|*Build Log [${env.BUILD_NUMBER}]*>"
             }
           }
         }
