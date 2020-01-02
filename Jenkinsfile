@@ -66,7 +66,6 @@ pipeline {
       deleteDir()
       sh "/usr/bin/docker image prune --force --filter 'until=72h'"
       sh "/usr/bin/docker image rm ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest || true"
-      sh "kubectl config delete-context ${DEV_KUBE_CONTEXT} || true"
       sh "gcloud auth revoke || true"
     }
     failure {
