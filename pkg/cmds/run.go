@@ -65,6 +65,14 @@ var runCmd = &cobra.Command{
 		}
 
 		util.Print(res)
+
+		if dnsEnabled {
+			for i := range tests {
+				for j := range tests[i].ProvisionCommand.Instances {
+					util.Printf("%s-%d.%s", dns[i], j, conf.BiomeDNSZone)
+				}
+			}
+		}
 	},
 }
 
