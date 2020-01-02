@@ -26,6 +26,7 @@ type Config struct {
 	SchemaURI          string        `mapstructure:"schemaURI"`
 	WBHost             string        `mapstructure:"wbHost"`
 	APITimeout         time.Duration `mapstructure:"apiTimeout"`
+	BiomeDNSZone       string        `mapstructure:"biomeDNSZone"`
 
 	OrgID string `mapstructure:"orgID"`
 
@@ -76,6 +77,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("tokenFile", "TOKEN_FILE")
 	viper.BindEnv("orgFile", "ORG_FILE")
 	viper.BindEnv("apiTimeout", "API_TIMEOUT")
+	//"biomeDNSZone" no env binding
 }
 
 func setViperDefaults() {
@@ -95,6 +97,7 @@ func setViperDefaults() {
 	viper.SetDefault("schemaFile", ".test-definition-format-schema")
 
 	viper.SetDefault("apiTimeout", 5*time.Second)
+	viper.SetDefault("biomeDNSZone", "infra.whiteblock.io")
 }
 
 func init() {
