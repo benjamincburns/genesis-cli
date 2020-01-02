@@ -8,7 +8,6 @@ def DEFAULT_BRANCH = 'master'
 
 //Dev
 def DEV_GCP_PROJECT_ID = "infra-dev-249211"
-def DEV_KUBE_CONTEXT = "gke_${DEV_GCP_PROJECT_ID}_${GCP_REGION}_${DEV_GKE_CLUSTER_NAME}"
 def IMAGE_REPO            = "gcr.io/${DEV_GCP_PROJECT_ID}"
 def BINARIES_BUCKET = 'infra-dev-binaries'
 
