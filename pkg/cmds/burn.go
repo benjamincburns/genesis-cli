@@ -2,14 +2,11 @@ package cmds
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 
+	"github.com/whiteblock/genesis-cli/pkg/service"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"github.com/whiteblock/definition"
 	"github.com/whiteblock/go-prettyjson"
 )
 
@@ -20,26 +17,7 @@ var burnCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
 
-		file, err := os.Open(args[0])
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-		defer file.Close()
-
-		data, err := ioutil.ReadAll(file)
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-		v := viper.New()
-		v.Set("verbosity", "FATAL")
-		definition.ConfigureGlobalFromViper(v) //shush library
-
-		def, err := definition.SchemaYAML(data)
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-
-		tests, err := definition.GetTests(def)
+		tests, def, err := service.ProcessDefinitionFromFile(args[0])
 		if err != nil {
 			util.ErrorFatal(err)
 		}

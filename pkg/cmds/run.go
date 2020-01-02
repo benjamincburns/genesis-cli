@@ -1,7 +1,6 @@
 package cmds
 
 import (
-	"io/ioutil"
 	"os"
 
 	"github.com/whiteblock/genesis-cli/pkg/service"
@@ -9,7 +8,6 @@ import (
 
 	"github.com/Pallinder/go-randomdata"
 	"github.com/spf13/cobra"
-	"github.com/whiteblock/definition"
 )
 
 var runCmd = &cobra.Command{
@@ -23,23 +21,7 @@ var runCmd = &cobra.Command{
 			org = args[1]
 		}
 
-		file, err := os.Open(args[0])
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-		defer file.Close()
-
-		data, err := ioutil.ReadAll(file)
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-
-		def, err := definition.SchemaYAML(data)
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-
-		tests, err := definition.GetTests(def)
+		tests, def, err := service.ProcessDefinitionFromFile(args[0])
 		if err != nil {
 			util.ErrorFatal(err)
 		}
@@ -68,8 +50,9 @@ var runCmd = &cobra.Command{
 
 		if dnsEnabled {
 			for i := range tests {
+				util.Printf("Test: %s", def.Spec.Tests[i].Name)
 				for j := range tests[i].ProvisionCommand.Instances {
-					util.Printf("%s-%d.%s", dns[i], j, conf.BiomeDNSZone)
+					util.Printf("\t%s-%d.%s", dns[i], j, conf.BiomeDNSZone)
 				}
 			}
 		}
