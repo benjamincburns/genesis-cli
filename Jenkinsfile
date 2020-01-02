@@ -47,9 +47,9 @@ pipeline {
       steps {
         script {
           withCredentials([file(credentialsId: 'google-infra-dev-auth', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-            docker.build("${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest")
             sh """
               gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
+              docker build . -t ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest -f binaries.Dockerfile
               docker run -v ${PWD}/bin:/opt/genesis ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest
               gsutil cp ./bin/linux/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/linux/amd64/
               gsutil cp ./bin/mac/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/mac/amd64/
