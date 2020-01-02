@@ -12,7 +12,7 @@ OUTPUT_DIR=./bin
 all: genesis
 
 genesis: | prep get
-	go build -o bin/genesis ./cmd/genesis
+	go build -o $(OUTPUT_DIR)/genesis ./cmd/genesis
 
 prep:
 	@mkdir $(OUTPUT_DIR) 2>> /dev/null | true 
