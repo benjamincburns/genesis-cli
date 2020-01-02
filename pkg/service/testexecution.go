@@ -19,7 +19,7 @@ import (
 
 var conf = config.NewConfig()
 
-const DNSHeader = "wbdns"
+const DNSHeader = "Wbdns"
 
 type Error struct {
 	Message string
