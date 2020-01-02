@@ -2,6 +2,7 @@ package cmds
 
 import (
 	"os"
+	"strings"
 
 	"github.com/whiteblock/genesis-cli/pkg/service"
 	"github.com/whiteblock/genesis-cli/pkg/util"
@@ -33,7 +34,7 @@ var runCmd = &cobra.Command{
 		}
 		if dnsEnabled {
 			for range tests {
-				dns = append(dns, randomdata.SillyName())
+				dns = append(dns, strings.ToLower(randomdata.SillyName()))
 			}
 		}
 
