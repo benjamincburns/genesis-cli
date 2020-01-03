@@ -8,7 +8,7 @@ timeout: '15m'
 steps:
   - id: 'mkdir'
     name: 'ubuntu'
-    args: ['bash', './myscript.bash']
+    args: ['mkdir', './bin']
     waitFor:
       - '-'
   - id: build
