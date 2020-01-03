@@ -52,8 +52,6 @@ pipeline {
               docker build . -t ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest -f binaries.Dockerfile
               docker run -v ${PWD}/bin:/opt/genesis ${IMAGE_REPO}/${APP_NAME}:${BRANCH_NAME}-build-latest
               docker run -v ${PWD}/bin:/opt/genesis alpine:latest chown -R \$(id -u):\$(id -g) /opt/genesis
-              gsutil cp ${PWD}/bin/linux/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/linux/amd64/
-              gsutil cp ${PWD}/bin/mac/genesis gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/mac/amd64/
               gsutil cp -r ${PWD}/bin/ gs://infra-dev-binaries/cli/${BRANCH_NAME}/bin/
             """
           }
