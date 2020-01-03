@@ -17,7 +17,6 @@ genesis: | prep get
 prep:
 	@mkdir $(OUTPUT_DIR) 2>> /dev/null | true
 
-
 linux:
 	@mkdir -p $(OUTPUT_DIR)/linux 2>> /dev/null | true
 	GOOS=linux
@@ -33,7 +32,7 @@ windows:
 
 multiplatform: linux mac windows
 
-install:
+install: | genesis
 	go install cmd/genesis/main.go
 
 test:
