@@ -6,6 +6,11 @@ substitutions:
   _BINARIES_BUCKET : 'infra-dev-binaries'
 timeout: '15m'
 steps:
+  - id: 'mkdir'
+    name: 'ubuntu'
+    args: ['bash', './myscript.bash']
+    waitFor:
+      - '-'
   - id: build
     name: 'gcr.io/cloud-builders/docker'
     args: [
@@ -16,7 +21,7 @@ steps:
       '-f','binaries.Dockerfile'
     ]
     waitFor:
-      - '-'
+      - 'mkdir'
   # create container based off image (but don't run)
   - id: createContainer
     name: 'gcr.io/cloud-builders/docker'
