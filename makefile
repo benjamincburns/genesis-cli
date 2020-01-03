@@ -17,7 +17,7 @@ WINDOWS_FLAGS=$(BUILD_FLAGS)
 
 PKG=main
 
-.PHONY: build test lint vet get linux mac windows multiplatform install clean
+.PHONY: build test lint vet get linux mac windows multiplatform install clean freebsd
 .ONESHELL:
 
 all: genesis
@@ -30,24 +30,34 @@ clean:
 	rm -rf $(OUTPUT_DIR)/linux
 	rm -rf $(OUTPUT_DIR)/mac
 	rm -rf $(OUTPUT_DIR)/windows
+	rm -rf $(OUTPUT_DIR)/freebsd
 
 prep:
-	@mkdir $(OUTPUT_DIR) 2>> /dev/null | true
+	@mkdir $(OUTPUT_DIR) 2>> /dev/null || true
 
 linux:
-	@mkdir -p $(OUTPUT_DIR)/linux 2>> /dev/null | true
-	GOOS=linux
-	@go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/genesis ./cmd/genesis
+	@mkdir -p $(OUTPUT_DIR)/linux 2>> /dev/null || true
+	GOARCH=386 GOOS=linux go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/386/genesis ./cmd/genesis
+	GOARCH=amd64 GOOS=linux go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/amd64/genesis ./cmd/genesis
+	GOARCH=arm GOOS=linux go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/arm/genesis ./cmd/genesis
+	GOARCH=arm64 GOOS=linux go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/arm64/genesis ./cmd/genesis
+	GOARCH=ppc64 GOOS=linux go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/ppc64/genesis ./cmd/genesis
+
+freebsd:
+	@mkdir -p $(OUTPUT_DIR)/freebsd 2>> /dev/null || true
+	GOARCH=386 GOOS=freebsd go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/freebsd/386/genesis ./cmd/genesis
+	GOARCH=amd64 GOOS=freebsd go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/freebsd/amd64/genesis ./cmd/genesis
+	GOARCH=arm GOOS=freebsd go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/freebsd/arm/genesis ./cmd/genesis
 
 mac:
-	@mkdir -p $(OUTPUT_DIR)/mac 2>> /dev/null | true
-	GOARCH=amd64 GOOS=darwin go build $(MAC_FLAGS) -o $(OUTPUT_DIR)/mac/genesis ./cmd/genesis
+	@mkdir -p $(OUTPUT_DIR)/mac 2>> /dev/null || true
+	GOARCH=amd64 GOOS=darwin go build $(MAC_FLAGS) -o $(OUTPUT_DIR)/mac/amd64/genesis ./cmd/genesis
 
 windows:
-	@mkdir -p $(OUTPUT_DIR)/windows 2>> /dev/null | true
-	GOARCH=amd64 GOOS=windows go build $(WINDOWS_FLAGS) -o $(OUTPUT_DIR)/windows/genesis.exe ./cmd/genesis 
+	@mkdir -p $(OUTPUT_DIR)/windows 2>> /dev/null || true
+	GOARCH=amd64 GOOS=windows go build $(WINDOWS_FLAGS) -o $(OUTPUT_DIR)/windows/amd64/genesis.exe ./cmd/genesis 
 
-multiplatform: linux mac windows
+multiplatform: linux mac windows freebsd
 
 install: | genesis
 	@cd cmd/genesis && \
