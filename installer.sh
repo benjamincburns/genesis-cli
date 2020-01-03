@@ -23,18 +23,29 @@ main() {
     esac
 
     local _url="${GENESIS_URL}/${_arch}/genesis${_ext}"
-    local _dir=/usr/local/bin
-    local _file="${_dir}/genesis${_ext}"
+    local _dir=$HOME/.whiteblock
+    local _file="${_dir}/bin/genesis${_ext}"
 
-    ensure mkdir -p "$_dir"
+    ensure mkdir -p "${_dir}/bin"
     ensure downloader "$_url" "$_file"
     ensure chmod a+x "$_file"
     if [ ! -x "$_file" ]; then
-        printf 'Failed to install genesis, are you root?\n'1>&2
+        printf 'Failed to install genesis\n'1>&2
         exit 1
     fi
 
     ignore "$_file" "$@"
+
+    if [ ! -x "${_dir}/env" ]; then
+        echo "export PATH=\"${_dir}/bin:$PATH\"" >> ${_dir}/env
+        echo "source ${_dir}/env" >> $HOME/.bashrc
+
+        echo "Please restart your shell or run"
+        echo "source ${_dir}/env"
+        echo "to start using genesis"
+    fi
+
+    
 
     local _retval=$?
 
@@ -157,7 +168,7 @@ assert_nz() {
 }
 
 ensure() {
-    if ! "$@"; then err "command failed, are you root?: $*"; fi
+    if ! "$@"; then err "command failed: $*"; fi
 }
 
 ignore() {
