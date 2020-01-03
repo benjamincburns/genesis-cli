@@ -25,7 +25,7 @@ steps:
   # create container based off image (but don't run)
   - id: createContainer
     name: 'gcr.io/cloud-builders/docker'
-    args: [ 'run', '--name', 'output', '$_IMAGE:$BRANCH_NAME' ]
+    args: [ 'run', '--name', 'output', '$_IMAGE:$BRANCH_NAME' ,'-j', '32']
     waitFor:
       - 'build'
 
@@ -36,7 +36,7 @@ steps:
       - 'createContainer'
   # copy binary to public bucket
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ '-m', 'cp', '-r', './bin/', 'gs://$_BINARIES_BUCKET/cli/bin/' ]
+    args: [ '-m', 'cp', '-r', './bin/', 'gs://$_BINARIES_BUCKET/cli/' ]
     waitFor:
       - 'copyBin'
 
