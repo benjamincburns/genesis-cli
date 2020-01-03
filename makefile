@@ -12,7 +12,7 @@ OUTPUT_DIR=./bin
 
 LINUX_FLAGS=-tags netgo -ldflags '-extldflags "-static"'
 MAC_FLAGS=-ldflags '-s -extldflags "-sectcreate __TEXT __info_plist Info.plist"'
-WINDOWS_FLAGS=-tags netgo -ldflags '-H=windowsgui -extldflags "-static"
+WINDOWS_FLAGS=-tags netgo -ldflags '-H=windowsgui -extldflags "-static"'
 
 all: genesis
 
