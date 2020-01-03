@@ -9,6 +9,11 @@ OUTPUT_DIR=./bin
 .PHONY: build test test_race lint vet get mocks clean-mocks manual-mocks
 .ONESHELL:
 
+
+LINUX_FLAGS=-tags netgo -ldflags '-extldflags "-static"'
+MAC_FLAGS=-ldflags '-s -extldflags "-sectcreate __TEXT __info_plist Info.plist"'
+WINDOWS_FLAGS=-tags netgo -ldflags '-H=windowsgui -extldflags "-static"
+
 all: genesis
 
 genesis: | prep get
@@ -21,15 +26,15 @@ prep:
 linux:
 	@mkdir -p $(OUTPUT_DIR)/linux 2>> /dev/null | true
 	GOOS=linux
-	go build -o $(OUTPUT_DIR)/linux/genesis ./cmd/genesis
+	go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/genesis ./cmd/genesis
 mac:
 	@mkdir -p $(OUTPUT_DIR)/mac 2>> /dev/null | true
 	GOOS=macos
-	go build -o $(OUTPUT_DIR)/mac/genesis ./cmd/genesis
+	go build $(MAC_FLAGS) -o $(OUTPUT_DIR)/mac/genesis ./cmd/genesis 
 windows:
 	@mkdir -p $(OUTPUT_DIR)/windows 2>> /dev/null | true
 	GOOS=windows
-	go build -o $(OUTPUT_DIR)/windows/genesis.exe ./cmd/genesis
+	go build $(WINDOWS_FLAGS) -o $(OUTPUT_DIR)/windows/genesis.exe ./cmd/genesis 
 
 multiplatform: linux mac windows
 
