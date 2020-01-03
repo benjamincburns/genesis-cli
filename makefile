@@ -3,6 +3,7 @@ CGO_ENABLED=0
 
 
 OUTPUT_DIR=./bin
+INSTALL_LOC=/usr/local/bin
 
 SHORT_HASH=$(shell git log --pretty=format:'%h' -n 1)
 DATE=$(shell date +"%d.%m.%y")
@@ -13,6 +14,8 @@ BUILD_FLAGS=-tags netgo -ldflags '$(LDFLAGS) -extldflags "-static"'
 LINUX_FLAGS=$(BUILD_FLAGS)
 MAC_FLAGS=$(BUILD_FLAGS)
 WINDOWS_FLAGS=$(BUILD_FLAGS)
+
+PKG=main
 
 .PHONY: build test lint vet get linux mac windows multiplatform install clean
 .ONESHELL:
@@ -47,7 +50,9 @@ windows:
 multiplatform: linux mac windows
 
 install: | genesis
-	go install cmd/genesis/main.go
+	@cd cmd/genesis && \
+	go install -ldflags="$(LDFLAGS)" . &&\
+	cd -
 
 test:
 	go test ./...
