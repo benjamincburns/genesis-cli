@@ -1,5 +1,5 @@
 GO111MODULE=on
-
+CGO_ENABLED=0
 DIRECTORIES=$(sort $(dir $(wildcard pkg/*/*/)))
 
 MOCKS=$(foreach x, $(DIRECTORIES), mocks/$(x))
