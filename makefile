@@ -34,7 +34,7 @@ prep:
 linux:
 	@mkdir -p $(OUTPUT_DIR)/linux 2>> /dev/null | true
 	GOOS=linux
-	@]go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/genesis ./cmd/genesis
+	@go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/genesis ./cmd/genesis
 
 mac:
 	@mkdir -p $(OUTPUT_DIR)/mac 2>> /dev/null | true
@@ -42,7 +42,6 @@ mac:
 
 windows:
 	@mkdir -p $(OUTPUT_DIR)/windows 2>> /dev/null | true
-	
 	GOARCH=amd64 GOOS=windows go build $(WINDOWS_FLAGS) -o $(OUTPUT_DIR)/windows/genesis.exe ./cmd/genesis 
 
 multiplatform: linux mac windows
