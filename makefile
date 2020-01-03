@@ -1,6 +1,6 @@
 GO111MODULE=on
 CGO_ENABLED=0
-GOARCH=amd64
+
 
 OUTPUT_DIR=./bin
 
@@ -23,7 +23,10 @@ genesis: | prep get
 	@go build -ldflags="$(LDFLAGS)" -o $(OUTPUT_DIR)/genesis ./cmd/genesis
 
 clean:
-	rm -rf OUTPUT_DIR
+	rm -rf $(OUTPUT_DIR)/genesis
+	rm -rf $(OUTPUT_DIR)/linux
+	rm -rf $(OUTPUT_DIR)/mac
+	rm -rf $(OUTPUT_DIR)/windows
 
 prep:
 	@mkdir $(OUTPUT_DIR) 2>> /dev/null | true
@@ -31,17 +34,16 @@ prep:
 linux:
 	@mkdir -p $(OUTPUT_DIR)/linux 2>> /dev/null | true
 	GOOS=linux
-	@go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/genesis ./cmd/genesis
+	@]go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/linux/genesis ./cmd/genesis
 
 mac:
 	@mkdir -p $(OUTPUT_DIR)/mac 2>> /dev/null | true
-	GOOS=macos
-	@go build $(MAC_FLAGS) -o $(OUTPUT_DIR)/mac/genesis ./cmd/genesis
+	GOARCH=amd64 GOOS=darwin go build $(MAC_FLAGS) -o $(OUTPUT_DIR)/mac/genesis ./cmd/genesis
 
 windows:
 	@mkdir -p $(OUTPUT_DIR)/windows 2>> /dev/null | true
-	GOOS=windows
-	@go build $(WINDOWS_FLAGS) -o $(OUTPUT_DIR)/windows/genesis.exe ./cmd/genesis 
+	
+	GOARCH=amd64 GOOS=windows go build $(WINDOWS_FLAGS) -o $(OUTPUT_DIR)/windows/genesis.exe ./cmd/genesis 
 
 multiplatform: linux mac windows
 
