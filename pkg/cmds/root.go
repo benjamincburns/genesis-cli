@@ -1,6 +1,8 @@
 package cmds
 
 import (
+	"fmt"
+
 	"github.com/whiteblock/genesis-cli/pkg/config"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
@@ -8,7 +10,9 @@ import (
 	"github.com/spf13/viper"
 )
 
-var conf = config.NewConfig()
+var (
+	conf = config.NewConfig()
+)
 
 var rootCmd = &cobra.Command{
 	Use:     "genesis",
@@ -17,7 +21,8 @@ var rootCmd = &cobra.Command{
 	Long:    ``,
 }
 
-func Execute() {
+func Execute(buildTime, commitHash string) {
+	rootCmd.Version = fmt.Sprintf("%s-%s", buildTime, commitHash)
 	if err := rootCmd.Execute(); err != nil {
 		util.ErrorFatal(err)
 	}
