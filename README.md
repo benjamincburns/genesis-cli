@@ -10,11 +10,11 @@ On all operating systems, this CLI can be installed with the command `go install
 ### Without go tools
 
 #### Linux
-TODO
+Download [here](https://storage.googleapis.com/infra-dev-binaries/cli/master/bin/linux/amd64/genesis)
 #### Mac
-TODO
+Download [here](https://storage.googleapis.com/infra-dev-binaries/cli/master/bin/mac/amd64/genesis)
 #### Windows
-TODO
+Download [here](https://storage.googleapis.com/infra-dev-binaries/cli/master/bin/windows/amd64/genesis.exe)
 
 ## Running a test
 	To run a test as a user in the org named whiteblock, you would use the command 
