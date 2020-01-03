@@ -79,7 +79,7 @@ pipeline {
                     channel: "${SLACK_CHANNEL}",
                     token: "${SLACK_TOKEN}",
                     color: 'danger',
-                    message: " To be enabled later, ALARM! \n *FAILED*: Job *${env.JOB_NAME}*. \n <${env.RUN_DISPLAY_URL}|*Build Log [${env.BUILD_NUMBER}]*>"
+                    message: "@channel ALARM! \n *FAILED*: Job *${env.JOB_NAME}*. \n <${env.RUN_DISPLAY_URL}|*Build Log [${env.BUILD_NUMBER}]*>"
             }
           }
         }
