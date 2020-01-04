@@ -5,25 +5,52 @@ Genesis CLI
 
 ### Using go tools
 
-On all operating systems, this CLI can be installed with the command `go install github.com/whiteblock/genesis-cli`
+On all operating systems, this CLI can be installed with the command 
+
+```
+go install github.com/whiteblock/genesis-cli
+```
 
 ### Without go tools
 
 #### Linux and Mac
-`curl -sSf https://storage.googleapis.com/infra-dev-binaries/cli/install.sh | sh`
+
+```
+curl -sSf https://storage.googleapis.com/infra-dev-binaries/cli/install.sh | sh
+```
+
 #### Windows
 Download [here](https://storage.googleapis.com/infra-dev-binaries/cli/master/bin/windows/amd64/genesis.exe)
 
 ## Running a test
-	To run a test as a user in the org named whiteblock, you would use the command 
-`genesis run <path to your yaml spec> whiteblock`. If it is your first time using the CLI, 
-it will prompt you in your browser to complete the authentication process. You only need to do this once. 
+To run a test as a user in the org named "whiteblock", you would use the command: 
+
+```
+genesis run <path to your yaml spec> whiteblock
+```
+
+If it is your first time using the CLI, it will prompt you in your browser to complete the authentication process. You only need to do this once. 
+
+
 The CLI will also remember the last organization you used, so after running that command, you would only need to use
-`genesis run <path to your yaml spec>` to run a subsequent test in the org whiteblock. 
+
+```
+genesis run <path to your yaml spec>
+```
+
+to run a subsequent test in the org "whiteblock". 
 
 ### DNS
-	To easily access your running test, you can chose for the instance hosts of the test to be exposed using DNS.
-This is done by adding the `--dns` flag to your run command i.e. `genesis run --dns ...`. The result will be the useable DNS names printed out for you on a per test basis. Here is an example of what it might look like:
+To easily access your running test, you can choose for the instance hosts of the test to be exposed using DNS.
+
+
+This is done by adding the `--dns` flag to your run command, like so:
+
+```
+genesis run --dns ...
+``` 
+
+The result will be the useable DNS names printed out for you on a per test basis. Here is an example of what it might look like:
 ```
 success
 Definition: fake-definition-id
