@@ -3,7 +3,7 @@
 substitutions:
   _PROJECT: cli
   _IMAGE: 'genesis'
-  _BINARIES_BUCKET : 'assets.infra.whiteblock.io'
+  _BINARIES_BUCKET : 'assets.whiteblock.io'
 timeout: '15m'
 steps:
   - id: 'mkdir'
