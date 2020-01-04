@@ -36,8 +36,6 @@ var lintCmd = &cobra.Command{
 		if !res.Valid() {
 			for _, schemaErr := range res.Errors() {
 				util.Error(schemaErr.String())
-				util.Error(schemaErr.Description())
-				util.Error(schemaErr.Details())
 			}
 			return
 		}
