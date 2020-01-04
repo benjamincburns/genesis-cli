@@ -3,12 +3,12 @@ Genesis CLI
 
 ## Installation
 
-### Using go tools
+### From source
 
 On all operating systems, this CLI can be installed with the command 
 
 ```
-go install github.com/whiteblock/genesis-cli/...
+make install
 ```
 
 ### Without go tools
