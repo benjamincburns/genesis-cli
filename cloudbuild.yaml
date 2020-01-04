@@ -31,7 +31,7 @@ steps:
 
   - id: copyBin
     name: 'gcr.io/cloud-builders/docker'
-    args: [ 'cp', 'output:/opt/genesis', './bin/' ]
+    args: [ 'cp', 'output:/opt/genesis/', './bin/' ]
     waitFor:
       - 'createContainer'
   # copy binary to public bucket
