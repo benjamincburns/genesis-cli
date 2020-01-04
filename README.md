@@ -8,7 +8,7 @@ Genesis CLI
 On all operating systems, this CLI can be installed with the command 
 
 ```
-go install github.com/whiteblock/genesis-cli
+go install github.com/whiteblock/genesis-cli/...
 ```
 
 ### Without go tools
