@@ -3,7 +3,6 @@ package validate
 import (
 	"encoding/json"
 	"io/ioutil"
-	"path"
 
 	"github.com/whiteblock/genesis-cli/pkg/config"
 	"github.com/whiteblock/genesis-cli/pkg/message"
@@ -32,7 +31,7 @@ func storeSchema(data []byte) error {
 }
 
 func getSchema() ([]byte, error) {
-	resp, err := conf.HTTPClient().Get(path.Join(conf.APIEndpoint(), conf.SchemaURI))
+	resp, err := conf.HTTPClient().Get(conf.SchemaURL)
 	if err != nil {
 		return schemaFromCache()
 	}

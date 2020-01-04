@@ -23,7 +23,7 @@ type Config struct {
 	Verbosity string `mapstructure:"verbosity"`
 
 	MultipathUploadURI string        `mapstructure:"multipathUploadURI"`
-	SchemaURI          string        `mapstructure:"schemaURI"`
+	SchemaURL          string        `mapstructure:"schemaURL"`
 	WBHost             string        `mapstructure:"wbHost"`
 	APITimeout         time.Duration `mapstructure:"apiTimeout"`
 	BiomeDNSZone       string        `mapstructure:"biomeDNSZone"`
@@ -71,7 +71,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("MultipathUploadURI", "MULTIPART_UPLOAD_URI")
 	viper.BindEnv("wbHost", "WB_HOST")
 	viper.BindEnv("orgID", "ORG_ID")
-	viper.BindEnv("schemaURI", "SCHEMA_URI")
+	viper.BindEnv("schemaURI", "SCHEMA_URL")
 
 	viper.BindEnv("schemaFile", "SCHEMA_FILE")
 	viper.BindEnv("tokenFile", "TOKEN_FILE")
@@ -93,7 +93,7 @@ func setViperDefaults() {
 	viper.SetDefault("tokenFile", ".auth_token")
 	viper.SetDefault("orgFile", ".org_name")
 
-	viper.SetDefault("schemaURI", "/schemas/test-definition-format")
+	viper.SetDefault("schemaURL", "https://assets.whiteblock.io/schema/schema.json")
 	viper.SetDefault("schemaFile", ".test-definition-format-schema")
 
 	viper.SetDefault("apiTimeout", 5*time.Second)
