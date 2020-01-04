@@ -3,7 +3,7 @@
 # Based on a script found in https://github.com/rust-lang/rustup
 set -u
 
-GENESIS_URL=https://storage.googleapis.com/infra-dev-binaries/cli/bin/genesis
+GENESIS_URL=https://assets.infra.whiteblock.io/cli/bin/genesis
 
 main() {
     downloader --check
