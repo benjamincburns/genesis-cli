@@ -25,7 +25,7 @@ steps:
   # create container based off image (but don't run)
   - id: createContainer
     name: 'gcr.io/cloud-builders/docker'
-    args: [ 'run', '--name', 'output', '$_IMAGE:$BRANCH_NAME' ,'-j', '32']
+    args: [ 'run', '--name', 'output', '$_IMAGE:$BRANCH_NAME' ]
     waitFor:
       - 'build'
 
