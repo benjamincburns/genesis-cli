@@ -16,11 +16,11 @@ go install github.com/whiteblock/genesis-cli
 #### Linux and Mac
 
 ```
-curl -sSf https://storage.googleapis.com/infra-dev-binaries/cli/install.sh | sh
+curl -sSf https://assets.whiteblock.io/cli/install.sh | sh
 ```
 
 #### Windows
-Download [here](https://storage.googleapis.com/infra-dev-binaries/cli/master/bin/windows/amd64/genesis.exe)
+Download [here](https://assets.whiteblock.io/cli/master/bin/windows/amd64/genesis.exe)
 
 ## Running a test
 To run a test as a user in the org named "whiteblock", you would use the command: 
