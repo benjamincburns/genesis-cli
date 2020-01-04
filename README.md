@@ -9,10 +9,8 @@ On all operating systems, this CLI can be installed with the command `go install
 
 ### Without go tools
 
-#### Linux
-Download [here](https://storage.googleapis.com/infra-dev-binaries/cli/master/bin/linux/amd64/genesis)
-#### Mac
-Download [here](https://storage.googleapis.com/infra-dev-binaries/cli/master/bin/mac/amd64/genesis)
+#### Linux and Mac
+`curl -sSf https://storage.googleapis.com/infra-dev-binaries/cli/install.sh | sh`
 #### Windows
 Download [here](https://storage.googleapis.com/infra-dev-binaries/cli/master/bin/windows/amd64/genesis.exe)
 
