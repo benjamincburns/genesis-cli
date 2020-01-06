@@ -15,10 +15,7 @@ var envCmd = &cobra.Command{
 	Short: "Get the whiteblock provided environment vars for a test spec",
 	Long: `This command lists the environment variables provided to your container. These 
 variables are useful to see the additional information available to you at runtime. 
-You can also see what these values might look like by using the --values flag. The names of the environment variables
-will be the same as returned by this command. If you would like to have them include examples 
-of the values of each variable, you may use the --values flag. Keep in mind that you should
-not use these values in place of the environment variable.
+The names of the environment variables in execution will be the same as returned by this command. 
 
 Environment Variables for IPs
 The Genesis platform provides environment variables to give you the IP addresses of services in the network.
@@ -63,6 +60,7 @@ to find the IP of a sidecar "soap-bar" to the 0th service instance of "foo-baz",
 }
 
 func init() {
-	envCmd.Flags().BoolP("values", "v", false, "show the expected values for each env var (might not be accurate)")
+	envCmd.Flags().Bool("values", false, "show the expected values for each env var (might not be accurate)")
+	envCmd.Flags().MarkHidden("values")
 	rootCmd.AddCommand(envCmd)
 }
