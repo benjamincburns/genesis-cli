@@ -15,9 +15,28 @@ var envCmd = &cobra.Command{
 	Short: "Get the whiteblock provided environment vars for a test spec",
 	Long: `This command lists the environment variables provided to your container. These 
 variables are useful to see the additional information available to you at runtime. 
-You can also see what these values might look like by using the --values flag. However, 
-the values you see may change slightly at runtime, ie, instead of an IP address of 192.168.2.1,
-it might instead be 192.168.5.3`,
+You can also see what these values might look like by using the --values flag. The names of the environment variables
+will be the same as returned by this command. If you would like to have them include examples 
+of the values of each variable, you may use the --values flag. Keep in mind that you should
+not use these values in place of the environment variable.
+
+Environment Variables for IPs
+The Genesis platform provides environment variables to give you the IP addresses of services in the network.
+All environment variables for IPs will be in all caps and also have '-' replaced with an underscore.
+
+Services
+The environment variables for the IP addresses of Services will be of the format 
+"{service}_SERVICE{instance_no}_{network}". So, if you have a service "foo-baz" on the network 
+"bar" then the first instance's IP address would be given in the environment variable
+"FOO_BAZ_SERVICE0_BAR".
+
+Sidecars
+The naming of environment variables for sidecars is very similar to that of Services, with a few differences. 
+The service's IP in the sidecar network will be the instance name of service, i.e., "{service}_SERVICE{instance_no}".
+The sidecars' IP environment variables are formatted as though the service is their network. For example,
+to find the IP of a sidecar "soap-bar" to the 0th service instance of "foo-baz", you would check the value of
+"SOAP_BAR_FOO_BAZ_SERVICE0".
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
 		envs, def, err := service.DefinitionEnv(args[0])
