@@ -46,6 +46,12 @@ main() {
         echo "to start using genesis"
     fi
 
+    if check_cmd man; then
+        ensure mkdir -p "${_dir}/man"
+        bash -c "${_dir}/bin/genesis man ${_dir}/man" 
+        mandb  >> /dev/null || true
+    fi
+
     
 
     local _retval=$?
