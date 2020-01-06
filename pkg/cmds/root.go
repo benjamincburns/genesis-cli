@@ -17,8 +17,10 @@ var (
 var rootCmd = &cobra.Command{
 	Use:     "genesis",
 	Version: "",
-	Short:   "",
-	Long:    ``,
+	Short:   "A utility for accessing Whiteblock Genesis",
+	Long: `Whiteblock Genesis is the only fully automated platform that helps development teams 
+quickly design and run end-to-end distributed systems tests. Whiteblock Genesis is here to 
+accelerate your testing process to maturity.`,
 }
 
 func Execute(buildTime, commitHash string) {

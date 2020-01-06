@@ -39,6 +39,7 @@ main() {
     if [ ! -x "${_dir}/env" ]; then
         echo "export PATH=\"${_dir}/bin:$PATH\"" >> ${_dir}/env
         echo "source ${_dir}/env" >> $HOME/.bashrc
+        echo ". <(genesis completion)" >> $HOME/.bashrc
 
         echo "Please restart your shell or run"
         echo "source ${_dir}/env"

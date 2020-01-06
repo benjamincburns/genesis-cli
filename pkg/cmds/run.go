@@ -14,7 +14,9 @@ import (
 var runCmd = &cobra.Command{
 	Use:   "run <file> [org]",
 	Short: "Run a test",
-	Long:  `Run a test`,
+	Long: `Run the tests specified in the given test definition file. If it is your first time running the
+	command, you will need to specify the org to deploy to. Subsequent runs will use this value until you specify it
+	once again.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 2)
 		org := ""

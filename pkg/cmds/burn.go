@@ -7,13 +7,13 @@ import (
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	"github.com/spf13/cobra"
-	"github.com/whiteblock/go-prettyjson"
 )
 
 var burnCmd = &cobra.Command{
 	Use:   "burn <file>",
-	Short: "Check the resource usage of a spec",
-	Long:  `Check the resource usage of a spec`,
+	Short: "Check the total resource usage of a spec",
+	Long: `Burn shows you the total resource usage of each test in the specification. 
+This information simplifies to calculation of burn rate.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
 
@@ -46,11 +46,13 @@ var burnCmd = &cobra.Command{
 
 			}
 		}
-		out, err := prettyjson.Marshal(humanizedCounts)
-		if err != nil {
-			util.ErrorFatal(err)
+
+		for key := range humanizedCounts {
+			util.Printf("%s:", key)
+			for k, v := range humanizedCounts[key] {
+				util.PrintKV(1, k, v)
+			}
 		}
-		util.Print(string(out))
 	},
 }
 
