@@ -17,7 +17,7 @@ WINDOWS_FLAGS=$(BUILD_FLAGS)
 
 PKG=main
 
-.PHONY: build test lint vet get linux mac windows multiplatform install clean freebsd
+.PHONY: build test lint vet get linux darwin windows multiplatform install clean freebsd
 .ONESHELL:
 
 all: genesis
@@ -28,7 +28,7 @@ genesis: | prep get
 clean:
 	rm -rf $(OUTPUT_DIR)/genesis
 	rm -rf $(OUTPUT_DIR)/linux
-	rm -rf $(OUTPUT_DIR)/mac
+	rm -rf $(OUTPUT_DIR)/darwin
 	rm -rf $(OUTPUT_DIR)/windows
 	rm -rf $(OUTPUT_DIR)/freebsd
 
@@ -49,15 +49,15 @@ freebsd:
 	GOARCH=amd64 GOOS=freebsd go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/freebsd/amd64/genesis ./cmd/genesis
 	GOARCH=arm GOOS=freebsd go build $(LINUX_FLAGS) -o $(OUTPUT_DIR)/freebsd/arm/genesis ./cmd/genesis
 
-mac:
-	@mkdir -p $(OUTPUT_DIR)/mac 2>> /dev/null || true
-	GOARCH=amd64 GOOS=darwin go build $(MAC_FLAGS) -o $(OUTPUT_DIR)/mac/amd64/genesis ./cmd/genesis
+darwin:
+	@mkdir -p $(OUTPUT_DIR)/darwin 2>> /dev/null || true
+	GOARCH=amd64 GOOS=darwin go build $(MAC_FLAGS) -o $(OUTPUT_DIR)/darwin/amd64/genesis ./cmd/genesis
 
 windows:
 	@mkdir -p $(OUTPUT_DIR)/windows 2>> /dev/null || true
 	GOARCH=amd64 GOOS=windows go build $(WINDOWS_FLAGS) -o $(OUTPUT_DIR)/windows/amd64/genesis.exe ./cmd/genesis 
 
-multiplatform: linux mac windows freebsd
+multiplatform: linux darwin windows freebsd
 
 install: | genesis
 	@cd cmd/genesis && \
