@@ -49,7 +49,7 @@ main() {
     if check_cmd man; then
         ensure mkdir -p "${_dir}/man"
         bash -c "${_dir}/bin/genesis man ${_dir}/man" 
-        mandb  >> /dev/null || true
+        mandb 2&>1 >> /dev/null || true
     fi
 
     
