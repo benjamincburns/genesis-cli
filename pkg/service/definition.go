@@ -4,9 +4,11 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/spf13/viper"
 	"github.com/whiteblock/definition"
 	"github.com/whiteblock/definition/command"
+	"github.com/whiteblock/definition/schema"
+
+	"github.com/spf13/viper"
 )
 
 func init() {
@@ -62,4 +64,30 @@ func DefinitionEnv(filename string) ([]map[string]string, definition.Definition,
 	}
 	envs, err := definition.GetEnvs(def)
 	return envs, def, err
+}
+
+func ReplaceFile(root *schema.RootSchema, find string, replace string) {
+	for i := range root.Services {
+		for j := range root.Services[i].InputFiles {
+			if root.Services[i].InputFiles[j].SourcePath == find {
+				root.Services[i].InputFiles[j].SourcePath = replace
+			}
+		}
+	}
+
+	for i := range root.Sidecars {
+		for j := range root.Sidecars[i].InputFiles {
+			if root.Sidecars[i].InputFiles[j].SourcePath == find {
+				root.Sidecars[i].InputFiles[j].SourcePath = replace
+			}
+		}
+	}
+
+	for i := range root.TaskRunners {
+		for j := range root.TaskRunners[i].InputFiles {
+			if root.TaskRunners[i].InputFiles[j].SourcePath == find {
+				root.TaskRunners[i].InputFiles[j].SourcePath = replace
+			}
+		}
+	}
 }

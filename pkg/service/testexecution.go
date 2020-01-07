@@ -16,6 +16,10 @@ import (
 	"github.com/whiteblock/genesis-cli/pkg/message"
 	organization "github.com/whiteblock/genesis-cli/pkg/org"
 	"github.com/whiteblock/genesis-cli/pkg/parser"
+	"github.com/whiteblock/genesis-cli/pkg/util"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/whiteblock/definition/schema"
 )
 
 var conf = config.NewConfig()
@@ -94,38 +98,65 @@ func buildRequest(dest string, filePath string, dns []string) (*http.Request, er
 		return nil, err
 	}
 
-	fw, err := w.CreateFormFile("definition", filePath)
-	if err != nil {
-		return nil, err
+	var root schema.RootSchema
+
+	{
+		f, err := os.Open(filePath)
+		if err != nil {
+			return nil, err
+		}
+		defer f.Close()
+
+		data, err := ioutil.ReadAll(f)
+		if err != nil {
+			return nil, err
+		}
+		def, err := parseDef(data)
+		if err != nil {
+			return nil, err
+		}
+		root = def.Spec
 	}
 
-	r, err := os.Open(filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	_, err = io.Copy(fw, r)
-	if err != nil {
-		return nil, err
-	}
 	basedir := filepath.Dir(filePath)
-
-	for _, fileName := range files {
-		fw, err := w.CreateFormFile(fileName, fileName)
+	readyFiles := map[string]bool{}
+	for i, fileName := range files {
+		if _, ok := readyFiles[fileName]; ok {
+			continue
+		}
+		readyFiles[fileName] = true
+		fw, err := w.CreateFormFile("/f/k"+fmt.Sprint(i), "/f/k"+fmt.Sprint(i))
 		if err != nil {
 			return nil, err
 		}
-
-		r, err := os.Open(filepath.Join(basedir, fileName))
+		ReplaceFile(&root, fileName, "/f/k"+fmt.Sprint(i))
+		r, err := util.ReadInputFile(basedir, fileName)
 		if err != nil {
 			return nil, err
 		}
+		defer r.Close()
 
 		_, err = io.Copy(fw, r)
 		if err != nil {
 			return nil, err
 		}
 
+	}
+
+	fw, err := w.CreateFormFile("definition", filePath)
+	if err != nil {
+		return nil, err
+	}
+	log.WithField("root", fmt.Sprintf("%+v", root)).Trace("resulting spec")
+	data, err := json.Marshal(root)
+	if err != nil {
+		return nil, err
+	}
+
+	r := bytes.NewReader(data)
+	_, err = io.Copy(fw, r)
+	if err != nil {
+		return nil, err
 	}
 
 	w.Close()

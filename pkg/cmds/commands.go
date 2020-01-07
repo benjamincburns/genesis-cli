@@ -1,0 +1,37 @@
+package cmds
+
+import (
+	"github.com/whiteblock/genesis-cli/pkg/service"
+	"github.com/whiteblock/genesis-cli/pkg/util"
+
+	"github.com/spf13/cobra"
+)
+
+var commandsCmd = &cobra.Command{
+	Use:    "commands <file>",
+	Hidden: true,
+	Short:  "get commands",
+	Long:   `ģ̴̶̪͓̪͔͔͎͔̭̖̖͋ͬ͑ͥͬͮ̆ͤ̅̀͠ͅē̶̡̞̱̩̬̣͖̤͕͉̹̪̏̓͐̌̏͝͠ṱ̡̻͖̟̺̼̟̺̖͖̞ͫ͊ͭͦͦ̽̊͆ͬ́͂͘͝ ̷̮͍̹̜̦̩̗͔͔̦̳̭̙͇̞̹̗̳̗́̾̉͌͠ç̷̶̸̱̹̟̬̮̳̰͍̯͙̜̻̠̥ͯ̿ͯ̅̆̐̿ͬͭͩͤ̇̓o͋̓̉̚͏͏̵̦̥̙̦̤̳̟͇͉m̧̧̛̪̙̘̗̫̹ͥ̿ͨͨ͞m̨͛̿̏̈́͡҉̙͇̖͔̭̰͎̣̻a̡̋̋̽̅̐̔ͥ̆ͬͪ͞͏͏͖̮̖̦̗n̰͙͍̱̪ͨ̅̊̃ͮ̽͠d̛̛͍̘̫̬̞̱̪̫͉̲͎̦̗͋̓̽͛̀ͮͭ̋ͫ̃̕s͊ͯ̈́̂ͩ̐͏̙̺̞̣̼̕`,
+	Run: func(cmd *cobra.Command, args []string) {
+		util.CheckArguments(cmd, args, 1, 1)
+
+		tests, def, err := service.ProcessDefinitionFromFile(args[0])
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+
+		for i := range tests {
+			util.Printf("%s:", def.Spec.Tests[i].Name)
+			for j := range tests[i].Commands {
+				util.PrintKV(1, j, "")
+				for k := range tests[i].Commands[j] {
+					util.PrintKV(2, tests[i].Commands[j][k].Order.Type, tests[i].Commands[j][k].Order.Payload)
+				}
+			}
+		}
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(commandsCmd)
+}

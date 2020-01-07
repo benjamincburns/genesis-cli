@@ -22,7 +22,7 @@ func pprint(subj string, attr ...color.Attribute) {
 		fmt.Print(subj)
 		return
 	}
-	fmt.Print(color.New(attr...).Sprint(subj))
+	fmt.Printf(color.New(attr...).Sprint(subj))
 }
 
 func Printf(format string, a ...interface{}) {
@@ -55,5 +55,5 @@ func PrintKV(depth int, k interface{}, v interface{}) {
 		indent += "    "
 	}
 	pprint(indent+fmt.Sprint(k)+": ", color.FgYellow)
-	pprintln(fmt.Sprint(v))
+	pprintln(fmt.Sprintf("%+v", v))
 }
