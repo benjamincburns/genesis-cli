@@ -77,38 +77,32 @@ func setViperEnvBindings() {
 	viper.BindEnv("tokenFile", "TOKEN_FILE")
 	viper.BindEnv("orgFile", "ORG_FILE")
 	viper.BindEnv("apiTimeout", "API_TIMEOUT")
-	//"biomeDNSZone" no env binding
+	viper.BindEnv("biomeDNSZone", "BIOME_DNS_ZONE")
 }
 
 func setViperDefaults() {
-	viper.SetDefault("authEndpoint", "auth.infra.whiteblock.io")
+	viper.SetDefault("authEndpoint", "auth.whiteblock.io")
 	viper.SetDefault("authPath", "/auth/realms/wb/protocol/openid-connect/auth")
 	viper.SetDefault("tokenPath", "/auth/realms/wb/protocol/openid-connect/token")
 	viper.SetDefault("redirectURL", "localhost:56666")
 	viper.SetDefault("authTimeout", 120*time.Second)
 	viper.SetDefault("verbosity", "INFO")
 	viper.SetDefault("multipathUploadURI", "/api/v1/testexecution/organizations/%s/files")
-	viper.SetDefault("wbHost", "www.infra.whiteblock.io")
+	viper.SetDefault("wbHost", "www.whiteblock.io")
 	viper.SetDefault("orgID", "")
-	viper.SetDefault("tokenFile", ".auth_token")
-	viper.SetDefault("orgFile", ".org_name")
+	viper.SetDefault("tokenFile", ".auth-token")
+	viper.SetDefault("orgFile", ".org-name")
 
 	viper.SetDefault("schemaURL", "https://assets.whiteblock.io/schema/schema.json")
 	viper.SetDefault("schemaFile", ".test-definition-format-schema")
 
 	viper.SetDefault("apiTimeout", 5*time.Second)
-	viper.SetDefault("biomeDNSZone", "infra.whiteblock.io")
+	viper.SetDefault("biomeDNSZone", "biomes.whiteblock.io")
 }
 
 func init() {
 	setViperDefaults()
 	setViperEnvBindings()
-
-	//viper.AddConfigPath("/etc/whiteblock/")          // path to look for the config file in
-	//viper.AddConfigPath("$HOME/.config/whiteblock/") // call multiple times to add many search paths
-	//viper.SetConfigName("genesis")
-	//viper.SetConfigType("yaml")
-
 }
 
 var (
