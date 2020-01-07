@@ -15,7 +15,7 @@ steps:
     id: 'version'
     name: 'ubuntu'
     args: ['bash','-c',"echo -n $SHORT_SHA > $_VERSION_FILE"]
-     waitFor:
+    waitFor:
       - '-'
   - id: build
     name: 'gcr.io/cloud-builders/docker'
