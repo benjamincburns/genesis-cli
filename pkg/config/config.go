@@ -91,7 +91,7 @@ func setViperDefaults() {
 	viper.SetDefault("authTimeout", 120*time.Second)
 	viper.SetDefault("verbosity", "INFO")
 	viper.SetDefault("multipathUploadURI", "/api/v1/testexecution/organizations/%s/files")
-	viper.SetDefault("wbHost", "www.whiteblock.io")
+	viper.SetDefault("wbHost", "genesis.whiteblock.io")
 	viper.SetDefault("orgID", "")
 	viper.SetDefault("tokenFile", ".auth-token")
 	viper.SetDefault("orgFile", ".org-name")
