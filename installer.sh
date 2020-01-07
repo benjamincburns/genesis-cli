@@ -41,6 +41,10 @@ main() {
         echo "source ${_dir}/env" >> $HOME/.bashrc
         echo ". <(genesis completion)" >> $HOME/.bashrc
 
+        echo "export PATH=\"${_dir}/bin:$PATH\"" >> ${_dir}/env
+        echo "source ${_dir}/env" >> $HOME/.zshrc
+        echo ". <(genesis completion)" >> $HOME/.zshrc
+
         echo "Please restart your shell or run"
         echo "source ${_dir}/env"
         echo "to start using genesis"
