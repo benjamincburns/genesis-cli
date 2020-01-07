@@ -49,7 +49,7 @@ main() {
             echo ". <(genesis completion)" >> $HOME/.zshrc
         fi
         echo "Please restart your shell or run"
-        echo "source ${_dir}/env"
+        echo "\e[1msource ${_dir}/env\e[0m"
         echo "to start using genesis"
     fi
 
