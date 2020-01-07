@@ -27,6 +27,8 @@ type Config struct {
 	WBHost             string        `mapstructure:"wbHost"`
 	APITimeout         time.Duration `mapstructure:"apiTimeout"`
 	BiomeDNSZone       string        `mapstructure:"biomeDNSZone"`
+	VersionLocation    string        `mapstructure:"versionLocation"`
+	CLIURL             string        `mapstructure:"cliURL"`
 
 	OrgID string `mapstructure:"orgID"`
 
@@ -77,6 +79,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("tokenFile", "TOKEN_FILE")
 	viper.BindEnv("orgFile", "ORG_FILE")
 	viper.BindEnv("apiTimeout", "API_TIMEOUT")
+	viper.BindEnv("versionLocation", "VERSION_LOCATION")
 	viper.BindEnv("biomeDNSZone", "BIOME_DNS_ZONE")
 }
 
@@ -97,6 +100,8 @@ func setViperDefaults() {
 	viper.SetDefault("schemaFile", ".test-definition-format-schema")
 
 	viper.SetDefault("apiTimeout", 5*time.Second)
+	viper.SetDefault("versionLocation", "https://assets.whiteblock.io/cli/latest")
+	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/%s/%s/genesis")
 	viper.SetDefault("biomeDNSZone", "biomes.whiteblock.io")
 }
 

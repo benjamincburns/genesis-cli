@@ -4,12 +4,18 @@ substitutions:
   _PROJECT: cli
   _IMAGE: 'genesis'
   _BINARIES_BUCKET : 'assets.whiteblock.io'
+  _VERSION_FILE: '.version'
 timeout: '15m'
 steps:
   - id: 'mkdir'
     name: 'ubuntu'
     args: ['mkdir', './bin']
     waitFor:
+      - '-'
+    id: 'version'
+    name: 'ubuntu'
+    args: ['bash','-c','echo -n $SHORT_SHA > $_VERSION_FILE']
+     waitFor:
       - '-'
   - id: build
     name: 'gcr.io/cloud-builders/docker'
@@ -22,6 +28,7 @@ steps:
     ]
     waitFor:
       - 'mkdir'
+      - 'version'
   # create container based off image (but don't run)
   - id: createContainer
     name: 'gcr.io/cloud-builders/docker'
@@ -42,6 +49,11 @@ steps:
 
   - name: 'gcr.io/cloud-builders/gsutil'
     args: [ 'cp', 'installer.sh', 'gs://$_BINARIES_BUCKET/cli/install.sh' ]
+    waitFor:
+      - 'copyBin'
+  
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: [ 'cp', '$_VERSION_FILE', 'gs://$_BINARIES_BUCKET/cli/latest' ]
     waitFor:
       - 'copyBin'
 

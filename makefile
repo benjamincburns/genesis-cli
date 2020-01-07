@@ -17,7 +17,7 @@ WINDOWS_FLAGS=$(BUILD_FLAGS)
 
 PKG=main
 
-.PHONY: build test lint vet get linux darwin windows multiplatform install clean freebsd
+.PHONY: build test lint vet get linux darwin windows multiplatform install clean freebsd version
 .ONESHELL:
 
 all: genesis
@@ -75,3 +75,6 @@ vet:
 
 get:
 	@go get ./...
+
+version:
+	@echo -n $(SHORT_HASH)

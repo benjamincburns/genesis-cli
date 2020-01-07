@@ -23,7 +23,10 @@ quickly design and run end-to-end distributed systems tests. Whiteblock Genesis 
 accelerate your testing process to maturity.`,
 }
 
+var version string
+
 func Execute(buildTime, commitHash string) {
+	version = commitHash
 	rootCmd.Version = fmt.Sprintf("%s-%s", buildTime, commitHash)
 	if err := rootCmd.Execute(); err != nil {
 		util.ErrorFatal(err)
