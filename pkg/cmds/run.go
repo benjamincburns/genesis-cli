@@ -43,7 +43,7 @@ var runCmd = &cobra.Command{
 		res, err := service.TestExecute(args[0], org, dns)
 		if err != nil {
 			util.Error(err)
-			if len(res) > 0 {
+			if len(res) > 0 && !strings.Contains(res, "<!DOCTYPE html>") {
 				util.Errorf("Response : %s", res)
 			}
 			os.Exit(1)

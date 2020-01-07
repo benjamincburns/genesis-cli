@@ -6,6 +6,7 @@ set -u
 GENESIS_URL=https://assets.whiteblock.io/cli/bin/genesis
 
 main() {
+
     downloader --check
     need_cmd uname
     need_cmd chmod
@@ -25,6 +26,8 @@ main() {
     local _url="${GENESIS_URL}/${_arch}/genesis${_ext}"
     local _dir=$HOME/.whiteblock
     local _file="${_dir}/bin/genesis${_ext}"
+    
+    check_conflict $_file
 
     ensure mkdir -p "${_dir}/bin"
     ensure downloader "$_url" "$_file"
@@ -52,8 +55,10 @@ main() {
 
     if check_cmd man; then
         ensure mkdir -p "${_dir}/man"
-        bash -c "${_dir}/bin/genesis man ${_dir}/man" 
-        mandb 2&>1 >> /dev/null || true
+        bash -c "${_dir}/bin/genesis man ${_dir}/man"
+        if check_cmd mandb; then
+            mandb >> /dev/null || true
+        fi
     fi
 
     
@@ -61,6 +66,16 @@ main() {
     local _retval=$?
 
     return "$_retval"
+}
+
+check_conflict() {
+    if check_cmd genesis; then
+        if [ "$(which genesis)" != "$1" ]; then
+            echo "Conflicting binary found at $(which genesis)" >&2
+            echo "Please remove this binary and then rerun the installation command" >&2
+            exit 1
+        fi
+    fi
 }
 
 get_architecture() {
