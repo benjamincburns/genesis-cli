@@ -12,7 +12,7 @@ steps:
     args: ['mkdir', './bin']
     waitFor:
       - '-'
-    id: 'version'
+  - id: 'version'
     name: 'ubuntu'
     args: ['bash','-c',"echo -n $SHORT_SHA > $_VERSION_FILE"]
     waitFor:
