@@ -88,7 +88,7 @@ func ErrorFatal(err interface{}) {
 }
 
 func Error(err interface{}) {
-	pprint(fmt.Sprint(err), color.FgRed)
+	pprintln(fmt.Sprint(err), color.FgRed)
 }
 
 func Errorf(base string, args ...interface{}) {
