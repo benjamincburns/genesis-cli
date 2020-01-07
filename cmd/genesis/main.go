@@ -1,11 +1,13 @@
 package main
 
 import (
+	"runtime"
+	"time"
+
 	"github.com/whiteblock/genesis-cli/pkg/cmds"
 	"github.com/whiteblock/genesis-cli/pkg/message"
 	"github.com/whiteblock/genesis-cli/pkg/service"
 	"github.com/whiteblock/genesis-cli/pkg/util"
-	"time"
 )
 
 var (
@@ -20,7 +22,12 @@ func main() {
 	select {
 	case hasUpdate := <-updateChan:
 		if hasUpdate {
-			util.Print(message.UpdateAvailable)
+			if runtime.GOOS == "windows" {
+				util.Print(message.WindowsUpdateAvailable)
+			} else {
+				util.Print(message.UpdateAvailable)
+			}
+
 		}
 
 	case <-timeChan:

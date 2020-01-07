@@ -2,19 +2,13 @@ package util
 
 import (
 	"fmt"
-	"runtime"
 
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
 )
 
 func pprintln(subj string, attr ...color.Attribute) {
-	// there is currently a bug in fmt where it does not do \r\n for windows
-	if runtime.GOOS == "windows" {
-		pprint(subj + "\r\n")
-	} else {
-		pprint(subj + "\n")
-	}
+	pprint(subj + "\r\n")
 }
 
 func pprint(subj string, attr ...color.Attribute) {

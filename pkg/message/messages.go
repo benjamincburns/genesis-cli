@@ -18,4 +18,9 @@ const (
 	UnknownFormat = "test definition is in an unknown format"
 
 	NoSchema = "unable to retrieve the schema"
+
+	WindowsUpdateAvailable = `There is an update availible, please download the latest version from
+https://assets.whiteblock.io/cli/master/bin/windows/amd64/genesis.exe`
+
+	UpdateAvailable = `There is an update availible, please run 'genesis update' to update to the latest version`
 )
