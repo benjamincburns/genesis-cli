@@ -8,7 +8,11 @@ import (
 )
 
 func pprintln(subj string, attr ...color.Attribute) {
-	pprint(subj + "\r\n")
+	if viper.GetBool("no-colors") {
+		fmt.Print(subj)
+		return
+	}
+	fmt.Println(color.New(attr...).Sprint(subj))
 }
 
 func pprint(subj string, attr ...color.Attribute) {
@@ -16,7 +20,7 @@ func pprint(subj string, attr ...color.Attribute) {
 		fmt.Print(subj)
 		return
 	}
-	fmt.Printf(color.New(attr...).Sprint(subj))
+	fmt.Print(color.New(attr...).Sprint(subj))
 }
 
 func Printf(format string, a ...interface{}) {

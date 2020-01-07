@@ -84,7 +84,7 @@ func setViperEnvBindings() {
 }
 
 func setViperDefaults() {
-	viper.SetDefault("authEndpoint", "auth.whiteblock.io")
+	viper.SetDefault("authEndpoint", "auth.genesis.whiteblock.io")
 	viper.SetDefault("authPath", "/auth/realms/wb/protocol/openid-connect/auth")
 	viper.SetDefault("tokenPath", "/auth/realms/wb/protocol/openid-connect/token")
 	viper.SetDefault("redirectURL", "localhost:56666")

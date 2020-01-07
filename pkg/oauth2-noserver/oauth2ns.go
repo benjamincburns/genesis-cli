@@ -95,7 +95,7 @@ func AuthenticateUser(oauthConfig *oauth2.Config, options ...AuthenticateUserOpt
 
 	clientChan, stopHTTPServerChan, cancelAuthentication := startHTTPServer(ctx, oauthConfig)
 	util.AuthPrint(message.PreBrowserAuthShowURL)
-	util.AuthPrint(urlString)
+	util.AuthPrint("\"" + urlString + "\"")
 	time.Sleep(1000 * time.Millisecond)
 	err := open.Run(urlString)
 	if err != nil {
@@ -188,9 +188,8 @@ func callbackHandler(ctx context.Context, oauthConfig *oauth2.Config,
 		}
 		// show success page
 		successPage := `
-		<div style="height:100px; width:100%!; display:flex; flex-direction: column; justify-content: center; align-items:center; background-color:#2ecc71; color:white; font-size:22"><div>Success!</div></div>
-		<p style="margin-top:20px; font-size:18; text-align:center">You are authenticated, you can now return to the program. This will auto-close</p>
-		<script>window.onload=function(){setTimeout(this.close, 4000)}</script>
+		<div></div>
+		<script>window.onload=function(){setTimeout(this.close, 60)}</script>
 		`
 		fmt.Fprintf(w, successPage)
 		// quitSignalChan <- quitSignal
