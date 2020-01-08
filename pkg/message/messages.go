@@ -19,8 +19,8 @@ const (
 
 	NoSchema = "unable to retrieve the schema"
 
-	WindowsUpdateAvailable = `There is an update availible, please download the latest version from
+	WindowsUpdateAvailable = `There is an update available, please download the latest version from
 https://assets.whiteblock.io/cli/master/bin/windows/amd64/genesis.exe`
 
-	UpdateAvailable = `There is an update availible, please run 'genesis update' to update to the latest version`
+	UpdateAvailable = `There is an update available, please run 'genesis update' to update to the latest version`
 )
