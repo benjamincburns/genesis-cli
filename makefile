@@ -5,10 +5,9 @@ CGO_ENABLED=0
 OUTPUT_DIR=./bin
 INSTALL_LOC=/usr/local/bin
 
-SHORT_HASH=$(shell git log --pretty=format:'%h' -n 1)
 DATE=$(shell date +"%d.%m.%y")
 
-LDFLAGS=-X main.buildTime=$(DATE) -X main.commitHash=$(SHORT_HASH)
+LDFLAGS=-X main.buildTime=$(DATE) -X main.commitHash=$(shell git log --pretty=format:'%h' -n 1)
 
 BUILD_FLAGS=-tags netgo -ldflags '$(LDFLAGS) -extldflags "-static"'
 LINUX_FLAGS=$(BUILD_FLAGS)
@@ -75,6 +74,3 @@ vet:
 
 get:
 	@go get ./...
-
-version:
-	@echo -n $(SHORT_HASH)
