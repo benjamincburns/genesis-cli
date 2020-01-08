@@ -101,7 +101,7 @@ func setViperDefaults() {
 
 	viper.SetDefault("apiTimeout", 5*time.Second)
 	viper.SetDefault("versionLocation", "https://assets.whiteblock.io/cli/latest")
-	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/%s/%s/genesis")
+	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/genesis/%s/%s/genesis")
 	viper.SetDefault("biomeDNSZone", "biomes.whiteblock.io")
 }
 
