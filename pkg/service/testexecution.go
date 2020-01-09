@@ -9,7 +9,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
-	"path/filepath"
+	"path"
 
 	"github.com/whiteblock/genesis-cli/pkg/auth"
 	"github.com/whiteblock/genesis-cli/pkg/config"
@@ -118,7 +118,7 @@ func buildRequest(dest string, filePath string, dns []string) (*http.Request, er
 		root = def.Spec
 	}
 
-	basedir := filepath.Dir(filePath)
+	basedir := path.Dir(filePath)
 	readyFiles := map[string]bool{}
 	for i, fileName := range files {
 		if _, ok := readyFiles[fileName]; ok {

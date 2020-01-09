@@ -1,13 +1,11 @@
 package service
 
 import (
-	"io/ioutil"
-	"os"
+	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	"github.com/whiteblock/definition"
 	"github.com/whiteblock/definition/command"
 	"github.com/whiteblock/definition/schema"
-
 	"github.com/spf13/viper"
 )
 
@@ -26,13 +24,7 @@ func parseDef(data []byte) (definition.Definition, error) {
 }
 
 func DefinitionFromFile(filename string) (def definition.Definition, err error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return
-	}
-	defer file.Close()
-
-	data, err := ioutil.ReadAll(file)
+	data, err := util.ReadFileOrRemote(filename)
 	if err != nil {
 		return
 	}

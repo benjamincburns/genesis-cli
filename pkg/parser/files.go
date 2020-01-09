@@ -1,8 +1,7 @@
 package parser
 
 import (
-	"io/ioutil"
-	"os"
+	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	"github.com/whiteblock/definition/schema"
 	"gopkg.in/yaml.v2"
@@ -17,12 +16,7 @@ func process(inputFiles []schema.InputFile) []string {
 }
 
 func ExtractFiles(yamlFile string) ([]string, error) {
-	f, err := os.Open(yamlFile)
-	if err != nil {
-		return nil, err
-	}
-
-	data, err := ioutil.ReadAll(f)
+	data, err := util.ReadFileOrRemote(yamlFile)
 	if err != nil {
 		return nil, err
 	}
