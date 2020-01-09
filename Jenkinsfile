@@ -11,9 +11,6 @@ def DEV_GCP_PROJECT_ID = "infra-dev-249211"
 def IMAGE_REPO            = "gcr.io/${DEV_GCP_PROJECT_ID}"
 def BINARIES_BUCKET = 'infra-dev-binaries'
 
-def SLACK_CHANNEL = '#alerts'
-def SLACK_CREDENTIALS_ID = 'jenkins-slack-integration-token'
-def SLACK_TEAM_DOMAIN = 'whiteblock'
 
 pipeline {
   agent any
@@ -66,19 +63,7 @@ pipeline {
     }
     failure {
       script {
-        script {
-          if (env.BRANCH_NAME == DEFAULT_BRANCH || env.BRANCH_NAME == 'master') {
-            withCredentials([
-                [$class: 'StringBinding', credentialsId: "${SLACK_CREDENTIALS_ID}", variable: 'SLACK_TOKEN']
-            ]) {
-                slackSend teamDomain: "${SLACK_TEAM_DOMAIN}",
-                    channel: "${SLACK_CHANNEL}",
-                    token: "${SLACK_TOKEN}",
-                    color: 'danger',
-                    message: "@channel ALARM! \n *FAILED*: Job *${env.JOB_NAME}*. \n <${env.RUN_DISPLAY_URL}|*Build Log [${env.BUILD_NUMBER}]*>"
-            }
-          }
-        }
+        slackNotify(env.BRANCH_NAME == DEFAULT_BRANCH)
       }
     }
   }
