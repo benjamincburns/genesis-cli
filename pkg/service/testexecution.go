@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"github.com/whiteblock/genesis-cli/pkg/auth"
 	"github.com/whiteblock/genesis-cli/pkg/config"
@@ -37,6 +38,17 @@ type Response struct {
 
 	Error *Error   `json:"error,omitempty"`
 	Meta  struct{} `json:"meta"`
+}
+
+func GetMostRecentTest(org string) (common.Test, error) {
+	tests, err := GetTests(org)
+	if err != nil {
+		return common.Test{}, err
+	}
+	if len(tests) == 0 {
+		return common.Test{}, fmt.Errorf("no active tests")
+	}
+	return tests[len(tests)-1], nil
 }
 
 func GetTests(org string) ([]common.Test, error) {
@@ -70,7 +82,15 @@ func GetTests(org string) ([]common.Test, error) {
 	}
 
 	var out []common.Test
-	return out, json.Unmarshal(data, &out)
+	err = json.Unmarshal(data, &out)
+	if err != nil {
+		return nil, err
+	}
+
+	sort.Slice(out, func(i, j int) bool {
+		return out[i].CreatedAt.Unix() < out[j].CreatedAt.Unix()
+	})
+	return out, nil
 }
 
 func TestExecute(filePath string, org string, dns []string) (string, []string, error) {
