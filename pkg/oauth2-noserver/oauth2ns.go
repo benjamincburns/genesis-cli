@@ -188,8 +188,16 @@ func callbackHandler(ctx context.Context, oauthConfig *oauth2.Config,
 		}
 		// show success page
 		successPage := `
-		<div></div>
-		<script>window.onload=function(){setTimeout(this.close, 60)}</script>
+        <html>
+        <head>
+          <title>Authentication successful</title>
+          <script type="text/javascript">window.onload=function(){setTimeout(this.close, 2000)}</script>
+        </head>
+        <body>
+		<div>You have successfully authenticated. This browser window will close in 2 seconds.</div>
+		
+        </body>
+        </html>
 		`
 		fmt.Fprintf(w, successPage)
 		// quitSignalChan <- quitSignal
