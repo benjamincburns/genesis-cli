@@ -51,18 +51,21 @@ func GetMostRecentTest(org string) (common.Test, error) {
 	return tests[len(tests)-1], nil
 }
 
-func GetTests(org string) ([]common.Test, error) {
+func GetTests(orgNameOrId string) ([]common.Test, error) {
 	client, err := auth.GetClient()
 	if err != nil {
 		return nil, err
 	}
 
-	if org == "" {
-		org = conf.OrgID
+	if orgNameOrId == "" {
+		orgNameOrId = conf.OrgID
 	}
-	org = organization.Get(org)
-
-	if org == "" {
+	org, err := organization.Get(orgNameOrId, client)
+	if err != nil {
+		log.Error(err)
+		return nil, fmt.Errorf(message.MissingOrgID)
+	}
+	if org.ID == "" {
 		return nil, fmt.Errorf(message.MissingOrgID)
 	}
 
@@ -93,22 +96,26 @@ func GetTests(org string) ([]common.Test, error) {
 	return out, nil
 }
 
-func TestExecute(filePath string, org string, dns []string) (string, []string, error) {
+func TestExecute(filePath string, orgNameOrId string, dns []string) (string, []string, error) {
 	client, err := auth.GetClient()
 	if err != nil {
 		return "", nil, err
 	}
 
-	if org == "" {
-		org = conf.OrgID
+	if orgNameOrId == "" {
+		orgNameOrId = conf.OrgID
 	}
-	org = organization.Get(org)
-
-	if org == "" {
+	org, err := organization.Get(orgNameOrId, client)
+	if err != nil {
+		log.Error(err)
 		return "", nil, fmt.Errorf(message.MissingOrgID)
 	}
 
-	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, org)
+	if org.ID == "" {
+		return "", nil, fmt.Errorf(message.MissingOrgID)
+	}
+
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, org.ID)
 
 	req, err := buildRequest(dest, filePath, dns)
 	if err != nil {
