@@ -90,7 +90,7 @@ func TestExecute(filePath string, org string, dns []string) (string, []string, e
 	if tests, ok := result["testIDs"]; ok {
 		for _, test := range tests.([]interface{}) {
 			out += fmt.Sprintf("\tTest: %v\n", test)
-			ids = append(ids, fmt.Sprintf("%v",ids))
+			ids = append(ids, fmt.Sprintf("%v", test))
 		}
 	}
 

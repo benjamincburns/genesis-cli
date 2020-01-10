@@ -3,8 +3,8 @@ package cmds
 import (
 	"os"
 	"strings"
-	"time"
 
+	"github.com/whiteblock/genesis-cli/pkg/cmds/internal"
 	"github.com/whiteblock/genesis-cli/pkg/service"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
@@ -40,7 +40,6 @@ var runCmd = &cobra.Command{
 			util.ErrorFatal(err)
 		}
 
-
 		if !dnsDisabled {
 			for range tests {
 				dns = append(dns, strings.ToLower(randomdata.SillyName()))
@@ -68,16 +67,21 @@ var runCmd = &cobra.Command{
 		}
 
 		if !awaitDisabled {
-			for _, id := range ids {
-				util.Printf("waiting for test %s",id)
-				for {
-					res, err := service.GetStatus(id)
-					time.Sleep(200*time.Millisecond)
-					util.Printf("%+v %v", res, err)
-				}
-				
+			infos := []util.BarInfo{}
+			for i := range ids {
+				infos = append(infos, util.BarInfo{
+					Name:  def.Spec.Tests[i].Name,
+					Total: tests[i].GuessSteps(),
+				})
 			}
+			awaiter, bars := util.SetupBars(infos)
+
+			for i := range ids {
+				go internal.TrackRunStatus(bars[i], ids[i], infos[i].Total)
+			}
+			awaiter.Wait()
 		}
+
 	},
 }
 

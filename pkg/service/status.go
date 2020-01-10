@@ -24,8 +24,12 @@ func GetStatus(testID string) (common.Status, error) {
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return common.Status{}, err
+		return common.Status{}, nil
 	}
 	var status common.Status
-	return status, json.Unmarshal(data, &status)
+	err = json.Unmarshal(data, &status)
+	if err != nil {
+		return common.Status{}, fmt.Errorf(string(data))
+	}
+	return status, nil
 }

@@ -23,7 +23,7 @@ type Config struct {
 	Verbosity string `mapstructure:"verbosity"`
 
 	MultipathUploadURI string        `mapstructure:"multipathUploadURI"`
-	StatusURI string `mapstructure:"statusURI"`
+	StatusURI          string        `mapstructure:"statusURI"`
 	SchemaURL          string        `mapstructure:"schemaURL"`
 	WBHost             string        `mapstructure:"wbHost"`
 	APITimeout         time.Duration `mapstructure:"apiTimeout"`
@@ -89,7 +89,7 @@ func setViperDefaults() {
 	viper.SetDefault("authEndpoint", "auth.genesis.whiteblock.io")
 	viper.SetDefault("authPath", "/auth/realms/wb/protocol/openid-connect/auth")
 	viper.SetDefault("tokenPath", "/auth/realms/wb/protocol/openid-connect/token")
-	viper.SetDefault("statusURI", "/api/v1/status/%s")
+	viper.SetDefault("statusURI", "/api/v1/testexecution/status/%s")
 	viper.SetDefault("redirectURL", "localhost:56666")
 	viper.SetDefault("authTimeout", 120*time.Second)
 	viper.SetDefault("verbosity", "INFO")
