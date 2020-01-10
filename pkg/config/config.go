@@ -23,7 +23,7 @@ type Config struct {
 	Verbosity string `mapstructure:"verbosity"`
 
 	MultipathUploadURI string        `mapstructure:"multipathUploadURI"`
-	GetOrgURI           string        `mapstructure:"getOrgURI"`
+	GetOrgURI          string        `mapstructure:"getOrgURI"`
 	StatusURI          string        `mapstructure:"statusURI"`
 	TestsURI           string        `mapstructure:"testsURI"`
 	SchemaURL          string        `mapstructure:"schemaURL"`

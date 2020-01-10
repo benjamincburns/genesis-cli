@@ -16,9 +16,9 @@ import (
 var conf = config.NewConfig()
 
 type Organization struct {
-	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	Label     string    `json:"label"`
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Label string `json:"label"`
 }
 
 // Get returns the stored org information if it is given an empty string

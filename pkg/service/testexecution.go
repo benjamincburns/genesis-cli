@@ -63,7 +63,7 @@ func GetTests(orgNameOrId string) ([]common.Test, error) {
 	org, err := organization.Get(orgNameOrId, client)
 	if err != nil {
 		log.Error(err)
-		return  nil, fmt.Errorf(message.MissingOrgID)
+		return nil, fmt.Errorf(message.MissingOrgID)
 	}
 	if org.ID == "" {
 		return nil, fmt.Errorf(message.MissingOrgID)
