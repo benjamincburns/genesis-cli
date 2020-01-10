@@ -23,6 +23,7 @@ type Config struct {
 	Verbosity string `mapstructure:"verbosity"`
 
 	MultipathUploadURI string        `mapstructure:"multipathUploadURI"`
+	GetOrgURI           string        `mapstructure:"getOrgURI"`
 	StatusURI          string        `mapstructure:"statusURI"`
 	TestsURI           string        `mapstructure:"testsURI"`
 	SchemaURL          string        `mapstructure:"schemaURL"`
@@ -73,6 +74,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("redirectURL", "REDIRECT_URL")
 	viper.BindEnv("authTimeout", "AUTH_TIMEOUT")
 	viper.BindEnv("MultipathUploadURI", "MULTIPART_UPLOAD_URI")
+	viper.BindEnv("GetOrgURI", "GET_ORG_URI")
 	viper.BindEnv("wbHost", "WB_HOST")
 	viper.BindEnv("orgID", "ORG_ID")
 	viper.BindEnv("schemaURI", "SCHEMA_URL")
@@ -97,6 +99,7 @@ func setViperDefaults() {
 	viper.SetDefault("authTimeout", 120*time.Second)
 	viper.SetDefault("verbosity", "INFO")
 	viper.SetDefault("multipathUploadURI", "/api/v1/testexecution/organizations/%s/files")
+	viper.SetDefault("getOrgURI", "/api/v1/registrar/organization/%s")
 	viper.SetDefault("wbHost", "genesis.whiteblock.io")
 	viper.SetDefault("orgID", "")
 	viper.SetDefault("tokenFile", ".auth-token")
