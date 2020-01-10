@@ -69,7 +69,7 @@ var updateCmd = &cobra.Command{
 		if err != nil {
 			util.ErrorFatal(err)
 		}
-		err = ioutil.WriteFile(location + ".tmp", binary, fi.Mode())
+		err = ioutil.WriteFile(location+".tmp", binary, fi.Mode())
 		if err != nil {
 			util.ErrorFatal(err)
 		}
