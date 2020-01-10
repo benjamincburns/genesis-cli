@@ -30,11 +30,11 @@ var runCmd = &cobra.Command{
 		}
 
 		var dns []string
-		dnsEnabled, err := cmd.Flags().GetBool("dns")
+		dnsDisabled, err := cmd.Flags().GetBool("no-dns")
 		if err != nil {
 			util.ErrorFatal(err)
 		}
-		if dnsEnabled {
+		if !dnsDisabled {
 			for range tests {
 				dns = append(dns, strings.ToLower(randomdata.SillyName()))
 			}
@@ -51,7 +51,7 @@ var runCmd = &cobra.Command{
 
 		util.Print(res)
 
-		if dnsEnabled {
+		if !dnsDisabled {
 			for i := range tests {
 				util.Printf("Test: %s", def.Spec.Tests[i].Name)
 				for j := range tests[i].ProvisionCommand.Instances {
@@ -64,5 +64,5 @@ var runCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(runCmd)
-	runCmd.Flags().BoolP("dns", "d", false, "use dns so you can access your deployments")
+	runCmd.Flags().BoolP("no-dns", "d", false, "disable assigning a DNS name to your deployment")
 }
