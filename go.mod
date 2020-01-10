@@ -30,6 +30,7 @@ require (
 	github.com/whiteblock/definition v0.0.0-20200107160332-7fd231d50f87
 	github.com/whiteblock/genesis v1.8.21
 	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
+	github.com/whiteblock/utility v0.0.0-20200109214606-621b46096b9a
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
 	golang.org/x/sys v0.0.0-20200107144601-ef85f5a75ddf // indirect

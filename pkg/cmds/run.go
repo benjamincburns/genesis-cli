@@ -3,6 +3,7 @@ package cmds
 import (
 	"os"
 	"strings"
+	"time"
 
 	"github.com/whiteblock/genesis-cli/pkg/service"
 	"github.com/whiteblock/genesis-cli/pkg/util"
@@ -34,13 +35,19 @@ var runCmd = &cobra.Command{
 		if err != nil {
 			util.ErrorFatal(err)
 		}
+		awaitDisabled, err := cmd.Flags().GetBool("no-await")
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+
+
 		if !dnsDisabled {
 			for range tests {
 				dns = append(dns, strings.ToLower(randomdata.SillyName()))
 			}
 		}
 
-		res, err := service.TestExecute(args[0], org, dns)
+		res, ids, err := service.TestExecute(args[0], org, dns)
 		if err != nil {
 			util.Error(err)
 			if len(res) > 0 && !strings.Contains(res, "<!DOCTYPE html>") {
@@ -59,10 +66,23 @@ var runCmd = &cobra.Command{
 				}
 			}
 		}
+
+		if !awaitDisabled {
+			for _, id := range ids {
+				util.Printf("waiting for test %s",id)
+				for {
+					res, err := service.GetStatus(id)
+					time.Sleep(200*time.Millisecond)
+					util.Printf("%+v %v", res, err)
+				}
+				
+			}
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(runCmd)
 	runCmd.Flags().BoolP("no-dns", "d", false, "disable assigning a DNS name to your deployment")
+	runCmd.Flags().BoolP("no-await", "a", false, "don't wait for completion, exit immediately after sending test")
 }

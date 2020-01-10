@@ -38,10 +38,10 @@ type Response struct {
 	Meta  struct{} `json:"meta"`
 }
 
-func TestExecute(filePath string, org string, dns []string) (string, error) {
+func TestExecute(filePath string, org string, dns []string) (string, []string, error) {
 	client, err := auth.GetClient()
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 
 	if org == "" {
@@ -50,50 +50,51 @@ func TestExecute(filePath string, org string, dns []string) (string, error) {
 	org = organization.Get(org)
 
 	if org == "" {
-		return "", fmt.Errorf(message.MissingOrgID)
+		return "", nil, fmt.Errorf(message.MissingOrgID)
 	}
 
 	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, org)
 
 	req, err := buildRequest(dest, filePath, dns)
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 
 	res, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 
 	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 	if res.StatusCode != http.StatusOK {
-		return string(data), fmt.Errorf("server responsed with %s", res.Status)
+		return string(data), nil, fmt.Errorf("server responsed with %s", res.Status)
 	}
-
+	log.WithField("response", string(data)).Trace("got a response from the server")
 	var resp Response
 	err = json.Unmarshal(data, &resp)
 	if err != nil {
-		return string(data), err
+		return string(data), nil, err
 	}
 
 	result, ok := resp.Data.(map[string]interface{})
 	if !ok {
-		return fmt.Sprint(resp), nil
+		return fmt.Sprint(resp), nil, nil
 	}
 
 	out := fmt.Sprintf("%v\n", result["message"])
 	out += fmt.Sprintf("Definition: %v\n", result["definitionID"])
-
+	ids := []string{}
 	if tests, ok := result["testIDs"]; ok {
 		for _, test := range tests.([]interface{}) {
 			out += fmt.Sprintf("\tTest: %v\n", test)
+			ids = append(ids, fmt.Sprintf("%v",ids))
 		}
 	}
 
-	return out, nil
+	return out, ids, nil
 }
 
 func buildRequest(dest string, filePath string, dns []string) (*http.Request, error) {
