@@ -15,7 +15,6 @@ type Awaiter interface {
 }
 
 func SetupBars(bars []BarInfo) (Awaiter, []*mpb.Bar) {
-	// pass &wg (optional), so p will wait for it eventually
 	p := mpb.New()
 	out := make([]*mpb.Bar, len(bars))
 
@@ -31,8 +30,6 @@ func SetupBars(bars []BarInfo) (Awaiter, []*mpb.Bar) {
 				// replace ETA decorator with "done" message, OnComplete event
 				decor.OnComplete(
 					decor.Name(bars[i].Name), "done",
-				// ETA decorator with ewma age of 60
-				//decor.EwmaETA(decor.ET_STYLE_GO, 60), "done",
 				),
 			),
 		)
