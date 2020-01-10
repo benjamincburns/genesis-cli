@@ -24,6 +24,7 @@ type Config struct {
 
 	MultipathUploadURI string        `mapstructure:"multipathUploadURI"`
 	StatusURI          string        `mapstructure:"statusURI"`
+	TestsURI           string        `mapstructure:"testsURI"`
 	SchemaURL          string        `mapstructure:"schemaURL"`
 	WBHost             string        `mapstructure:"wbHost"`
 	APITimeout         time.Duration `mapstructure:"apiTimeout"`
@@ -75,6 +76,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("wbHost", "WB_HOST")
 	viper.BindEnv("orgID", "ORG_ID")
 	viper.BindEnv("schemaURI", "SCHEMA_URL")
+	viper.BindEnv("testsURI", "TESTS_URI")
 
 	viper.BindEnv("schemaFile", "SCHEMA_FILE")
 	viper.BindEnv("tokenFile", "TOKEN_FILE")
@@ -90,6 +92,7 @@ func setViperDefaults() {
 	viper.SetDefault("authPath", "/auth/realms/wb/protocol/openid-connect/auth")
 	viper.SetDefault("tokenPath", "/auth/realms/wb/protocol/openid-connect/token")
 	viper.SetDefault("statusURI", "/api/v1/testexecution/status/%s")
+	viper.SetDefault("testsURI", "/api/v1/testexecution/organizations/%s/tests")
 	viper.SetDefault("redirectURL", "localhost:56666")
 	viper.SetDefault("authTimeout", 120*time.Second)
 	viper.SetDefault("verbosity", "INFO")

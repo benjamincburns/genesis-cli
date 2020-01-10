@@ -20,6 +20,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/whiteblock/definition/schema"
+	"github.com/whiteblock/utility/common"
 )
 
 var conf = config.NewConfig()
@@ -36,6 +37,40 @@ type Response struct {
 
 	Error *Error   `json:"error,omitempty"`
 	Meta  struct{} `json:"meta"`
+}
+
+func GetTests(org string) ([]common.Test, error) {
+	client, err := auth.GetClient()
+	if err != nil {
+		return nil, err
+	}
+
+	if org == "" {
+		org = conf.OrgID
+	}
+	org = organization.Get(org)
+
+	if org == "" {
+		return nil, fmt.Errorf(message.MissingOrgID)
+	}
+
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.TestsURI, org)
+	resp, err := client.Get(dest)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf(string(data))
+	}
+
+	var out []common.Test
+	return out, json.Unmarshal(data, &out)
 }
 
 func TestExecute(filePath string, org string, dns []string) (string, []string, error) {
@@ -83,8 +118,11 @@ func TestExecute(filePath string, org string, dns []string) (string, []string, e
 	if !ok {
 		return fmt.Sprint(resp), nil, nil
 	}
+	out := ""
+	if result["message"] != nil {
+		out += fmt.Sprintf("%v\n", result["message"])
+	}
 
-	out := fmt.Sprintf("%v\n", result["message"])
 	out += fmt.Sprintf("Definition: %v\n", result["definitionID"])
 	ids := []string{}
 	if tests, ok := result["testIDs"]; ok {

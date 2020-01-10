@@ -11,7 +11,7 @@ var commandsCmd = &cobra.Command{
 	Use:    "commands <file>",
 	Hidden: true,
 	Short:  "get commands",
-	Long:   `ģ̴̶̪͓̪͔͔͎͔̭̖̖͋ͬ͑ͥͬͮ̆ͤ̅̀͠ͅē̶̡̞̱̩̬̣͖̤͕͉̹̪̏̓͐̌̏͝͠ṱ̡̻͖̟̺̼̟̺̖͖̞ͫ͊ͭͦͦ̽̊͆ͬ́͂͘͝ ̷̮͍̹̜̦̩̗͔͔̦̳̭̙͇̞̹̗̳̗́̾̉͌͠ç̷̶̸̱̹̟̬̮̳̰͍̯͙̜̻̠̥ͯ̿ͯ̅̆̐̿ͬͭͩͤ̇̓o͋̓̉̚͏͏̵̦̥̙̦̤̳̟͇͉m̧̧̛̪̙̘̗̫̹ͥ̿ͨͨ͞m̨͛̿̏̈́͡҉̙͇̖͔̭̰͎̣̻a̡̋̋̽̅̐̔ͥ̆ͬͪ͞͏͏͖̮̖̦̗n̰͙͍̱̪ͨ̅̊̃ͮ̽͠d̛̛͍̘̫̬̞̱̪̫͉̲͎̦̗͋̓̽͛̀ͮͭ̋ͫ̃̕s͊ͯ̈́̂ͩ̐͏̙̺̞̣̼̕`,
+	Long:   `get commands`,
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
 
