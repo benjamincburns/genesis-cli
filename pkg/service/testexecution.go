@@ -87,6 +87,12 @@ func TestExecute(filePath string, org string, dns []string) (string, error) {
 	out := fmt.Sprintf("%v\n", result["message"])
 	out += fmt.Sprintf("Definition: %v\n", result["definitionID"])
 
+	if tests, ok := result["testIDs"]; ok {
+		for _, test := range tests.([]interface{}) {
+			out += fmt.Sprintf("\tTest: %v\n", test)
+		}
+	}
+
 	return out, nil
 }
 
