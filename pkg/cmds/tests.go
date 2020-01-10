@@ -26,12 +26,31 @@ var testsCmd = &cobra.Command{
 		if len(tests) == 0 {
 			util.Print("you do not have any active tests")
 		}
+		details, err := cmd.Flags().GetBool("details")
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+		simple, err := cmd.Flags().GetBool("simple")
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+
 		for i := range tests {
-			util.Print(tests[i])
+			if simple {
+				util.Print(tests[i].ID)
+				continue
+			}
+			util.PrintKV(0, "Test", tests[i].ID)
+			if details {
+				util.PrintKV(1, "Definition", tests[i].DefinitionID)
+				util.PrintKV(1, "Started", tests[i].CreatedAt)
+			}
 		}
 	},
 }
 
 func init() {
+	testsCmd.Flags().BoolP("details", "d", false, "show more test details")
+	testsCmd.Flags().BoolP("simple", "1", false, "list the tests without any labels or formatting")
 	rootCmd.AddCommand(testsCmd)
 }
