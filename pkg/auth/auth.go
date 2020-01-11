@@ -25,6 +25,7 @@ func GetToken() *oauth2.Token {
 		}
 	}
 	if !conf.UserDir.Exists(conf.TokenFile) {
+		log.Trace("the token file does not exist")
 		return nil
 	}
 	data, err := conf.UserDir.ReadFile(conf.TokenFile)
@@ -43,7 +44,7 @@ func GetToken() *oauth2.Token {
 
 func getClientFromLocalToken(authConf *oauth2.Config) *oauth2ns.AuthorizedClient {
 	token := GetToken()
-	if token != nil {
+	if token == nil {
 		return nil
 	}
 
