@@ -15,7 +15,15 @@ import (
 
 var conf = config.NewConfig()
 
-func getClientFromLocalToken(authConf *oauth2.Config) *oauth2ns.AuthorizedClient {
+func GetToken() *oauth2.Token {
+	token := new(oauth2.Token)
+
+	if len(conf.GenesisCredentials) != 0 {
+		err := json.Unmarshal([]byte(conf.GenesisCredentials), token)
+		if err == nil {
+			return token
+		}
+	}
 	if !conf.UserDir.Exists(conf.TokenFile) {
 		return nil
 	}
@@ -25,11 +33,17 @@ func getClientFromLocalToken(authConf *oauth2.Config) *oauth2ns.AuthorizedClient
 		return nil
 	}
 
-	token := new(oauth2.Token)
-
 	err = json.Unmarshal(data, token)
 	if err != nil {
 		log.WithField("error", err).Debug("couldn't parse token file")
+		return nil
+	}
+	return token
+}
+
+func getClientFromLocalToken(authConf *oauth2.Config) *oauth2ns.AuthorizedClient {
+	token := GetToken()
+	if token != nil {
 		return nil
 	}
 

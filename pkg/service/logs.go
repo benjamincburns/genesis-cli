@@ -4,12 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	log "github.com/sirupsen/logrus"
-	"github.com/whiteblock/genesis-cli/pkg/auth"
-	"github.com/whiteblock/genesis-cli/pkg/message"
-	organization "github.com/whiteblock/genesis-cli/pkg/org"
 	"io/ioutil"
 	"time"
+
+	"github.com/whiteblock/genesis-cli/pkg/auth"
 )
 
 type SearchParams struct {
@@ -35,20 +33,13 @@ func GetLogs(orgNameOrId string) ([]LogItem, error) {
 		return nil, err
 	}
 
-	if orgNameOrId == "" {
-		orgNameOrId = conf.OrgID
-	}
-	org, err := organization.Get(orgNameOrId, client)
+	orgID, err := getOrgID(orgNameOrId)
 	if err != nil {
-		log.WithField("error", err).Trace("failed to fetch org id ")
-		return nil, fmt.Errorf(message.MissingOrgID)
-	}
-	if org.ID == "" {
-		return nil, fmt.Errorf(message.MissingOrgID)
+		return nil, err
 	}
 
 	searchParams := SearchParams{
-		OrgID: org.ID,
+		OrgID: orgID,
 		Date:  time.Now().String(),
 	}
 

@@ -63,3 +63,7 @@ Test: your-other-test
 	wingtree-1.biomes.whiteblock.io
 
 ```
+
+### Remote Auth
+You can get your credentials with the command `genesis auth print-access-token`
+And then you can authenticate anywhere by setting the environment variable GENESIS_CREDENTIALS to the value of the previous command.

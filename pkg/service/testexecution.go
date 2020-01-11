@@ -51,25 +51,40 @@ func GetMostRecentTest(org string) (common.Test, error) {
 	return tests[len(tests)-1], nil
 }
 
+func getOrgID(orgID string) (string, error) {
+	client, err := auth.GetClient()
+	if err != nil {
+		return "", err
+	}
+	if orgID == "" {
+		orgID = conf.OrgID
+	}
+	org, err := organization.Get(orgID, client)
+	if err != nil {
+		log.WithField("error", err).Trace("failed to fetch org id ")
+		if orgID == "" {
+			return orgID, fmt.Errorf(message.MissingOrgID)
+		}
+		return orgID, nil
+	}
+	if org.ID == "" && orgID == "" {
+		return orgID, fmt.Errorf(message.MissingOrgID)
+	}
+	return org.ID, nil
+}
+
 func GetTests(orgNameOrId string) ([]common.Test, error) {
 	client, err := auth.GetClient()
 	if err != nil {
 		return nil, err
 	}
 
-	if orgNameOrId == "" {
-		orgNameOrId = conf.OrgID
-	}
-	org, err := organization.Get(orgNameOrId, client)
+	orgID, err := getOrgID(orgNameOrId)
 	if err != nil {
-		log.WithField("error", err).Trace("failed to fetch org id ")
-		return nil, fmt.Errorf(message.MissingOrgID)
-	}
-	if org.ID == "" {
-		return nil, fmt.Errorf(message.MissingOrgID)
+		return nil, err
 	}
 
-	dest := conf.APIEndpoint() + fmt.Sprintf(conf.TestsURI, org.ID)
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.TestsURI, orgID)
 	resp, err := client.Get(dest)
 	if err != nil {
 		return nil, err
@@ -102,20 +117,12 @@ func TestExecute(filePath string, orgNameOrId string, dns []string) (string, []s
 		return "", nil, err
 	}
 
-	if orgNameOrId == "" {
-		orgNameOrId = conf.OrgID
-	}
-	org, err := organization.Get(orgNameOrId, client)
+	orgID, err := getOrgID(orgNameOrId)
 	if err != nil {
-		log.WithField("error", err).Trace("failed to fetch org id ")
-		return "", nil, fmt.Errorf(message.MissingOrgID)
+		return "", nil, err
 	}
 
-	if org.ID == "" {
-		return "", nil, fmt.Errorf(message.MissingOrgID)
-	}
-
-	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, org.ID)
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, orgID)
 
 	req, err := buildRequest(dest, filePath, dns)
 	if err != nil {

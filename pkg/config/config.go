@@ -36,9 +36,10 @@ type Config struct {
 
 	OrgID string `mapstructure:"orgID"`
 
-	TokenFile  string `mapstructure:"tokenFile"`
-	OrgFile    string `mapstructure:"orgFile"`
-	SchemaFile string `mapstructure:"schemaFile"`
+	TokenFile          string `mapstructure:"tokenFile"`
+	OrgFile            string `mapstructure:"orgFile"`
+	SchemaFile         string `mapstructure:"schemaFile"`
+	GenesisCredentials string `mapstructure:"genesisCredentials"`
 
 	Dir     configdir.ConfigDir `mapstructure:"-"`
 	UserDir *configdir.Config   `mapstructure:"-"`
@@ -89,6 +90,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("versionLocation", "VERSION_LOCATION")
 	viper.BindEnv("biomeDNSZone", "BIOME_DNS_ZONE")
 	viper.BindEnv("statusURI", "STATUS_URI")
+	viper.BindEnv("genesisCredentials", "GENESIS_CREDENTIALS")
 }
 
 func setViperDefaults() {
