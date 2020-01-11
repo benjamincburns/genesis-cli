@@ -1,6 +1,7 @@
 package cmds
 
 import (
+	"github.com/whiteblock/genesis-cli/pkg/auth"
 	organization "github.com/whiteblock/genesis-cli/pkg/org"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
@@ -14,7 +15,12 @@ var orgCmd = &cobra.Command{
 	Aliases: []string{},
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 0, 0)
-		org, err := organization.Get(orgNameOrId, client)
+
+		client, err := auth.GetClient()
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+		org, err := organization.Get("", client)
 		if err != nil {
 			util.ErrorFatal(err)
 		}
