@@ -40,6 +40,7 @@ type Config struct {
 	OrgFile            string `mapstructure:"orgFile"`
 	SchemaFile         string `mapstructure:"schemaFile"`
 	GenesisCredentials string `mapstructure:"genesisCredentials"`
+	GenesisBanner      string `mapstructure:"genesisBanner"`
 
 	Dir     configdir.ConfigDir `mapstructure:"-"`
 	UserDir *configdir.Config   `mapstructure:"-"`
@@ -91,6 +92,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("biomeDNSZone", "BIOME_DNS_ZONE")
 	viper.BindEnv("statusURI", "STATUS_URI")
 	viper.BindEnv("genesisCredentials", "GENESIS_CREDENTIALS")
+	viper.BindEnv("banner", "GENESIS_BANNER")
 }
 
 func setViperDefaults() {
@@ -117,6 +119,8 @@ func setViperDefaults() {
 	viper.SetDefault("versionLocation", "https://assets.whiteblock.io/cli/latest")
 	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/genesis/%s/%s/genesis")
 	viper.SetDefault("biomeDNSZone", "biomes.whiteblock.io")
+
+	viper.SetDefault("genesisBanner", "")
 
 }
 
