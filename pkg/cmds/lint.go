@@ -39,7 +39,7 @@ Then will run an internal mock of the test, to check for other issues.`,
 			for _, schemaErr := range res.Errors() {
 				util.Error(schemaErr.String())
 			}
-			return
+			os.Exit(1)
 		}
 		_, _, err = service.ProcessDefinitionFromBytes(data)
 		if err != nil {
