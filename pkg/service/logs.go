@@ -40,7 +40,7 @@ func GetLogs(orgNameOrId string) ([]LogItem, error) {
 	}
 	org, err := organization.Get(orgNameOrId, client)
 	if err != nil {
-		log.Error(err)
+		log.WithFields("error", err).Trace("failed to fetch org id ")
 		return nil, fmt.Errorf(message.MissingOrgID)
 	}
 	if org.ID == "" {
