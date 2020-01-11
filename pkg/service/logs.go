@@ -20,8 +20,8 @@ type SearchParams struct {
 type Item struct {
 	Text      string `json:"text"`
 	Container string `json:"container"`
-	Image     string `json:"container"`
-	Tag       string `json:"container"`
+	Image     string `json:"image"`
+	Tag       string `json:"tag"`
 }
 
 type LogItem struct {
