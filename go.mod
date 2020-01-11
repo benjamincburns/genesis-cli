@@ -26,7 +26,7 @@ require (
 	github.com/spf13/viper v1.6.1
 	github.com/whiteblock/amqp v1.0.5
 	github.com/whiteblock/cli v1.8.18
-	github.com/whiteblock/definition v0.0.0-20200111154858-68f9269b33f5
+	github.com/whiteblock/definition v0.0.0-20200111160458-5fa5bfa26f03
 	github.com/whiteblock/genesis v1.8.21
 	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
 	github.com/whiteblock/mpb v1.0.0
