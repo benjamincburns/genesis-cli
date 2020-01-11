@@ -69,7 +69,7 @@ func GetTests(orgNameOrId string) ([]common.Test, error) {
 		return nil, fmt.Errorf(message.MissingOrgID)
 	}
 
-	dest := conf.APIEndpoint() + fmt.Sprintf(conf.TestsURI, org)
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.TestsURI, org.ID)
 	resp, err := client.Get(dest)
 	if err != nil {
 		return nil, err
