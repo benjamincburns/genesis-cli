@@ -91,9 +91,10 @@ func set(orgIdOrName string, client *oauth2ns.AuthorizedClient) (Organization, e
 		return org, err
 	}
 	if res.StatusCode != 200 {
+		data, _ := ioutil.ReadAll(res.Body)
+		log.WithField("resp", string(data)).Trace("failed to get org info")
 		return org, errors.New("error connecting to backend")
 	}
-
 
 	data, err := ioutil.ReadAll(res.Body)
 
