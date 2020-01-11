@@ -33,6 +33,7 @@ type Config struct {
 	BiomeDNSZone       string        `mapstructure:"biomeDNSZone"`
 	VersionLocation    string        `mapstructure:"versionLocation"`
 	CLIURL             string        `mapstructure:"cliURL"`
+	LocalGenesisURL    string        `mapstructure:"localGenesisURL"`
 
 	OrgID string `mapstructure:"orgID"`
 
@@ -89,6 +90,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("versionLocation", "VERSION_LOCATION")
 	viper.BindEnv("biomeDNSZone", "BIOME_DNS_ZONE")
 	viper.BindEnv("statusURI", "STATUS_URI")
+	viper.BindEnv("localGenesisURL", "LOCAL_GENESIS_URL")
 }
 
 func setViperDefaults() {
@@ -115,6 +117,7 @@ func setViperDefaults() {
 	viper.SetDefault("versionLocation", "https://assets.whiteblock.io/cli/latest")
 	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/genesis/%s/%s/genesis")
 	viper.SetDefault("biomeDNSZone", "biomes.whiteblock.io")
+	viper.SetDefault("localGenesisURL", "http://localhost:8000/command")
 
 }
 
