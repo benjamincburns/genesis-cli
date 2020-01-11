@@ -87,13 +87,13 @@ func set(orgIdOrName string, client *oauth2ns.AuthorizedClient) (Organization, e
 	}
 
 	res, err := client.Do(req)
+	if err != nil {
+		return org, err
+	}
 	if res.StatusCode != 200 {
 		return org, errors.New("error connecting to backend")
 	}
 
-	if err != nil {
-		return org, err
-	}
 
 	data, err := ioutil.ReadAll(res.Body)
 
