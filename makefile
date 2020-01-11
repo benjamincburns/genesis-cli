@@ -33,6 +33,8 @@ clean:
 
 prep:
 	@mkdir $(OUTPUT_DIR) 2>> /dev/null || true
+	@find .git/hooks -type l -exec rm {} \; || true
+	@find .githooks -type f -exec ln -sf ../../{} .git/hooks/ \; || true
 
 linux:
 	@mkdir -p $(OUTPUT_DIR)/linux 2>> /dev/null || true
