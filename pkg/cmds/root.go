@@ -33,6 +33,9 @@ func Execute(buildTime, commitHash string) {
 	}
 }
 func init() {
+	if conf.GenesisBanner != "" {
+		util.Print(conf.GenesisBanner)
+	}
 	rootCmd.PersistentFlags().Bool("no-colors", false, "disable terminal colors")
 
 	viper.BindPFlag("no-colors", rootCmd.PersistentFlags().Lookup("no-colors"))
