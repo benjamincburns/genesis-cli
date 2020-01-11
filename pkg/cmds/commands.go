@@ -49,7 +49,7 @@ var localCmd = &cobra.Command{
 		if err != nil {
 			util.ErrorFatal(err)
 		}
-
+		tests[0].Commands = tests[0].Commands[1:]
 		data, err := json.Marshal(tests[0])
 		if err != nil {
 			util.ErrorFatal(err)
