@@ -135,6 +135,8 @@ github.com/pelletier/go-toml v1.6.0/go.mod h1:5N711Q9dKgbdkxHL+MEfF31hpT7l0S0s/t
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/pkg/errors v0.9.0 h1:J8lpUdobwIeCI7OiSxHqEwJUKvJwicL5+3v1oe2Yb4k=
+github.com/pkg/errors v0.9.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pquerna/cachecontrol v0.0.0-20180517163645-1555304b9b35/go.mod h1:prYjPmNq4d1NPVmpShWobRqXY3q7Vp+80DqgxxUrUIA=
 github.com/prometheus/client_golang v0.9.1/go.mod h1:7SWBe2y4D6OKWSNQJUaRYU/AaXPKyh/dDVn+NZz0KFw=
@@ -208,6 +210,10 @@ github.com/whiteblock/definition v0.0.0-20200111160458-5fa5bfa26f03 h1:dBoA3voUX
 github.com/whiteblock/definition v0.0.0-20200111160458-5fa5bfa26f03/go.mod h1:FtNWAMy10yYY599C0B431qe64mgKOt0pcq/fJJJ7Sns=
 github.com/whiteblock/definition v0.0.0-20200111205944-3c260d958fba h1:yK4qEPZzpBZ3NmshrQbBNdho86ope8MTlu8w2Mdwu9I=
 github.com/whiteblock/definition v0.0.0-20200111205944-3c260d958fba/go.mod h1:FtNWAMy10yYY599C0B431qe64mgKOt0pcq/fJJJ7Sns=
+github.com/whiteblock/definition v0.0.0-20200112191151-fb29ba4248e9 h1:g4CluphEBsqnX7rf8DVXKKWDexuTh8DIeL8QoUxynGo=
+github.com/whiteblock/definition v0.0.0-20200112191151-fb29ba4248e9/go.mod h1:FtNWAMy10yYY599C0B431qe64mgKOt0pcq/fJJJ7Sns=
+github.com/whiteblock/definition v0.0.0-20200112213852-5e0104c7e8a4 h1:gl+W0fWAciqMpVI7pvsVXNE03mDKiedca8feRKhO34A=
+github.com/whiteblock/definition v0.0.0-20200112213852-5e0104c7e8a4/go.mod h1:FtNWAMy10yYY599C0B431qe64mgKOt0pcq/fJJJ7Sns=
 github.com/whiteblock/genesis v1.8.21/go.mod h1:11YYdwnFgOkLm0R2D9VTiHXYOMOi6+RAn8xhGjiz7TA=
 github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe/go.mod h1:DiL8S7+O7oZaiYO5wOEHtZ9+0jIjA/hawX2HrVwHutM=
 github.com/whiteblock/go.uuid v1.2.1 h1:prUjjtzVGGZ0A1Jt3yGxFIdTD69u9FGwaU3e73xqFeI=

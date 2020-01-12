@@ -14,7 +14,7 @@ require (
 	github.com/nmrshll/rndm-go v0.0.0-20170430161430-8da3024e53de
 	github.com/palantir/stacktrace v0.0.0-20161112013806-78658fd2d177
 	github.com/pelletier/go-toml v1.6.0 // indirect
-	github.com/pkg/errors v0.8.1
+	github.com/pkg/errors v0.9.0
 	github.com/shibukawa/configdir v0.0.0-20170330084843-e180dbdc8da0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/skratchdot/open-golang v0.0.0-20190402232053-79abb63cd66e
@@ -26,7 +26,7 @@ require (
 	github.com/spf13/viper v1.6.1
 	github.com/whiteblock/amqp v1.0.5
 	github.com/whiteblock/cli v1.8.18
-	github.com/whiteblock/definition v0.0.0-20200111205944-3c260d958fba
+	github.com/whiteblock/definition v0.0.0-20200112213852-5e0104c7e8a4
 	github.com/whiteblock/genesis v1.8.21
 	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
 	github.com/whiteblock/mpb v1.0.0
