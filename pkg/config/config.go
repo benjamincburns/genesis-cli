@@ -33,6 +33,8 @@ type Config struct {
 	BiomeDNSZone       string        `mapstructure:"biomeDNSZone"`
 	VersionLocation    string        `mapstructure:"versionLocation"`
 	CLIURL             string        `mapstructure:"cliURL"`
+	StopTestURI        string        `mapstructure:"stopTestURI"`
+	StopDefURI         string        `mapstructure:"stopDefURI"`
 
 	OrgID string `mapstructure:"orgID"`
 
@@ -93,6 +95,9 @@ func setViperEnvBindings() {
 	viper.BindEnv("statusURI", "STATUS_URI")
 	viper.BindEnv("genesisCredentials", "GENESIS_CREDENTIALS")
 	viper.BindEnv("banner", "GENESIS_BANNER")
+
+	viper.BindEnv("stopTestURI", "STOP_TEST_URI")
+	viper.BindEnv("stopDefURI", "STOP_DEF_URI")
 }
 
 func setViperDefaults() {
@@ -119,6 +124,8 @@ func setViperDefaults() {
 	viper.SetDefault("versionLocation", "https://assets.whiteblock.io/cli/latest")
 	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/genesis/%s/%s/genesis")
 	viper.SetDefault("biomeDNSZone", "biomes.whiteblock.io")
+	viper.SetDefault("stopTestURI", "/api/v1/testexecution/stop/test/%s")
+	viper.SetDefault("stopDefURI", "/api/v1/testexecution/stop/definition/%s")
 
 	viper.SetDefault("genesisBanner", "")
 

@@ -169,6 +169,29 @@ func TestExecute(filePath string, orgNameOrId string, dns []string) (string, []s
 	return out, ids, nil
 }
 
+func StopTest(id string, isDef bool) error {
+	client, err := auth.GetClient()
+	if err != nil {
+		return err
+	}
+	dest := func() string {
+		if isDef {
+			return conf.APIEndpoint() + fmt.Sprintf(conf.StopDefURI, id)
+		}
+		return conf.APIEndpoint() + fmt.Sprintf(conf.StopTestURI, id)
+	}()
+	resp, err := client.Post(dest, "application/json", bytes.NewReader([]byte{}))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		data, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf(string(data))
+	}
+	return nil
+}
+
 func buildRequest(dest string, filePath string, dns []string) (*http.Request, error) {
 	b := bytes.Buffer{}
 	w := multipart.NewWriter(&b)
