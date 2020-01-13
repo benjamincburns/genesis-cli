@@ -19,7 +19,7 @@ func TrackRunStatusNoTTY(id string, total int64) {
 			}
 			util.ErrorFatal(err)
 		}
-		util.Printf("%d%%", total - int64(res.StepsLeft))
+		util.Printf("%d%%", total-int64(res.StepsLeft))
 		if res.StepsLeft == 0 || res.Finished == true {
 			return
 		}
