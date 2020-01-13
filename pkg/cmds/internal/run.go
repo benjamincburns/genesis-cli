@@ -19,8 +19,11 @@ func TrackRunStatusNoTTY(id string, total int64) {
 			}
 			util.ErrorFatal(err)
 		}
-		util.Printf("%d%%", total-int64(res.StepsLeft))
+		util.Printf("%f%%", float64(total-int64(res.StepsLeft))/float64(total))
 		if res.StepsLeft == 0 || res.Finished == true {
+			if res.Message != "" {
+				util.PrintKV(0, id, res.Message)
+			}
 			return
 		}
 		time.Sleep(5000 * time.Millisecond)
@@ -38,6 +41,9 @@ func TrackRunStatus(p *mpb.Progress, bar *mpb.Bar, id string, total int64) {
 		}
 		bar.SetCurrent(total - int64(res.StepsLeft))
 		if res.StepsLeft == 0 || res.Finished == true {
+			if res.Message != "" {
+				util.PrintKV(0, id, res.Message)
+			}
 			return
 		}
 
@@ -64,7 +70,6 @@ func AwaitStatus(id string, total int64) <-chan error {
 
 			time.Sleep(500 * time.Millisecond)
 		}
-		out <- nil
 	}()
 	return out
 }

@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
@@ -63,8 +64,21 @@ func PrintS(depth int, v interface{}) {
 		for key, value := range val {
 			PrintKV(depth+1, key, value)
 		}
+
 	default:
-		pprintln(fmt.Sprintf(indent+"%+v", v))
+		t := reflect.TypeOf(v)
+		if t.Kind() != reflect.Struct {
+			pprintln(fmt.Sprintf(indent+"%+v", v))
+			return
+		}
+		rv := reflect.ValueOf(v)
+		//reflect.ValueOf(v).Field(i).Kind()
+		for i := 0; i < t.NumField(); i++ {
+			field := t.Field(i)
+			name := field.Name
+			PrintKV(depth+1, name, rv.Field(i).Interface())
+		}
+
 	}
 }
 
