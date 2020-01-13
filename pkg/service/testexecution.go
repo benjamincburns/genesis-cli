@@ -112,51 +112,51 @@ func GetTests(orgNameOrId string) ([]common.Test, error) {
 	return out, nil
 }
 
-func UploadFiles(filePath string, orgNameOrId string) (string, error) {
+func UploadFiles(filePath string, orgNameOrId string) ([]byte, string, error) {
 	client, err := auth.GetClient()
 	if err != nil {
-		return "", err
+		return nil, "", err
 	}
 
 	orgID, err := getOrgID(orgNameOrId)
 	if err != nil {
-		return "", err
+		return nil, "", err
 	}
 
 	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, orgID)
 
-	req, err := buildRequest(dest, filePath)
+	newSpec, req, err := buildRequest(dest, filePath)
 	if err != nil {
-		return "", err
+		return newSpec, "", err
 	}
 	log.WithField("url", dest).Debug("uploading files")
 	res, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return newSpec, "", err
 	}
 
 	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", err
+		return newSpec, "", err
 	}
 	if res.StatusCode != http.StatusOK {
-		return string(data), fmt.Errorf("server responsed with %s", res.Status)
+		return newSpec, string(data), fmt.Errorf("server responsed with %s", res.Status)
 	}
 	log.WithField("response", string(data)).Trace("got a response from the server")
 	var resp Response
 	err = json.Unmarshal(data, &resp)
 	if err != nil {
-		return string(data), err
+		return newSpec, string(data), err
 	}
 
 	result, ok := resp.Data.(map[string]interface{})
 	if !ok {
-		return "", fmt.Errorf("%v", resp.Data)
+		return newSpec, "", fmt.Errorf("%v", resp.Data)
 	}
-	return fmt.Sprint(result["definitionID"]), nil
+	return newSpec, fmt.Sprint(result["definitionID"]), nil
 }
 
-func RunTest(defFile string, orgNameOrId string, definitionID string, dns []string) (out []string, err error) {
+func RunTest(definition []byte, orgNameOrId string, definitionID string, dns []string) (out []string, err error) {
 	orgID, err := getOrgID(orgNameOrId)
 	if err != nil {
 		return
@@ -167,14 +167,9 @@ func RunTest(defFile string, orgNameOrId string, definitionID string, dns []stri
 		return
 	}
 
-	r, err := util.ReadInputFile("", defFile)
-	if err != nil {
-		return nil, err
-	}
-
 	dest := conf.APIEndpoint() + fmt.Sprintf(conf.RunTestURI, orgID, definitionID)
 	log.WithField("url", dest).Debug("running test")
-	req, err := http.NewRequest("POST", dest, r)
+	req, err := http.NewRequest("POST", dest, bytes.NewReader(definition))
 	if err != nil {
 		return nil, err
 	}
@@ -216,12 +211,12 @@ func StopTest(id string, isDef bool) error {
 	return nil
 }
 
-func buildRequest(dest string, filePath string) (*http.Request, error) {
+func buildRequest(dest string, filePath string) ([]byte, *http.Request, error) {
 	b := bytes.Buffer{}
 	w := multipart.NewWriter(&b)
 	files, err := parser.ExtractFiles(filePath)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	var root schema.RootSchema
@@ -229,17 +224,17 @@ func buildRequest(dest string, filePath string) (*http.Request, error) {
 	{
 		f, err := os.Open(filePath)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		defer f.Close()
 
 		data, err := ioutil.ReadAll(f)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		def, err := parseDef(data)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		root = def.Spec
 	}
@@ -253,44 +248,44 @@ func buildRequest(dest string, filePath string) (*http.Request, error) {
 		readyFiles[fileName] = true
 		fw, err := w.CreateFormFile("/f/k"+fmt.Sprint(i), "/f/k"+fmt.Sprint(i))
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		ReplaceFile(&root, fileName, "/f/k"+fmt.Sprint(i))
 		r, err := util.ReadInputFile(basedir, fileName)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		defer r.Close()
 
 		_, err = io.Copy(fw, r)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 
 	}
 
 	fw, err := w.CreateFormFile("definition", filePath)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	log.WithField("root", fmt.Sprintf("%+v", root)).Trace("resulting spec")
 	data, err := json.Marshal(root)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	r := bytes.NewReader(data)
 	_, err = io.Copy(fw, r)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	w.Close()
 
 	req, err := http.NewRequest("PUT", dest, &b)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	req.Header.Set("Content-Type", w.FormDataContentType())
-	return req, nil
+	return data, req, nil
 }
