@@ -78,12 +78,18 @@ var runCmd = &cobra.Command{
 					Total: tests[i].GuessSteps(),
 				})
 			}
-			awaiter, bars := util.SetupBars(infos)
+			if util.IsTTY() {
+				awaiter, bars := util.SetupBars(infos)
 
-			for i := range testIDs {
-				go internal.TrackRunStatus(awaiter, bars[i], testIDs[i], infos[i].Total)
+				for i := range testIDs {
+					go internal.TrackRunStatus(awaiter, bars[i], testIDs[i], infos[i].Total)
+				}
+				awaiter.Wait()
+			} else {
+				for i := range testIDs {
+					go internal.TrackRunStatusNoTTY(testIDs[i], infos[i].Total)
+				}
 			}
-			awaiter.Wait()
 		}
 
 	},
