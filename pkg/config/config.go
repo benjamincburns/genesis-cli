@@ -115,7 +115,7 @@ func setViperDefaults() {
 	viper.SetDefault("redirectURL", "localhost:56666")
 	viper.SetDefault("authTimeout", 120*time.Second)
 	viper.SetDefault("verbosity", "INFO")
-	viper.SetDefault("multipathUploadURI", "/api/v1/files/organizations/%s/files")
+	viper.SetDefault("multipathUploadURI", "/api/v1/files/organizations/%s/definitions")
 	viper.SetDefault("getOrgURI", "/api/v1/registrar/organization/%s")
 	viper.SetDefault("logsURI", "/api/v1/logs/data")
 	viper.SetDefault("wbHost", "genesis.whiteblock.io")
