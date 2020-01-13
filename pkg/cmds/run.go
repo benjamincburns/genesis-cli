@@ -1,6 +1,7 @@
 package cmds
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/whiteblock/genesis-cli/pkg/cmds/internal"
@@ -54,15 +55,19 @@ var runCmd = &cobra.Command{
 			util.ErrorFatal(err)
 		}
 
-		util.Print("Executing your test")
+		util.PrintKV(0, "Project", defID)
 
-		if !dnsDisabled {
-			for i := range tests {
-				util.Printf("Test: %s", def.Spec.Tests[i].Name)
+		for i := range tests {
+			util.PrintKV(1, def.Spec.Tests[i].Name, "")
+			util.PrintKV(2, "Domains", "")
+			if !dnsDisabled {
 				for j := range tests[i].ProvisionCommand.Instances {
-					util.Printf("\t%s-%d.%s", dns[i], j, conf.BiomeDNSZone)
+					util.PrintS(3, fmt.Sprintf("%s-%d.%s", dns[i], j, conf.BiomeDNSZone))
+
 				}
 			}
+			util.PrintKV(2, "ID", testIDs[i])
+
 		}
 
 		if !awaitDisabled {
