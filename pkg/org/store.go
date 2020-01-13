@@ -85,9 +85,10 @@ func set(orgIdOrName string, client *oauth2ns.AuthorizedClient) (Organization, e
 	if err != nil {
 		return org, err
 	}
-
+	log.WithField("url", dest).Debug("getting org info")
 	res, err := client.Do(req)
 	if err != nil {
+		log.WithField("err", err).Trace("failed to get org info")
 		return org, err
 	}
 	if res.StatusCode != 200 {

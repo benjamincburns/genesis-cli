@@ -35,6 +35,8 @@ type Config struct {
 	CLIURL             string        `mapstructure:"cliURL"`
 	StopTestURI        string        `mapstructure:"stopTestURI"`
 	StopDefURI         string        `mapstructure:"stopDefURI"`
+	RunTestURI         string        `mapstructure:"runTestURI"`
+	CreateTestURI      string        `mapstructure:"createTestURI"`
 
 	OrgID string `mapstructure:"orgID"`
 
@@ -98,6 +100,8 @@ func setViperEnvBindings() {
 
 	viper.BindEnv("stopTestURI", "STOP_TEST_URI")
 	viper.BindEnv("stopDefURI", "STOP_DEF_URI")
+	viper.BindEnv("runTestURI", "RUN_TEST_URI")
+	viper.BindEnv("createTestURI", "CREATE_DEF_URI")
 }
 
 func setViperDefaults() {
@@ -106,10 +110,12 @@ func setViperDefaults() {
 	viper.SetDefault("tokenPath", "/auth/realms/wb/protocol/openid-connect/token")
 	viper.SetDefault("statusURI", "/api/v1/testexecution/status/%s")
 	viper.SetDefault("testsURI", "/api/v1/testexecution/organizations/%s/tests")
+	viper.SetDefault("runTestURI", "/api/v1/testexecution/run/%s/%s") //org def
+	viper.SetDefault("createTestURI", "/api/v1/testexecution/run/%s") //org
 	viper.SetDefault("redirectURL", "localhost:56666")
 	viper.SetDefault("authTimeout", 120*time.Second)
 	viper.SetDefault("verbosity", "INFO")
-	viper.SetDefault("multipathUploadURI", "/api/v1/testexecution/organizations/%s/files")
+	viper.SetDefault("multipathUploadURI", "/api/v1/files/organizations/%s/files")
 	viper.SetDefault("getOrgURI", "/api/v1/registrar/organization/%s")
 	viper.SetDefault("logsURI", "/api/v1/logs/data")
 	viper.SetDefault("wbHost", "genesis.whiteblock.io")

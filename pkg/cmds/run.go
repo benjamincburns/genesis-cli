@@ -1,7 +1,6 @@
 package cmds
 
 import (
-	"os"
 	"strings"
 
 	"github.com/whiteblock/genesis-cli/pkg/cmds/internal"
@@ -45,17 +44,17 @@ var runCmd = &cobra.Command{
 				dns = append(dns, strings.ToLower(randomdata.SillyName()))
 			}
 		}
-
-		res, ids, err := service.TestExecute(args[0], org, dns)
+		defID, err := service.UploadFiles(args[0], org)
 		if err != nil {
-			util.Error(err)
-			if len(res) > 0 && !strings.Contains(res, "<!DOCTYPE html>") {
-				util.Errorf("Response : %s", res)
-			}
-			os.Exit(1)
+			util.ErrorFatal(err)
 		}
 
-		util.Print(res)
+		testIDs, err := service.RunTest(args[0], org, defID, dns)
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+
+		util.Print("Executing your test")
 
 		if !dnsDisabled {
 			for i := range tests {
@@ -68,7 +67,7 @@ var runCmd = &cobra.Command{
 
 		if !awaitDisabled {
 			infos := []util.BarInfo{}
-			for i := range ids {
+			for i := range testIDs {
 				infos = append(infos, util.BarInfo{
 					Name:  def.Spec.Tests[i].Name,
 					Total: tests[i].GuessSteps(),
@@ -76,8 +75,8 @@ var runCmd = &cobra.Command{
 			}
 			awaiter, bars := util.SetupBars(infos)
 
-			for i := range ids {
-				go internal.TrackRunStatus(bars[i], ids[i], infos[i].Total)
+			for i := range testIDs {
+				go internal.TrackRunStatus(bars[i], testIDs[i], infos[i].Total)
 			}
 			awaiter.Wait()
 		}

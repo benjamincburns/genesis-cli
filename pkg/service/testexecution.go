@@ -85,6 +85,7 @@ func GetTests(orgNameOrId string) ([]common.Test, error) {
 	}
 
 	dest := conf.APIEndpoint() + fmt.Sprintf(conf.TestsURI, orgID)
+	log.WithField("url", dest).Debug("getting tests")
 	resp, err := client.Get(dest)
 	if err != nil {
 		return nil, err
@@ -111,62 +112,84 @@ func GetTests(orgNameOrId string) ([]common.Test, error) {
 	return out, nil
 }
 
-func TestExecute(filePath string, orgNameOrId string, dns []string) (string, []string, error) {
+func UploadFiles(filePath string, orgNameOrId string) (string, error) {
 	client, err := auth.GetClient()
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
 
 	orgID, err := getOrgID(orgNameOrId)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
 
 	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, orgID)
 
-	req, err := buildRequest(dest, filePath, dns)
+	req, err := buildRequest(dest, filePath)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
-
+	log.WithField("url", dest).Debug("sending tests")
 	res, err := client.Do(req)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
 
 	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
 	if res.StatusCode != http.StatusOK {
-		return string(data), nil, fmt.Errorf("server responsed with %s", res.Status)
+		return string(data), fmt.Errorf("server responsed with %s", res.Status)
 	}
 	log.WithField("response", string(data)).Trace("got a response from the server")
 	var resp Response
 	err = json.Unmarshal(data, &resp)
 	if err != nil {
-		return string(data), nil, err
+		return string(data), err
 	}
 
 	result, ok := resp.Data.(map[string]interface{})
 	if !ok {
-		return fmt.Sprint(resp), nil, nil
+		return "", fmt.Errorf("%v", resp.Data)
 	}
-	out := ""
-	if result["message"] != nil {
-		out += fmt.Sprintf("%v\n", result["message"])
+	return fmt.Sprint(result["definitionID"]), nil
+}
+
+func RunTest(defFile string, orgNameOrId string, definitionID string, dns []string) (out []string, err error) {
+	orgID, err := getOrgID(orgNameOrId)
+	if err != nil {
+		return
 	}
 
-	out += fmt.Sprintf("Definition: %v\n", result["definitionID"])
-	ids := []string{}
-	if tests, ok := result["testIDs"]; ok {
-		for _, test := range tests.([]interface{}) {
-			out += fmt.Sprintf("\tTest: %v\n", test)
-			ids = append(ids, fmt.Sprintf("%v", test))
-		}
+	client, err := auth.GetClient()
+	if err != nil {
+		return
 	}
 
-	return out, ids, nil
+	r, err := util.ReadInputFile("", defFile)
+	if err != nil {
+		return nil, err
+	}
+
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.RunTestURI, orgID, definitionID)
+	req, err := http.NewRequest("POST", dest, r)
+	if err != nil {
+		return nil, err
+	}
+	for i := range dns {
+		req.Header.Set(DNSHeader, dns[i])
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		data, _ := ioutil.ReadAll(resp.Body)
+		return nil, fmt.Errorf(string(data))
+	}
+	return out, json.NewDecoder(resp.Body).Decode(&out)
 }
 
 func StopTest(id string, isDef bool) error {
@@ -192,7 +215,7 @@ func StopTest(id string, isDef bool) error {
 	return nil
 }
 
-func buildRequest(dest string, filePath string, dns []string) (*http.Request, error) {
+func buildRequest(dest string, filePath string) (*http.Request, error) {
 	b := bytes.Buffer{}
 	w := multipart.NewWriter(&b)
 	files, err := parser.ExtractFiles(filePath)
@@ -268,8 +291,5 @@ func buildRequest(dest string, filePath string, dns []string) (*http.Request, er
 		return nil, err
 	}
 	req.Header.Set("Content-Type", w.FormDataContentType())
-	for i := range dns {
-		req.Header.Set(DNSHeader, dns[i])
-	}
 	return req, nil
 }
