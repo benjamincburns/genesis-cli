@@ -76,7 +76,7 @@ var runCmd = &cobra.Command{
 			awaiter, bars := util.SetupBars(infos)
 
 			for i := range testIDs {
-				go internal.TrackRunStatus(bars[i], testIDs[i], infos[i].Total)
+				go internal.TrackRunStatus(awaiter, bars[i], testIDs[i], infos[i].Total)
 			}
 			awaiter.Wait()
 		}

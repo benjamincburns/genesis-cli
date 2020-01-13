@@ -10,11 +10,7 @@ type BarInfo struct {
 	Total int64
 }
 
-type Awaiter interface {
-	Wait()
-}
-
-func SetupBars(bars []BarInfo) (Awaiter, []*mpb.Bar) {
+func SetupBars(bars []BarInfo) (*mpb.Progress, []*mpb.Bar) {
 	p := mpb.New()
 	out := make([]*mpb.Bar, len(bars))
 

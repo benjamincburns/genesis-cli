@@ -9,6 +9,7 @@ require (
 	github.com/gorilla/rpc v1.2.0 // indirect
 	github.com/joonix/log v0.0.0-20190524090622-13fe31bbdd7a
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
+	github.com/mattn/go-isatty v0.0.11
 	github.com/mattn/go-sqlite3 v2.0.2+incompatible // indirect
 	github.com/nmrshll/oauth2-noserver v0.0.0-20190221200101-9bf017bef639
 	github.com/nmrshll/rndm-go v0.0.0-20170430161430-8da3024e53de
