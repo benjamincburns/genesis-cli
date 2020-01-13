@@ -129,7 +129,7 @@ func UploadFiles(filePath string, orgNameOrId string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	log.WithField("url", dest).Debug("sending tests")
+	log.WithField("url", dest).Debug("uploading files")
 	res, err := client.Do(req)
 	if err != nil {
 		return "", err
@@ -173,6 +173,7 @@ func RunTest(defFile string, orgNameOrId string, definitionID string, dns []stri
 	}
 
 	dest := conf.APIEndpoint() + fmt.Sprintf(conf.RunTestURI, orgID, definitionID)
+	log.WithField("url", dest).Debug("running test")
 	req, err := http.NewRequest("POST", dest, r)
 	if err != nil {
 		return nil, err
