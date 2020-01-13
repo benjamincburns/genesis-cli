@@ -37,6 +37,8 @@ func init() {
 		util.Print(conf.GenesisBanner)
 	}
 	rootCmd.PersistentFlags().Bool("no-colors", false, "disable terminal colors")
+	rootCmd.PersistentFlags().Bool("dev", false, "disable terminal colors")
+	rootCmd.PersistentFlags().MarkHidden("dev")
 
 	viper.BindPFlag("no-colors", rootCmd.PersistentFlags().Lookup("no-colors"))
 }

@@ -2,6 +2,7 @@ package config
 
 import (
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -105,9 +106,40 @@ func setViperEnvBindings() {
 }
 
 func setViperDefaults() {
-	viper.SetDefault("authEndpoint", "auth.genesis.whiteblock.io")
-	viper.SetDefault("authPath", "/auth/realms/wb/protocol/openid-connect/auth")
-	viper.SetDefault("tokenPath", "/auth/realms/wb/protocol/openid-connect/token")
+	isDev := false
+	for i := range os.Args {
+		if os.Args[i] == "--dev" {
+			isDev = true
+			break
+		}
+	}
+
+	if isDev {
+		viper.SetDefault("authEndpoint", "auth.infra.whiteblock.io")
+		viper.SetDefault("authPath", "/auth/realms/wb/protocol/openid-connect/auth")
+		viper.SetDefault("tokenPath", "/auth/realms/wb/protocol/openid-connect/token")
+		viper.SetDefault("multipathUploadURI", "/api/v1/files/organizations/%s/definitions")
+		viper.SetDefault("wbHost", "www.infra.whiteblock.io")
+		viper.SetDefault("schemaURL", "https://assets.whiteblock.io/schema/schema.json")
+		viper.SetDefault("schemaFile", ".dev-test-definition-format-schema")
+		viper.SetDefault("tokenFile", ".dev-auth-token")
+		viper.SetDefault("orgFile", ".dev-org-name")
+		viper.SetDefault("biomeDNSZone", "infra.whiteblock.io")
+		viper.SetDefault("genesisBanner", "")
+	} else {
+		viper.SetDefault("authEndpoint", "auth.genesis.whiteblock.io")
+		viper.SetDefault("authPath", "/auth/realms/wb/protocol/openid-connect/auth")
+		viper.SetDefault("tokenPath", "/auth/realms/wb/protocol/openid-connect/token")
+		viper.SetDefault("multipathUploadURI", "/api/v1/files/organizations/%s/definitions")
+		viper.SetDefault("wbHost", "genesis.whiteblock.io")
+		viper.SetDefault("schemaURL", "https://assets.whiteblock.io/schema/schema.json")
+		viper.SetDefault("schemaFile", ".test-definition-format-schema")
+		viper.SetDefault("tokenFile", ".auth-token")
+		viper.SetDefault("orgFile", ".org-name")
+		viper.SetDefault("biomeDNSZone", "biomes.whiteblock.io")
+		viper.SetDefault("genesisBanner", "")
+	}
+
 	viper.SetDefault("statusURI", "/api/v1/testexecution/status/%s")
 	viper.SetDefault("testsURI", "/api/v1/testexecution/organizations/%s/tests")
 	viper.SetDefault("runTestURI", "/api/v1/testexecution/run/%s/%s") //org def
@@ -115,26 +147,14 @@ func setViperDefaults() {
 	viper.SetDefault("redirectURL", "localhost:56666")
 	viper.SetDefault("authTimeout", 120*time.Second)
 	viper.SetDefault("verbosity", "INFO")
-	viper.SetDefault("multipathUploadURI", "/api/v1/files/organizations/%s/definitions")
 	viper.SetDefault("getOrgURI", "/api/v1/registrar/organization/%s")
 	viper.SetDefault("logsURI", "/api/v1/logs/data")
-	viper.SetDefault("wbHost", "genesis.whiteblock.io")
 	viper.SetDefault("orgID", "")
-	viper.SetDefault("tokenFile", ".auth-token")
-	viper.SetDefault("orgFile", ".org-name")
-
-	viper.SetDefault("schemaURL", "https://assets.whiteblock.io/schema/schema.json")
-	viper.SetDefault("schemaFile", ".test-definition-format-schema")
-
 	viper.SetDefault("apiTimeout", 5*time.Second)
 	viper.SetDefault("versionLocation", "https://assets.whiteblock.io/cli/latest")
 	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/genesis/%s/%s/genesis")
-	viper.SetDefault("biomeDNSZone", "biomes.whiteblock.io")
 	viper.SetDefault("stopTestURI", "/api/v1/testexecution/stop/test/%s")
 	viper.SetDefault("stopDefURI", "/api/v1/testexecution/stop/definition/%s")
-
-	viper.SetDefault("genesisBanner", "")
-
 }
 
 func init() {
