@@ -87,7 +87,7 @@ var runCmd = &cobra.Command{
 				awaiter.Wait()
 			} else {
 				for i := range testIDs {
-					go internal.TrackRunStatusNoTTY(testIDs[i], infos[i].Total)
+					internal.TrackRunStatusNoTTY(testIDs[i], infos[i].Total)
 				}
 			}
 		}
