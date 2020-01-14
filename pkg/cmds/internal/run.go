@@ -1,17 +1,23 @@
 package internal
 
 import (
+	"fmt"
+	"os"
 	"errors"
 	"strings"
 	"time"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/whiteblock/genesis-cli/pkg/service"
 	"github.com/whiteblock/genesis-cli/pkg/util"
-
 	"github.com/whiteblock/mpb"
 )
 
 func TrackRunStatusNoTTY(id string, total int64) {
+	logger := log.New()
+	log.SetOutput(os.Stdout)
+
 	for {
 		res, err := service.GetStatus(id)
 		if err != nil {
@@ -20,10 +26,17 @@ func TrackRunStatusNoTTY(id string, total int64) {
 			}
 			util.ErrorFatal(err)
 		}
-		util.Printf("%f%%", float64(total-int64(res.StepsLeft))/float64(total))
+
+		logger.WithFields(log.Fields{
+			"test-id":          id,
+			"steps-percentage": fmt.Sprintf("%.2f%%", (float64(total-int64(res.StepsLeft))/float64(total))*100),
+		}).Info("Progress")
 		if res.StepsLeft == 0 || res.Finished == true {
 			if res.Message != "" {
-				util.PrintKV(0, id, res.Message)
+				logger.WithFields(log.Fields{
+					"test-id": id,
+					"result":  res.Message,
+				}).Info("Result")
 			}
 			return
 		}
