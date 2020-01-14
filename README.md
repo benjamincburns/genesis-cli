@@ -3,15 +3,7 @@ Genesis CLI
 
 ## Installation
 
-### From source
-
-On all operating systems, this CLI can be installed with the command
-
-```
-make install
-```
-
-### Without go tools
+### Binaries
 
 #### Linux and Mac
 
@@ -21,6 +13,14 @@ curl -sSf https://assets.whiteblock.io/cli/install.sh | sh
 
 #### Windows
 Download [here](https://assets.whiteblock.io/cli/master/bin/windows/amd64/genesis.exe)
+
+### From source
+
+On all operating systems, this CLI can be installed with the command
+
+```
+make install
+```
 
 ## Running a test
 To run a test as a user in the org named "whiteblock", you would use the command:
