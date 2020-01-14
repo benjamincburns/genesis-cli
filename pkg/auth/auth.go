@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sync"
 
 	"github.com/whiteblock/genesis-cli/pkg/config"
 	"github.com/whiteblock/genesis-cli/pkg/oauth2-noserver"
@@ -13,7 +14,13 @@ import (
 	"golang.org/x/oauth2"
 )
 
-var conf = config.NewConfig()
+var (
+	conf         = config.NewConfig()
+	globalClient *oauth2ns.AuthorizedClient
+
+	mux     = &sync.Mutex{}
+	oldFlag = false
+)
 
 func GetToken() *oauth2.Token {
 	token := new(oauth2.Token)
@@ -56,6 +63,7 @@ func getClientFromLocalToken(authConf *oauth2.Config) *oauth2ns.AuthorizedClient
 }
 
 func storeToken(client *oauth2ns.AuthorizedClient) error {
+
 	data, err := json.Marshal(client.Token)
 	if err != nil {
 		return err
@@ -64,6 +72,9 @@ func storeToken(client *oauth2ns.AuthorizedClient) error {
 }
 
 func Login() (*oauth2ns.AuthorizedClient, error) {
+	mux.Lock()
+	oldFlag = true
+	mux.Unlock()
 	client, err := oauth2ns.AuthenticateUser(getAuthConf())
 	if err != nil {
 		return nil, err
@@ -72,22 +83,31 @@ func Login() (*oauth2ns.AuthorizedClient, error) {
 }
 
 func GetClient() (*oauth2ns.AuthorizedClient, error) {
+	mux.Lock()
+	defer mux.Unlock()
+	if globalClient != nil && !oldFlag {
+		return globalClient, nil
+	}
+	oldFlag = false
 	authConf := getAuthConf()
 
-	client := getClientFromLocalToken(authConf)
-	if client != nil {
-		return client, nil
+	var err error
+
+	globalClient = getClientFromLocalToken(authConf)
+	if globalClient != nil {
+		return globalClient, nil
 	}
 
-	client, err := oauth2ns.AuthenticateUser(authConf)
+	globalClient, err = oauth2ns.AuthenticateUser(authConf)
 	if err != nil {
 		return nil, err
 	}
-	err = storeToken(client)
+	err = storeToken(globalClient)
 	if err != nil {
 		util.Errorf("couldn't store token: %v", err)
 	}
-	return client, nil
+
+	return globalClient, nil
 
 }
 

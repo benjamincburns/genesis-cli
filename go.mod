@@ -27,15 +27,15 @@ require (
 	github.com/spf13/viper v1.6.1
 	github.com/whiteblock/amqp v1.0.5
 	github.com/whiteblock/cli v1.8.18
-	github.com/whiteblock/definition v0.0.0-20200112213852-5e0104c7e8a4
+	github.com/whiteblock/definition v0.0.0-20200113230748-d2b2b5ca03e4
 	github.com/whiteblock/genesis v1.8.21
 	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
 	github.com/whiteblock/mpb v1.0.0
 	github.com/whiteblock/utility v0.0.0-20200113035647-db557feae653
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
-	golang.org/x/sys v0.0.0-20200107162124-548cf772de50 // indirect
-	google.golang.org/genproto v0.0.0-20200108215221-bd8f9a0ef82f // indirect
+	golang.org/x/sys v0.0.0-20200113162924-86b910548bc1 // indirect
+	google.golang.org/genproto v0.0.0-20200113173426-e1de0a7b01eb // indirect
 	gopkg.in/ini.v1 v1.51.1 // indirect
 	gopkg.in/yaml.v2 v2.2.7
 )
