@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/Pallinder/go-randomdata v1.2.0
+	github.com/dspinhirne/netaddr-go v0.0.0-20200114144454-1f4c8303963f // indirect
 	github.com/fatih/color v1.7.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/gorilla/rpc v1.2.0 // indirect
@@ -26,9 +27,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.6.1
 	github.com/whiteblock/amqp v1.0.5
-	github.com/whiteblock/cli v1.8.18
-	github.com/whiteblock/definition v0.0.0-20200113230748-d2b2b5ca03e4
-	github.com/whiteblock/genesis v1.8.21
+	github.com/whiteblock/definition v0.0.0-20200114154534-1a4a4f8fd6df
 	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
 	github.com/whiteblock/mpb v1.0.0
 	github.com/whiteblock/utility v0.0.0-20200113035647-db557feae653
