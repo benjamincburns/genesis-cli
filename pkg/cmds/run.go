@@ -79,12 +79,20 @@ var runCmd = &cobra.Command{
 				})
 			}
 			if util.IsTTY() {
+				channels := map[string]<-chan error{}
 				awaiter, bars := util.SetupBars(infos)
 
 				for i := range testIDs {
-					go internal.TrackRunStatus(awaiter, bars[i], testIDs[i], infos[i].Total)
+					channels[def.Spec.Tests[i].Name] = internal.TrackRunStatus(awaiter, bars[i],
+						testIDs[i], infos[i].Total)
 				}
 				awaiter.Wait()
+				for test, errChan := range channels {
+					err := <-errChan
+					if err != nil {
+						util.Errorf("%s: %s", test, err.Error())
+					}
+				}
 			} else {
 				for i := range testIDs {
 					internal.TrackRunStatusNoTTY(testIDs[i], infos[i].Total)

@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"errors"
 	"strings"
 	"time"
 
@@ -30,28 +31,7 @@ func TrackRunStatusNoTTY(id string, total int64) {
 	}
 }
 
-func TrackRunStatus(p *mpb.Progress, bar *mpb.Bar, id string, total int64) {
-	for {
-		res, err := service.GetStatus(id)
-		if err != nil {
-			if strings.Contains(err.Error(), "could not find the status") {
-				continue
-			}
-			util.ErrorFatal(err)
-		}
-		bar.SetCurrent(total - int64(res.StepsLeft))
-		if res.StepsLeft == 0 || res.Finished == true {
-			if res.Message != "" {
-				util.PrintKV(0, id, res.Message)
-			}
-			return
-		}
-
-		time.Sleep(500 * time.Millisecond)
-	}
-}
-
-func AwaitStatus(id string, total int64) <-chan error {
+func TrackRunStatus(p *mpb.Progress, bar *mpb.Bar, id string, total int64) <-chan error {
 	out := make(chan error)
 	go func() {
 		for {
@@ -63,8 +43,13 @@ func AwaitStatus(id string, total int64) <-chan error {
 				out <- err
 				return
 			}
+			bar.SetCurrent(total - int64(res.StepsLeft))
 			if res.StepsLeft == 0 || res.Finished == true {
-				out <- nil
+				if res.Message != "" {
+					out <- errors.New(res.Message)
+				} else {
+					out <- nil
+				}
 				return
 			}
 
