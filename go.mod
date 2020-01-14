@@ -16,7 +16,7 @@ require (
 	github.com/nmrshll/rndm-go v0.0.0-20170430161430-8da3024e53de
 	github.com/palantir/stacktrace v0.0.0-20161112013806-78658fd2d177
 	github.com/pelletier/go-toml v1.6.0 // indirect
-	github.com/pkg/errors v0.9.0
+	github.com/pkg/errors v0.9.1
 	github.com/shibukawa/configdir v0.0.0-20170330084843-e180dbdc8da0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/skratchdot/open-golang v0.0.0-20190402232053-79abb63cd66e
@@ -27,10 +27,10 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.6.1
 	github.com/whiteblock/amqp v1.0.5
-	github.com/whiteblock/definition v0.0.0-20200114154534-1a4a4f8fd6df
+	github.com/whiteblock/definition v0.0.0-20200114221454-5d57ac2b76bc
 	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
 	github.com/whiteblock/mpb v1.0.0
-	github.com/whiteblock/utility v0.0.0-20200113035647-db557feae653
+	github.com/whiteblock/utility v0.0.0-20200114214418-65f7a67e0c0e
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
 	golang.org/x/sys v0.0.0-20200113162924-86b910548bc1 // indirect

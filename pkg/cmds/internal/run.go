@@ -1,9 +1,9 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"errors"
 	"strings"
 	"time"
 
