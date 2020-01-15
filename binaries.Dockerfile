@@ -11,4 +11,4 @@ RUN go mod download
 
 COPY . .
 
-ENTRYPOINT ["/bin/sh","-c","OUTPUT_DIR=/opt/genesis make -e multiplatform"]
+

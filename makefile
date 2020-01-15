@@ -6,8 +6,9 @@ OUTPUT_DIR=./bin
 INSTALL_LOC=/usr/local/bin
 
 DATE=$(shell date +"%d.%m.%y")
+SHORT_SHA=$(shell git log --pretty=format:'%h' -n 1)
 
-LDFLAGS=-X main.buildTime=$(DATE) -X main.commitHash=$(shell git log --pretty=format:'%h' -n 1)
+LDFLAGS=-X main.buildTime=$(DATE) -X main.commitHash=$(SHORT_SHA)
 
 BUILD_FLAGS=-tags netgo -ldflags '$(LDFLAGS) -extldflags "-static"'
 LINUX_FLAGS=$(BUILD_FLAGS)

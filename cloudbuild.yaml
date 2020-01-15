@@ -17,11 +17,11 @@ steps:
     args: ['bash','-c',"echo -n $SHORT_SHA > $_VERSION_FILE"]
     waitFor:
       - '-'
-  - id: build
+  - id: builder
     name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
-      '-t', '$_IMAGE:$BRANCH_NAME',
+      '-t', 'builder:$_IMAGE-$BRANCH_NAME',
       '--cache-from', '$_IMAGE:$BRANCH_NAME',
       '.',
       '-f','binaries.Dockerfile'
@@ -29,6 +29,17 @@ steps:
     waitFor:
       - 'mkdir'
       - 'version'
+
+  - id: builder
+    name: 'builder:$_IMAGE-$BRANCH_NAME'
+    args: [#ENTRYPOINT ["","", make -e multiplatform"]
+      '/bin/sh',
+      '-c',
+      "OUTPUT_DIR=./bin SHORT_SHA=$SHORT_SHA make -e multiplatform"
+    ]
+    waitFor:
+      - 'builder'
+
   # create container based off image (but don't run)
   - id: createContainer
     name: 'gcr.io/cloud-builders/docker'
