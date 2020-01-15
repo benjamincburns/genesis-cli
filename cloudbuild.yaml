@@ -35,9 +35,9 @@ steps:
       - 'OUTPUT_DIR=./bin'
       - 'SHORT_SHA=$SHORT_SHA'
     args: [
-      '/bin/bash',
-      '-c',
-      "make -e multiplatform"
+      'make ',
+      '-e',
+      "multiplatform"
     ]
     waitFor:
       - 'builder'
