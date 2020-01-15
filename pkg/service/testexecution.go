@@ -234,6 +234,26 @@ func Fork(defID, orgID string) (out common.ForkResponse, err error) {
 	return out, json.NewDecoder(resp.Body).Decode(&out)
 }
 
+func TestInfo(testID string) (out common.TestInfo, err error) {
+	client, err := auth.GetClient()
+	if err != nil {
+		return
+	}
+
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.TestInfoURI, testID)
+	log.WithField("url", dest).Debug("forking test")
+	resp, err := client.Get(dest)
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		data, _ := ioutil.ReadAll(resp.Body)
+		return out, fmt.Errorf(string(data))
+	}
+	return out, json.NewDecoder(resp.Body).Decode(&out)
+}
+
 func buildRequest(dest string, filePath string) ([]byte, *http.Request, error) {
 	b := bytes.Buffer{}
 	w := multipart.NewWriter(&b)
