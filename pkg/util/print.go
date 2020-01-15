@@ -55,30 +55,44 @@ func PrintS(depth int, v interface{}) {
 	for i := 0; i < depth; i++ {
 		indent += indentStr
 	}
-	switch val := v.(type) {
-	case []interface{}:
-		for i := range val {
-			PrintS(depth+1, val[i])
+	rv := reflect.ValueOf(v)
+	t := rv.Type()
+	if t.Kind() == reflect.Ptr && !rv.IsNil() {
+		PrintS(depth, rv.Elem().Interface())
+		return
+	}
+	if t.Kind() == reflect.Map {
+		iter := rv.MapRange()
+		for iter.Next() {
+			k := iter.Key()
+			v := iter.Value()
+			PrintKV(depth, k.Interface(), v.Interface())
 		}
-	case map[string]interface{}:
-		for key, value := range val {
-			PrintKV(depth+1, key, value)
-		}
-
-	default:
-		t := reflect.TypeOf(v)
-		if t.Kind() != reflect.Struct {
-			pprintln(fmt.Sprintf(indent+"%+v", v))
-			return
-		}
+		return
+	}
+	if t.Kind() == reflect.Slice {
 		rv := reflect.ValueOf(v)
-		//reflect.ValueOf(v).Field(i).Kind()
-		for i := 0; i < t.NumField(); i++ {
-			field := t.Field(i)
-			name := field.Name
-			PrintKV(depth+1, name, rv.Field(i).Interface())
+		for i := 0; i < rv.Len(); i++ {
+			PrintS(depth+1, rv.Index(i).Interface())
 		}
+		return
+	}
+	if t.Kind() != reflect.Struct {
+		pprintln(fmt.Sprintf(indent+"%+v", v))
+		return
+	}
 
+	//reflect.ValueOf(v).Field(i).Kind()
+	for i := 0; i < t.NumField(); i++ {
+		if !rv.Field(i).CanInterface() {
+			continue
+		}
+		field := t.Field(i)
+		name := field.Name
+		if field.Tag.Get("genesis") != "" {
+			name = field.Tag.Get("genesis")
+		}
+		PrintKV(depth, name, rv.Field(i).Interface())
 	}
 }
 
@@ -88,20 +102,47 @@ func PrintKV(depth int, k interface{}, v interface{}) {
 		indent += indentStr
 	}
 
-	switch val := v.(type) {
-	case []interface{}:
+	rv := reflect.ValueOf(v)
+	t := rv.Type()
+	if t.Kind() == reflect.Ptr && !rv.IsNil() {
+		PrintS(depth, rv.Elem().Interface())
+		return
+	}
+	if t.Kind() == reflect.Slice {
 		pprintln(indent+fmt.Sprint(k)+": ", color.FgYellow)
-		for i := range val {
-			PrintS(depth+1, val[i])
+		rv := reflect.ValueOf(v)
+		for i := 0; i < rv.Len(); i++ {
+			PrintS(depth+1, rv.Index(i).Interface())
 		}
-	case map[string]interface{}:
+		return
+	}
+	if t.Kind() == reflect.Map {
 		pprintln(indent+fmt.Sprint(k)+": ", color.FgYellow)
-		for key, value := range val {
-			PrintKV(depth+1, key, value)
+		iter := rv.MapRange()
+		for iter.Next() {
+			k := iter.Key()
+			v := iter.Value()
+			PrintKV(depth+1, k.Interface(), v.Interface())
 		}
-	default:
+		return
+	}
+	if t.Kind() != reflect.Struct {
 		pprint(indent+fmt.Sprint(k)+": ", color.FgYellow)
 		pprintln(fmt.Sprintf("%+v", v))
+		return
 	}
 
+	pprintln(indent+fmt.Sprint(k)+": ", color.FgYellow)
+	//reflect.ValueOf(v).Field(i).Kind()
+	for i := 0; i < t.NumField(); i++ {
+		if !rv.Field(i).CanInterface() {
+			continue
+		}
+		field := t.Field(i)
+		name := field.Name
+		if field.Tag.Get("genesis") != "" {
+			name = field.Tag.Get("genesis")
+		}
+		PrintKV(depth+1, name, rv.Field(i).Interface())
+	}
 }

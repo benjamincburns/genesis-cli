@@ -38,6 +38,7 @@ type Config struct {
 	StopDefURI         string        `mapstructure:"stopDefURI"`
 	RunTestURI         string        `mapstructure:"runTestURI"`
 	CreateTestURI      string        `mapstructure:"createTestURI"`
+	ForkURI            string        `mapstructure:"forkURI"`
 
 	OrgID string `mapstructure:"orgID"`
 
@@ -103,6 +104,7 @@ func setViperEnvBindings() {
 	viper.BindEnv("stopDefURI", "STOP_DEF_URI")
 	viper.BindEnv("runTestURI", "RUN_TEST_URI")
 	viper.BindEnv("createTestURI", "CREATE_DEF_URI")
+	viper.BindEnv("forkURI", "FORK_URI")
 }
 
 func setViperDefaults() {
@@ -155,6 +157,7 @@ func setViperDefaults() {
 	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/genesis/%s/%s/genesis")
 	viper.SetDefault("stopTestURI", "/api/v1/testexecution/stop/test/%s")
 	viper.SetDefault("stopDefURI", "/api/v1/testexecution/stop/definition/%s")
+	viper.SetDefault("forkURI", "/api/v1/files/fork/%s/%s") //org def
 }
 
 func init() {

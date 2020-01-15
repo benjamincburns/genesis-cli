@@ -6,6 +6,7 @@ import (
 
 	"github.com/whiteblock/definition"
 	"github.com/whiteblock/definition/command"
+	"github.com/whiteblock/definition/pkg/entity"
 	"github.com/whiteblock/definition/schema"
 
 	"github.com/spf13/viper"
@@ -64,6 +65,15 @@ func DefinitionEnv(filename string) ([]map[string]string, definition.Definition,
 	}
 	envs, err := definition.GetEnvs(def)
 	return envs, def, err
+}
+
+func DefinitionDist(filename string) ([]*entity.ResourceDist, definition.Definition, error) {
+	def, err := DefinitionFromFile(filename)
+	if err != nil {
+		return nil, definition.Definition{}, err
+	}
+	dist, err := definition.GetDist(def)
+	return dist, def, err
 }
 
 func ReplaceFile(root *schema.RootSchema, find string, replace string) {

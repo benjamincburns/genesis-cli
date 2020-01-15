@@ -194,6 +194,8 @@ github.com/whiteblock/definition v0.0.0-20200114204013-d46934b76e84 h1:okUQS3xny
 github.com/whiteblock/definition v0.0.0-20200114204013-d46934b76e84/go.mod h1:FtNWAMy10yYY599C0B431qe64mgKOt0pcq/fJJJ7Sns=
 github.com/whiteblock/definition v0.0.0-20200114221454-5d57ac2b76bc h1:Qgcy4v9g9AonVB2I09Z0i6xh43DTxRFAz80co0IssHE=
 github.com/whiteblock/definition v0.0.0-20200114221454-5d57ac2b76bc/go.mod h1:FtNWAMy10yYY599C0B431qe64mgKOt0pcq/fJJJ7Sns=
+github.com/whiteblock/definition v0.0.0-20200114224857-8de42b735b01 h1:ktExgmZmGmgsAVopIFbP1343mMpTmWO3ktUWHaONo5Q=
+github.com/whiteblock/definition v0.0.0-20200114224857-8de42b735b01/go.mod h1:FtNWAMy10yYY599C0B431qe64mgKOt0pcq/fJJJ7Sns=
 github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe/go.mod h1:DiL8S7+O7oZaiYO5wOEHtZ9+0jIjA/hawX2HrVwHutM=
 github.com/whiteblock/go.uuid v1.2.1 h1:prUjjtzVGGZ0A1Jt3yGxFIdTD69u9FGwaU3e73xqFeI=
 github.com/whiteblock/go.uuid v1.2.1/go.mod h1:J0Y9qymnDEwrdEFeIzpsul8Ye1jzfPoW3JDJVx8hdGM=
@@ -204,6 +206,12 @@ github.com/whiteblock/utility v0.0.0-20200113035647-db557feae653 h1:b5bcKGuw8Zk8
 github.com/whiteblock/utility v0.0.0-20200113035647-db557feae653/go.mod h1:D2cZnXZ08m1NEri4km0KK6MDHWV1KN5Gm2G7HGAwKyM=
 github.com/whiteblock/utility v0.0.0-20200114214418-65f7a67e0c0e h1:HHrdEpNQvezQsqR3yhqRkTmPy4pKOfFxvEatjH1Igm0=
 github.com/whiteblock/utility v0.0.0-20200114214418-65f7a67e0c0e/go.mod h1:D2cZnXZ08m1NEri4km0KK6MDHWV1KN5Gm2G7HGAwKyM=
+github.com/whiteblock/utility v0.0.0-20200115023618-adc4b71ab603 h1:Lu/xcWwQHb1o5KjX9g8/KAB+El3UqnN/y+xK0sel2PU=
+github.com/whiteblock/utility v0.0.0-20200115023618-adc4b71ab603/go.mod h1:D2cZnXZ08m1NEri4km0KK6MDHWV1KN5Gm2G7HGAwKyM=
+github.com/whiteblock/utility v0.0.0-20200115024115-4d247207add2 h1:Qf6KWUMT2PpRPy+Z6fDr2xM7/vnX8HVZsipAcnSmqgg=
+github.com/whiteblock/utility v0.0.0-20200115024115-4d247207add2/go.mod h1:D2cZnXZ08m1NEri4km0KK6MDHWV1KN5Gm2G7HGAwKyM=
+github.com/whiteblock/utility v0.0.0-20200115025120-4036f6bb6b49 h1:VMGy3mn7THTboaeO59DSrOKBGpurvYKYv/dee4PSMlE=
+github.com/whiteblock/utility v0.0.0-20200115025120-4036f6bb6b49/go.mod h1:D2cZnXZ08m1NEri4km0KK6MDHWV1KN5Gm2G7HGAwKyM=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f h1:J9EGpcZtP0E/raorCMxlFGSTBrsSlaDGf3jU/qvAE2c=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
 github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 h1:EzJWgHovont7NscjpAxXsDA8S8BMYve8Y5+7cuRE7R0=
