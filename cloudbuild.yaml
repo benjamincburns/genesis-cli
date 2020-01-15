@@ -31,10 +31,13 @@ steps:
 
   - id: build
     name: 'builder:$_IMAGE-$BRANCH_NAME'
+    env:
+      - 'OUTPUT_DIR=./bin'
+      - 'SHORT_SHA=$SHORT_SHA'
     args: [
       '/bin/bash',
       '-c',
-      "OUTPUT_DIR=./bin SHORT_SHA=$SHORT_SHA make -e multiplatform"
+      "make -e multiplatform"
     ]
     waitFor:
       - 'builder'
