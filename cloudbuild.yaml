@@ -30,7 +30,7 @@ steps:
       - 'mkdir'
       - 'version'
 
-  - id: builder
+  - id: build
     name: 'builder:$_IMAGE-$BRANCH_NAME'
     args:
       '/bin/sh',
@@ -40,23 +40,11 @@ steps:
     waitFor:
       - 'builder'
 
-  # create container based off image (but don't run)
-  - id: createContainer
-    name: 'gcr.io/cloud-builders/docker'
-    args: [ 'run', '--name', 'output', '$_IMAGE:$BRANCH_NAME' ]
-    waitFor:
-      - 'build'
-
-  - id: copyBin
-    name: 'gcr.io/cloud-builders/docker'
-    args: [ 'cp', 'output:/opt/genesis/', './bin/' ]
-    waitFor:
-      - 'createContainer'
   # copy binary to public bucket
   - name: 'gcr.io/cloud-builders/gsutil'
     args: [ '-m', 'cp', '-r', './bin/', 'gs://$_BINARIES_BUCKET/cli/' ]
     waitFor:
-      - 'copyBin'
+      - 'build'
 
   - name: 'gcr.io/cloud-builders/gsutil'
     args: [ 'cp', 'installer.sh', 'gs://$_BINARIES_BUCKET/cli/install.sh' ]
