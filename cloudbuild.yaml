@@ -32,7 +32,7 @@ steps:
 
   - id: builder
     name: 'builder:$_IMAGE-$BRANCH_NAME'
-    args: [#ENTRYPOINT ["","", make -e multiplatform"]
+    args:
       '/bin/sh',
       '-c',
       "OUTPUT_DIR=./bin SHORT_SHA=$SHORT_SHA make -e multiplatform"
