@@ -12,7 +12,7 @@ curl -sSf https://assets.whiteblock.io/cli/install.sh | sh
 ```
 
 #### Windows
-Download [here](https://assets.whiteblock.io/cli/master/bin/windows/amd64/genesis.exe)
+Download [here](https://assets.whiteblock.io/cli/bin/windows/amd64/genesis.exe)
 
 ### From source
 
