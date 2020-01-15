@@ -49,12 +49,12 @@ steps:
   - name: 'gcr.io/cloud-builders/gsutil'
     args: [ 'cp', 'installer.sh', 'gs://$_BINARIES_BUCKET/cli/install.sh' ]
     waitFor:
-      - 'copyBin'
+      - 'build'
   
   - name: 'gcr.io/cloud-builders/gsutil'
     args: [ 'cp', '$_VERSION_FILE', 'gs://$_BINARIES_BUCKET/cli/latest' ]
     waitFor:
-      - 'copyBin'
+      - 'build'
 
 options:
   machineType: 'N1_HIGHCPU_32'
