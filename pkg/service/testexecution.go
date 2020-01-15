@@ -20,7 +20,7 @@ import (
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/whiteblock/definition/schema"
+	//"github.com/whiteblock/definition/schema"
 	"github.com/whiteblock/utility/common"
 )
 
@@ -242,38 +242,34 @@ func buildRequest(dest string, filePath string) ([]byte, *http.Request, error) {
 		return nil, nil, err
 	}
 
-	var root schema.RootSchema
-
-	{
-		f, err := os.Open(filePath)
-		if err != nil {
-			return nil, nil, err
-		}
-		defer f.Close()
-
-		data, err := ioutil.ReadAll(f)
-		if err != nil {
-			return nil, nil, err
-		}
-		def, err := parseDef(data)
-		if err != nil {
-			return nil, nil, err
-		}
-		root = def.Spec
+	f, err := os.Open(filePath)
+	if err != nil {
+		return nil, nil, err
 	}
+	defer f.Close()
+
+	data, err := ioutil.ReadAll(f)
+	if err != nil {
+		return nil, nil, err
+	}
+	/*def, err := parseDef(data)
+	if err != nil {
+		return nil, nil, err
+	}*/
+	//root := def.Spec
 
 	basedir := filepath.Dir(filePath)
 	readyFiles := map[string]bool{}
-	for i, fileName := range files {
+	for _, fileName := range files {
 		if _, ok := readyFiles[fileName]; ok {
 			continue
 		}
 		readyFiles[fileName] = true
-		fw, err := w.CreateFormFile("/f/k"+fmt.Sprint(i), "/f/k"+fmt.Sprint(i))
+		fw, err := w.CreateFormFile(fileName, fileName)
 		if err != nil {
 			return nil, nil, err
 		}
-		ReplaceFile(&root, fileName, "/f/k"+fmt.Sprint(i))
+		//ReplaceFile(&root, fileName, "/f/k"+fmt.Sprint(i))
 		r, err := util.ReadInputFile(basedir, fileName)
 		if err != nil {
 			return nil, nil, err
@@ -284,18 +280,17 @@ func buildRequest(dest string, filePath string) ([]byte, *http.Request, error) {
 		if err != nil {
 			return nil, nil, err
 		}
-
 	}
 
 	fw, err := w.CreateFormFile("definition", filePath)
 	if err != nil {
 		return nil, nil, err
 	}
-	log.WithField("root", fmt.Sprintf("%+v", root)).Trace("resulting spec")
-	data, err := json.Marshal(root)
+	//log.WithField("root", fmt.Sprintf("%+v", root)).Trace("resulting spec")
+	/*data, err := json.Marshal(root)
 	if err != nil {
 		return nil, nil, err
-	}
+	}*/
 
 	r := bytes.NewReader(data)
 	_, err = io.Copy(fw, r)

@@ -157,7 +157,7 @@ func setViperDefaults() {
 	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/genesis/%s/%s/genesis")
 	viper.SetDefault("stopTestURI", "/api/v1/testexecution/stop/test/%s")
 	viper.SetDefault("stopDefURI", "/api/v1/testexecution/stop/definition/%s")
-	viper.SetDefault("forkURI", "/api/v1/files/fork/%s/%s") //org def
+	viper.SetDefault("forkURI", "/api/v1/testexecution/fork/%s/%s") //org def
 }
 
 func init() {
