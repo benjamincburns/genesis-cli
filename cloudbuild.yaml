@@ -22,7 +22,6 @@ steps:
     args: [
       'build',
       '-t', 'builder:$_IMAGE-$BRANCH_NAME',
-      '--cache-from', '$_IMAGE:$BRANCH_NAME',
       '.',
       '-f','binaries.Dockerfile'
     ]
@@ -33,7 +32,7 @@ steps:
   - id: build
     name: 'builder:$_IMAGE-$BRANCH_NAME'
     args: [
-      '/bin/sh',
+      '/bin/bash',
       '-c',
       "OUTPUT_DIR=./bin SHORT_SHA=$SHORT_SHA make -e multiplatform"
     ]
