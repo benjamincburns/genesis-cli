@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/whiteblock/genesis-cli/pkg/auth"
 	"github.com/whiteblock/genesis-cli/pkg/config"
 	oauth2ns "github.com/whiteblock/genesis-cli/pkg/oauth2-noserver"
 	"io/ioutil"
@@ -108,4 +109,24 @@ func set(orgIdOrName string, client *oauth2ns.AuthorizedClient) (Organization, e
 		log.WithField("error", err).Debug("couldn't write to the org file")
 	}
 	return org, nil
+}
+
+func GetOrgInfo(orgIdOrName string) (out Organization, err error) {
+	client, err := auth.GetClient()
+	if err != nil {
+		return
+	}
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.GetOrgURI, orgIdOrName)
+	log.WithField("url", dest).Debug("getting org info")
+	res, err := client.Get(dest)
+	if err != nil {
+		log.WithField("err", err).Trace("failed to get org info")
+		return
+	}
+	if res.StatusCode != 200 {
+		data, _ := ioutil.ReadAll(res.Body)
+		log.WithField("resp", string(data)).Trace("failed to get org info")
+		return out, errors.New("error connecting to backend")
+	}
+	return out, json.NewDecoder(res.Body).Decode(&out)
 }

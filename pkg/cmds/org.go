@@ -14,18 +14,25 @@ var orgCmd = &cobra.Command{
 	Long:    `What org am I acting as?`,
 	Aliases: []string{},
 	Run: func(cmd *cobra.Command, args []string) {
-		util.CheckArguments(cmd, args, 0, 0)
+		util.CheckArguments(cmd, args, 0, 1)
+		if len(args) == 0 {
+			client, err := auth.GetClient()
+			if err != nil {
+				util.ErrorFatal(err)
+			}
+			org, err := organization.Get("", client)
+			if err != nil {
+				util.ErrorFatal(err)
+			}
 
-		client, err := auth.GetClient()
+			util.Print(org.Name)
+		}
+
+		orgInfo, err := organization.GetOrgInfo(args[0])
 		if err != nil {
 			util.ErrorFatal(err)
 		}
-		org, err := organization.Get("", client)
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-
-		util.Print(org.Name)
+		util.PrintS(0, orgInfo)
 	},
 }
 
