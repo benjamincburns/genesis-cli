@@ -156,7 +156,7 @@ func setViperDefaults() {
 	viper.SetDefault("orgID", "")
 	viper.SetDefault("apiTimeout", 5*time.Second)
 	viper.SetDefault("versionLocation", "https://assets.whiteblock.io/cli/latest")
-	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/genesis/%s/%s/genesis")
+	viper.SetDefault("cliURL", "https://assets.whiteblock.io/cli/bin/%s/%s/genesis")
 	viper.SetDefault("stopTestURI", "/api/v1/testexecution/stop/test/%s")
 	viper.SetDefault("stopDefURI", "/api/v1/testexecution/stop/definition/%s")
 	viper.SetDefault("forkURI", "/api/v1/testexecution/fork/%s/%s")        //org def
