@@ -84,7 +84,7 @@ var runCmd = &cobra.Command{
 
 				for i := range testIDs {
 					channels[def.Spec.Tests[i].Name] = internal.TrackRunStatus(awaiter, bars[i],
-						testIDs[i], infos[i].Total)
+						testIDs[i], infos[i])
 				}
 				awaiter.Wait()
 				for test, errChan := range channels {

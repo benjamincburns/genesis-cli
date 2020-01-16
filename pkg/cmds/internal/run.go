@@ -12,12 +12,12 @@ import (
 	"github.com/whiteblock/genesis-cli/pkg/service"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 	"github.com/whiteblock/mpb"
+	"github.com/whiteblock/mpb/decor"
 )
 
 func TrackRunStatusNoTTY(id string, total int64) {
 	logger := log.New()
 	log.SetOutput(os.Stdout)
-
 	for {
 		res, err := service.GetStatus(id)
 		if err != nil {
@@ -44,9 +44,10 @@ func TrackRunStatusNoTTY(id string, total int64) {
 	}
 }
 
-func TrackRunStatus(p *mpb.Progress, bar *mpb.Bar, id string, total int64) <-chan error {
+func TrackRunStatus(p *mpb.Progress, bar *mpb.Bar, id string, info util.BarInfo) <-chan error {
 	out := make(chan error)
 	go func() {
+		phase := ""
 		for {
 			res, err := service.GetStatus(id)
 			if err != nil {
@@ -56,7 +57,24 @@ func TrackRunStatus(p *mpb.Progress, bar *mpb.Bar, id string, total int64) <-cha
 				out <- err
 				return
 			}
-			bar.SetCurrent(total - int64(res.StepsLeft))
+
+			if phase != res.Phase {
+				phase = res.Phase
+				b2 := p.AddBar(info.Total,
+					mpb.BarParkTo(bar),
+					mpb.BarClearOnComplete(),
+					mpb.PrependDecorators(
+						decor.Name(info.Name),
+						decor.Percentage(decor.WCSyncSpace),
+					),
+					mpb.AppendDecorators(
+						decor.OnComplete(decor.Name(phase), "done!"),
+					),
+				)
+				bar.SetCurrent(info.Total)
+				bar = b2
+			}
+			bar.SetCurrent(info.Total - int64(res.StepsLeft))
 			if res.StepsLeft == 0 || res.Finished == true {
 				if res.Message != "" {
 					out <- errors.New(res.Message)
