@@ -79,7 +79,7 @@ func mkSystemComponent(name string, serv _service) schema.SystemComponent {
 	return sys
 }
 
-func mkService(volumes map[string]volume name string, serv _service) schema.Service {
+func mkService(volumes map[string]volume, name string, serv _service) schema.Service {
 	out := schema.Service{
 		Name:        name,
 		Image:       serv.Image,
@@ -87,6 +87,32 @@ func mkService(volumes map[string]volume name string, serv _service) schema.Serv
 	}
 	if serv.Command != nil {
 		out.Script.Inline = strings.Join(serv.Command, " ")
+	}
+	for _, v := range serv.Volumes {
+		pieces := strings.Split(v, ":")
+		if _, exists := volumes[pieces[0]]; exists {
+			out.Volumes = append(out.Volumes, schema.Volume{
+				Name:  pieces[0],
+				Path:  pieces[1],
+				Scope: schema.GlobalScope,
+			})
+		} else if stat, err := os.Lstat(pieces[0]); err == nil { //do I need stuff from there?
+			if !stat.Mode().IsRegular() && !stat.IsDir() {
+				util.Errorf("cannot upload %s, not a normal file", pieces[0])
+				continue
+			}
+			out.InputFiles = append(out.InputFiles, schema.InputFile{
+				SourcePath:      pieces[0],
+				DestinationPath: pieces[1],
+			})
+		} else {
+			out.Volumes = append(out.Volumes, schema.Volume{
+				Name:  pieces[0],
+				Path:  pieces[1],
+				Scope: schema.LocalScope,
+			})
+		}
+
 	}
 	out.Resources.Memory = serv.Deploy.Resources.Limits.Memory
 	return out
@@ -97,7 +123,7 @@ var composeCmd = &cobra.Command{
 	Short:   "Convert docker compose into a spec",
 	Long:    `Convert docker compose into a spec`,
 	Aliases: []string{},
-	Hidden: true,
+	Hidden:  true,
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
 		file, err := os.Open(args[0])
@@ -118,7 +144,7 @@ var composeCmd = &cobra.Command{
 		root := schema.RootSchema{}
 		//Register the services
 		for name, serv := range comp.Services {
-			root.Services = append(root.Services, mkService(name, serv))
+			root.Services = append(root.Services, mkService(comp.Volumes, name, serv))
 		}
 		//build the dependency tree
 		phases := []schema.Phase{}
@@ -160,10 +186,11 @@ var composeCmd = &cobra.Command{
 		}
 		if len(phases) > 0 {
 			test := schema.Test{
-				Name:   "compose",
-				System: phases[0].System,
+				Name:        "compose",
+				System:      phases[0].System,
+				Description: "This was auto-generated from a docker compose file",
 			}
-			json.Unmarshal([]byte(`"infinite"`),&test.Timeout)
+			json.Unmarshal([]byte(`"infinite"`), &test.Timeout)
 			if len(phases) > 1 {
 				test.Phases = phases[1:]
 			}
