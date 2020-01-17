@@ -31,7 +31,17 @@ var testsCmd = &cobra.Command{
 			return
 		}
 
-		tests, err := service.GetTests(org)
+		start, err := cmd.Flags().GetInt64("start")
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+
+		max, err := cmd.Flags().GetInt64("max")
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+
+		tests, err := service.GetTests(org, max, start)
 		if err != nil {
 			util.ErrorFatal(err)
 		}
@@ -62,6 +72,8 @@ var testsCmd = &cobra.Command{
 }
 
 func init() {
+	testsCmd.Flags().Int64P("start", "s", 0, "start")
+	testsCmd.Flags().Int64P("max", "m", 5, "max entries")
 	testsCmd.Flags().BoolP("details", "d", false, "show more test details")
 	testsCmd.Flags().BoolP("simple", "1", false, "list the tests without any labels or formatting")
 	testsCmd.Flags().BoolP("latest", "l", false, "show the ID of only the most recent active test")

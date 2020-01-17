@@ -41,14 +41,14 @@ type Response struct {
 }
 
 func GetMostRecentTest(org string) (common.Test, error) {
-	tests, err := GetTests(org)
+	tests, err := GetTests(org, 1, 0)
 	if err != nil {
 		return common.Test{}, err
 	}
 	if len(tests) == 0 {
 		return common.Test{}, fmt.Errorf("no active tests")
 	}
-	return tests[len(tests)-1], nil
+	return tests[0], nil
 }
 
 func getOrgID(orgID string) (string, error) {
@@ -73,7 +73,7 @@ func getOrgID(orgID string) (string, error) {
 	return org.ID, nil
 }
 
-func GetTests(orgNameOrId string) ([]common.Test, error) {
+func GetTests(orgNameOrId string, max int64, start int64) ([]common.Test, error) {
 	client, err := auth.GetClient()
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func GetTests(orgNameOrId string) ([]common.Test, error) {
 		return nil, err
 	}
 
-	dest := conf.APIEndpoint() + fmt.Sprintf(conf.TestsURI, orgID)
+	dest := conf.APIEndpoint() + fmt.Sprintf(conf.TestsURI, orgID) + fmt.Sprintf("?max=%d&start=%d", max, start)
 	log.WithField("url", dest).Debug("getting tests")
 	resp, err := client.Get(dest)
 	if err != nil {
