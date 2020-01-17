@@ -1,9 +1,6 @@
 package cmds
 
 import (
-	"io/ioutil"
-	"os"
-
 	"github.com/whiteblock/genesis-cli/pkg/cmds/internal"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
@@ -19,17 +16,8 @@ Then will run an internal mock of the test, to check for other issues.`,
 	Aliases: []string{"validate"},
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
-		f, err := os.Open(args[0])
-		if err != nil {
-			util.ErrorFatal(err)
-		}
 
-		data, err := ioutil.ReadAll(f)
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-
-		internal.Lint(data)
+		internal.Lint(util.MustReadFile(args[0]))
 	},
 }
 

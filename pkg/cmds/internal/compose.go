@@ -37,6 +37,25 @@ type deploy struct {
 	Replicas  int64
 }
 
+type environment map[string]string
+
+func (env *environment) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	var arr []string
+	err := unmarshal(&arr)
+	if err != nil {
+		return unmarshal(env)
+	}
+	(*env) = environment{}
+	for i := range arr {
+		kv := strings.SplitN(arr[i], "=", 2)
+		if len(kv) != 2 {
+			return fmt.Errorf("Invalid environment entry %s", arr[i])
+		}
+		(*env)[kv[0]] = kv[1]
+	}
+	return nil
+}
+
 type _service struct {
 	ContainerName                     string `yaml:"container_name"`
 	Image                             string
@@ -45,15 +64,19 @@ type _service struct {
 	DependsOn                         []string `yaml:"depends_on"` //build tree
 	CapAdd                            []string `yaml:"cap_add"`
 	Build                             build
-	Environment                       map[string]string
+	Environment                       environment
 	Deploy                            deploy
 }
 
 func mkSystemComponent(name string, serv _service) schema.SystemComponent {
 	sys := schema.SystemComponent{
+		Name:         name,
 		Type:         name,
 		PortMappings: serv.Ports,
 		Count:        serv.Deploy.Replicas,
+	}
+	if sys.Count == 0 {
+		sys.Count = 1
 	}
 	for i := range sys.PortMappings {
 		if !strings.Contains(sys.PortMappings[i], ":") {

@@ -1,6 +1,7 @@
 package cmds
 
 import (
+	"github.com/whiteblock/genesis-cli/pkg/cmds/internal"
 	"github.com/whiteblock/genesis-cli/pkg/service"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
@@ -15,7 +16,17 @@ var commandsCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
 
-		tests, def, err := service.ProcessDefinitionFromFile(args[0])
+		data := util.MustReadFile(args[0])
+		isCompose, err := cmd.Flags().GetBool("docker-compose")
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+
+		if isCompose {
+			data = internal.MustSchemaYAMLFromCompose(data)
+		}
+
+		tests, def, err := service.ProcessDefinitionFromBytes(data)
 		if err != nil {
 			util.ErrorFatal(err)
 		}
@@ -42,6 +53,7 @@ var commandsCmd = &cobra.Command{
 }
 
 func init() {
+	commandsCmd.Flags().BoolP("docker-compose", "c", false, "file is a docker compose file")
 	commandsCmd.Flags().BoolP("meta", "m", false, "show command meta")
 	rootCmd.AddCommand(commandsCmd)
 }
