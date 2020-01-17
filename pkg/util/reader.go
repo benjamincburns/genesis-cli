@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-	//log "github.com/sirupsen/logrus"
 )
 
 func ReadInputFile(basedir string, filename string) (io.ReadCloser, error) {
@@ -40,4 +39,17 @@ func ReadInputFile(basedir string, filename string) (io.ReadCloser, error) {
 		return nil, fmt.Errorf(string(data))
 	}
 	return nil, fmt.Errorf(`could not retrieve source-file "%s"`, filename)
+}
+
+func MustReadFile(path string) []byte {
+	file, err := os.Open(path)
+	if err != nil {
+		ErrorFatal(err)
+	}
+	defer file.Close()
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		ErrorFatal(err)
+	}
+	return data
 }

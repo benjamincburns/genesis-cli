@@ -1,10 +1,8 @@
 package parser
 
 import (
-	"io/ioutil"
-	"os"
-
 	"github.com/whiteblock/definition/schema"
+
 	"gopkg.in/yaml.v2"
 )
 
@@ -16,19 +14,10 @@ func process(inputFiles []schema.InputFile) []string {
 	return out
 }
 
-func ExtractFiles(yamlFile string) ([]string, error) {
-	f, err := os.Open(yamlFile)
-	if err != nil {
-		return nil, err
-	}
-
-	data, err := ioutil.ReadAll(f)
-	if err != nil {
-		return nil, err
-	}
+func ExtractFiles(specData []byte) ([]string, error) {
 
 	var root schema.RootSchema
-	err = yaml.Unmarshal(data, &root)
+	err := yaml.Unmarshal(specData, &root)
 	if err != nil {
 		return nil, err
 	}

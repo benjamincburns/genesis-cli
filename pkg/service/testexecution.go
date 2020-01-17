@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
-	"os"
 	"path/filepath"
 	"sort"
 
@@ -112,7 +111,7 @@ func GetTests(orgNameOrId string, max int64, start int64) ([]common.Test, error)
 	return out, nil
 }
 
-func UploadFiles(filePath string, orgNameOrId string) ([]byte, string, error) {
+func UploadFiles(filePath string, specData []byte, orgNameOrId string) ([]byte, string, error) {
 	client, err := auth.GetClient()
 	if err != nil {
 		return nil, "", err
@@ -125,7 +124,7 @@ func UploadFiles(filePath string, orgNameOrId string) ([]byte, string, error) {
 
 	dest := conf.APIEndpoint() + fmt.Sprintf(conf.MultipathUploadURI, orgID)
 
-	newSpec, req, err := buildRequest(dest, filePath)
+	newSpec, req, err := buildRequest(dest, filePath, specData)
 	if err != nil {
 		return newSpec, "", err
 	}
@@ -254,29 +253,13 @@ func TestInfo(testID string) (out common.TestInfo, err error) {
 	return out, json.NewDecoder(resp.Body).Decode(&out)
 }
 
-func buildRequest(dest string, filePath string) ([]byte, *http.Request, error) {
+func buildRequest(dest string, filePath string, specData []byte) ([]byte, *http.Request, error) {
 	b := bytes.Buffer{}
 	w := multipart.NewWriter(&b)
-	files, err := parser.ExtractFiles(filePath)
+	files, err := parser.ExtractFiles(specData)
 	if err != nil {
 		return nil, nil, err
 	}
-
-	f, err := os.Open(filePath)
-	if err != nil {
-		return nil, nil, err
-	}
-	defer f.Close()
-
-	data, err := ioutil.ReadAll(f)
-	if err != nil {
-		return nil, nil, err
-	}
-	/*def, err := parseDef(data)
-	if err != nil {
-		return nil, nil, err
-	}*/
-	//root := def.Spec
 
 	basedir := filepath.Dir(filePath)
 	readyFiles := map[string]bool{}
@@ -289,7 +272,6 @@ func buildRequest(dest string, filePath string) ([]byte, *http.Request, error) {
 		if err != nil {
 			return nil, nil, err
 		}
-		//ReplaceFile(&root, fileName, "/f/k"+fmt.Sprint(i))
 		r, err := util.ReadInputFile(basedir, fileName)
 		if err != nil {
 			return nil, nil, err
@@ -306,13 +288,8 @@ func buildRequest(dest string, filePath string) ([]byte, *http.Request, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	//log.WithField("root", fmt.Sprintf("%+v", root)).Trace("resulting spec")
-	/*data, err := json.Marshal(root)
-	if err != nil {
-		return nil, nil, err
-	}*/
 
-	r := bytes.NewReader(data)
+	r := bytes.NewReader(specData)
 	_, err = io.Copy(fw, r)
 	if err != nil {
 		return nil, nil, err
@@ -325,5 +302,5 @@ func buildRequest(dest string, filePath string) ([]byte, *http.Request, error) {
 		return nil, nil, err
 	}
 	req.Header.Set("Content-Type", w.FormDataContentType())
-	return data, req, nil
+	return specData, req, nil
 }

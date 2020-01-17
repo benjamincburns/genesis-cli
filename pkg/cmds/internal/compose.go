@@ -106,6 +106,7 @@ func mkService(volumes map[string]interface{}, name string, serv _service) schem
 	out.Resources.Memory = serv.Deploy.Resources.Limits.Memory
 	return out
 }
+
 func SchemaFromCompose(data []byte) (schema.RootSchema, error) {
 	var comp compose
 	err := yaml.Unmarshal(data, &comp)
@@ -138,7 +139,7 @@ func SchemaFromCompose(data []byte) (schema.RootSchema, error) {
 				if !haveit || val >= len(phases) {
 					//check if it actually exists
 					if _, exists := comp.Services[dep]; !exists {
-						util.ErrorFatalf("dependency %s does not exist", dep)
+						return schema.RootSchema{}, fmt.Errorf("dependency %s does not exist", dep)
 					}
 					broken = true
 					break
@@ -168,4 +169,20 @@ func SchemaFromCompose(data []byte) (schema.RootSchema, error) {
 		root.Tests = []schema.Test{test}
 	}
 	return root, nil
+}
+
+func SchemaYAMLFromCompose(data []byte) ([]byte, error) {
+	root, err := SchemaFromCompose(data)
+	if err != nil {
+		return nil, err
+	}
+	return yaml.Marshal(root)
+}
+
+func MustSchemaYAMLFromCompose(data []byte) []byte {
+	out, err := SchemaYAMLFromCompose(data)
+	if err != nil {
+		util.ErrorFatal(err)
+	}
+	return out
 }
