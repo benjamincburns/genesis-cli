@@ -17,7 +17,7 @@ var filesCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
 		basePath := filepath.Dir(args[0])
-		files, err := parser.ExtractFiles(args[0])
+		files, err := parser.ExtractFiles(util.MustReadFile(args[0]))
 		if err != nil {
 			util.ErrorFatal(err)
 		}

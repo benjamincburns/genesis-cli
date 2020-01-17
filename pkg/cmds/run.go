@@ -25,7 +25,17 @@ var runCmd = &cobra.Command{
 			org = args[1]
 		}
 
-		tests, def, err := service.ProcessDefinitionFromFile(args[0])
+		data := util.MustReadFile(args[0])
+		isCompose, err := cmd.Flags().GetBool("docker-compose")
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+
+		if isCompose {
+			data = internal.MustSchemaYAMLFromCompose(data)
+		}
+
+		tests, def, err := service.ProcessDefinitionFromBytes(data)
 		if err != nil {
 			util.ErrorFatal(err)
 		}
@@ -35,6 +45,7 @@ var runCmd = &cobra.Command{
 		if err != nil {
 			util.ErrorFatal(err)
 		}
+
 		awaitDisabled, err := cmd.Flags().GetBool("no-await")
 		if err != nil {
 			util.ErrorFatal(err)
@@ -45,7 +56,7 @@ var runCmd = &cobra.Command{
 				dns = append(dns, strings.ToLower(randomdata.SillyName()))
 			}
 		}
-		normalizedSpec, defID, err := service.UploadFiles(args[0], org)
+		normalizedSpec, defID, err := service.UploadFiles(args[0], data, org)
 		if err != nil {
 			util.ErrorFatal(err)
 		}
@@ -104,7 +115,9 @@ var runCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(runCmd)
+
 	runCmd.Flags().BoolP("no-dns", "d", false, "disable assigning a DNS name to your deployment")
+	runCmd.Flags().BoolP("docker-compose", "c", false, "deploy from a docker compose file")
 	runCmd.Flags().BoolP("no-await", "a", false, "don't wait for completion, exit immediately after sending test")
+	rootCmd.AddCommand(runCmd)
 }

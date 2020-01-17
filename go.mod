@@ -25,16 +25,16 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.6.1
+	github.com/spf13/viper v1.6.2
 	github.com/whiteblock/amqp v1.0.5
-	github.com/whiteblock/definition v0.0.0-20200114224857-8de42b735b01
+	github.com/whiteblock/definition v0.0.0-20200117181626-31abef8cf81b
 	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
 	github.com/whiteblock/mpb v1.0.0
-	github.com/whiteblock/utility v0.0.0-20200115161241-3c57abb98c8b
+	github.com/whiteblock/utility v0.0.0-20200117171911-d78e6f0dd169
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
-	golang.org/x/sys v0.0.0-20200113162924-86b910548bc1 // indirect
-	google.golang.org/genproto v0.0.0-20200113173426-e1de0a7b01eb // indirect
+	golang.org/x/sys v0.0.0-20200117145432-59e60aa80a0c // indirect
+	google.golang.org/genproto v0.0.0-20200117163144-32f20d992d24 // indirect
 	gopkg.in/ini.v1 v1.51.1 // indirect
 	gopkg.in/yaml.v2 v2.2.7
 )
