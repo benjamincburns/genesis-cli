@@ -27,10 +27,10 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.6.2
 	github.com/whiteblock/amqp v1.0.5
-	github.com/whiteblock/definition v0.0.0-20200117181626-31abef8cf81b
+	github.com/whiteblock/definition v0.0.0-20200117213848-8847fd3f3c42
 	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
 	github.com/whiteblock/mpb v1.0.0
-	github.com/whiteblock/utility v0.0.0-20200117171911-d78e6f0dd169
+	github.com/whiteblock/utility v0.0.0-20200117195942-fda69310d06f
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
 	golang.org/x/sys v0.0.0-20200117145432-59e60aa80a0c // indirect

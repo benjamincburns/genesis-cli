@@ -1,13 +1,13 @@
 package internal
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
 
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
+	yamlC "github.com/ghodss/yaml"
 	"github.com/whiteblock/definition/schema"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -185,7 +185,7 @@ func SchemaFromCompose(data []byte) (schema.RootSchema, error) {
 			System:      phases[0].System,
 			Description: "This was auto-generated from a docker compose file",
 		}
-		json.Unmarshal([]byte(`"infinite"`), &test.Timeout)
+		test.Timeout = test.Timeout.SetInfinite()
 		if len(phases) > 1 {
 			test.Phases = phases[1:]
 		}
@@ -204,6 +204,15 @@ func SchemaYAMLFromCompose(data []byte) ([]byte, error) {
 
 func MustSchemaYAMLFromCompose(data []byte) []byte {
 	out, err := SchemaYAMLFromCompose(data)
+	if err != nil {
+		util.ErrorFatal(err)
+	}
+	return out
+}
+
+func MustSchemaJSONFromCompose(data []byte) []byte {
+
+	out, err := yamlC.YAMLToJSON(MustSchemaYAMLFromCompose(data))
 	if err != nil {
 		util.ErrorFatal(err)
 	}

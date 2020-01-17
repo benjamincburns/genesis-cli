@@ -16,7 +16,16 @@ var composeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
 
-		data := internal.MustSchemaYAMLFromCompose(util.MustReadFile(args[0]))
+		isJSON, err := cmd.Flags().GetBool("json")
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+		var data []byte
+		if isJSON {
+			data = internal.MustSchemaJSONFromCompose(util.MustReadFile(args[0]))
+		} else {
+			data = internal.MustSchemaYAMLFromCompose(util.MustReadFile(args[0]))
+		}
 
 		util.Print(string(data))
 		internal.Lint(data)
@@ -24,5 +33,6 @@ var composeCmd = &cobra.Command{
 }
 
 func init() {
+	composeCmd.Flags().Bool("json", false, "file is a docker compose file")
 	rootCmd.AddCommand(composeCmd)
 }
