@@ -115,7 +115,6 @@ github.com/mattn/go-isatty v0.0.10/go.mod h1:qgIWMr58cqv1PHHyhnkY9lrL7etaEgOFcME
 github.com/mattn/go-isatty v0.0.11 h1:FxPOTFNqGkuDUGi3H/qkUbQO4ZiBa2brKq5r0l8TGeM=
 github.com/mattn/go-isatty v0.0.11/go.mod h1:PhnuNfih5lzO57/f3n+odYbM4JtupLOxQOAqxQCu2WE=
 github.com/mattn/go-sqlite3 v1.9.0/go.mod h1:FPy6KqzDD04eiIsT53CuJW3U88zkxoIYsOqkbpncsNc=
-github.com/mattn/go-sqlite3 v2.0.2+incompatible/go.mod h1:FPy6KqzDD04eiIsT53CuJW3U88zkxoIYsOqkbpncsNc=
 github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5Ld7szi9bcBfOoFv/3dc6xSMkL2PC0=
 github.com/mitchellh/go-homedir v1.1.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
 github.com/mitchellh/mapstructure v1.1.2 h1:fmNYVwqnSfB9mZU6OS2O6GsXM+wcskZDuKQzvN1EDeE=
@@ -131,7 +130,6 @@ github.com/pelletier/go-toml v1.2.0/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/9
 github.com/pelletier/go-toml v1.6.0 h1:aetoXYr0Tv7xRU/V4B4IZJ2QcbtMUFoNb3ORp7TzIK4=
 github.com/pelletier/go-toml v1.6.0/go.mod h1:5N711Q9dKgbdkxHL+MEfF31hpT7l0S0s/t2kKREewys=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
-github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
@@ -175,7 +173,6 @@ github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=
 github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
 github.com/spf13/viper v1.3.2/go.mod h1:ZiWeW+zYFKm7srdB9IoDzzZXaJaI5eL9QjNiN/DMA2s=
 github.com/spf13/viper v1.5.0/go.mod h1:AkYRkVJF8TkSG/xet6PzXX+l39KhhXa2pdqVSxnTcn4=
-github.com/spf13/viper v1.6.1/go.mod h1:t3iDnF5Jlj76alVNuyFBk5oUMCvsrkbvZK0WQdfDi5k=
 github.com/spf13/viper v1.6.2 h1:7aKfF+e8/k68gda3LOjo5RxiUqddoFxVq4BKBPrxk5E=
 github.com/spf13/viper v1.6.2/go.mod h1:t3iDnF5Jlj76alVNuyFBk5oUMCvsrkbvZK0WQdfDi5k=
 github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
@@ -191,9 +188,10 @@ github.com/ugorji/go v1.1.4/go.mod h1:uQMGLiO92mf5W77hV/PUCpI3pbzQx3CRekS0kk+RGr
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
 github.com/vbauerster/mpb v3.4.0+incompatible/go.mod h1:zAHG26FUhVKETRu+MWqYXcI70POlC6N8up9p1dID7SU=
 github.com/vbauerster/mpb/v4 v4.11.2/go.mod h1:jIuIRCltGJUnm6DCyPVkwjlLUk4nHTH+m4eD14CdFF0=
-github.com/whiteblock/amqp v1.0.5/go.mod h1:jtXr905sYSk+gICmqE21pnT4Js25fYEshBMytwOjLts=
-github.com/whiteblock/definition v0.0.0-20200117213848-8847fd3f3c42 h1:/bRq6NwndHLaKj4pndX7W9/2qMc/j+QQUUmaEaOtto0=
-github.com/whiteblock/definition v0.0.0-20200117213848-8847fd3f3c42/go.mod h1:+ERVIhTtgvt5h4G1+8PtLI+g1988P9ycW9HPmcjat78=
+github.com/whiteblock/definition v0.0.0-20200120145830-03708b9d504d h1:exzPgE2KyqtTgMyTgu9SNPzxJRfVL25QwPy+/hoO8/g=
+github.com/whiteblock/definition v0.0.0-20200120145830-03708b9d504d/go.mod h1:+ERVIhTtgvt5h4G1+8PtLI+g1988P9ycW9HPmcjat78=
+github.com/whiteblock/definition v0.0.0-20200120150310-fb21f989dcc9 h1:zaCi4lqkq9k5dabhY8z2HRxGuuuTr1TNc7Q5gJRkSBo=
+github.com/whiteblock/definition v0.0.0-20200120150310-fb21f989dcc9/go.mod h1:+ERVIhTtgvt5h4G1+8PtLI+g1988P9ycW9HPmcjat78=
 github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe/go.mod h1:DiL8S7+O7oZaiYO5wOEHtZ9+0jIjA/hawX2HrVwHutM=
 github.com/whiteblock/go.uuid v1.2.1 h1:prUjjtzVGGZ0A1Jt3yGxFIdTD69u9FGwaU3e73xqFeI=
 github.com/whiteblock/go.uuid v1.2.1/go.mod h1:J0Y9qymnDEwrdEFeIzpsul8Ye1jzfPoW3JDJVx8hdGM=

@@ -11,7 +11,6 @@ require (
 	github.com/joonix/log v0.0.0-20190524090622-13fe31bbdd7a
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/mattn/go-isatty v0.0.11
-	github.com/mattn/go-sqlite3 v2.0.2+incompatible // indirect
 	github.com/nmrshll/oauth2-noserver v0.0.0-20190221200101-9bf017bef639
 	github.com/nmrshll/rndm-go v0.0.0-20170430161430-8da3024e53de
 	github.com/palantir/stacktrace v0.0.0-20161112013806-78658fd2d177
@@ -26,9 +25,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.6.2
-	github.com/whiteblock/amqp v1.0.5
-	github.com/whiteblock/definition v0.0.0-20200117213848-8847fd3f3c42
-	github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
+	github.com/whiteblock/definition v0.0.0-20200120150310-fb21f989dcc9
 	github.com/whiteblock/mpb v1.0.0
 	github.com/whiteblock/utility v0.0.0-20200117195942-fda69310d06f
 	github.com/xeipuuv/gojsonschema v1.2.0
