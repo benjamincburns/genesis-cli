@@ -26,6 +26,7 @@ var orgCmd = &cobra.Command{
 			}
 
 			util.Print(org.Name)
+			return
 		}
 
 		orgInfo, err := organization.GetOrgInfo(args[0])
