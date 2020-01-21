@@ -19,7 +19,6 @@ import (
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	log "github.com/sirupsen/logrus"
-	//"github.com/whiteblock/definition/schema"
 	"github.com/whiteblock/utility/common"
 )
 
