@@ -192,6 +192,8 @@ github.com/whiteblock/definition v0.0.0-20200120145830-03708b9d504d h1:exzPgE2Ky
 github.com/whiteblock/definition v0.0.0-20200120145830-03708b9d504d/go.mod h1:+ERVIhTtgvt5h4G1+8PtLI+g1988P9ycW9HPmcjat78=
 github.com/whiteblock/definition v0.0.0-20200120150310-fb21f989dcc9 h1:zaCi4lqkq9k5dabhY8z2HRxGuuuTr1TNc7Q5gJRkSBo=
 github.com/whiteblock/definition v0.0.0-20200120150310-fb21f989dcc9/go.mod h1:+ERVIhTtgvt5h4G1+8PtLI+g1988P9ycW9HPmcjat78=
+github.com/whiteblock/definition v0.0.0-20200121014940-6473a44ad82a h1:eVZk1/39T2bylgnhoW1wIsGNpRFiosdiwjG58Gx4Ax8=
+github.com/whiteblock/definition v0.0.0-20200121014940-6473a44ad82a/go.mod h1:+ERVIhTtgvt5h4G1+8PtLI+g1988P9ycW9HPmcjat78=
 github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe/go.mod h1:DiL8S7+O7oZaiYO5wOEHtZ9+0jIjA/hawX2HrVwHutM=
 github.com/whiteblock/go.uuid v1.2.1 h1:prUjjtzVGGZ0A1Jt3yGxFIdTD69u9FGwaU3e73xqFeI=
 github.com/whiteblock/go.uuid v1.2.1/go.mod h1:J0Y9qymnDEwrdEFeIzpsul8Ye1jzfPoW3JDJVx8hdGM=
@@ -262,6 +264,8 @@ golang.org/x/sys v0.0.0-20191026070338-33540a1f6037/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20191113165036-4c7a9d0fe056/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200117145432-59e60aa80a0c h1:gUYreENmqtjZb2brVfUas1sC6UivSY8XwKwPo8tloLs=
 golang.org/x/sys v0.0.0-20200117145432-59e60aa80a0c/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20200120151820-655fe14d7479 h1:LhLiKguPgZL+Tglay4GhVtfF0kb8cvOJ0dHTCBO8YNI=
+golang.org/x/sys v0.0.0-20200120151820-655fe14d7479/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.2 h1:tW2bmiBqwgJj/UpqtC8EpXEZVYOwU0yG4iWbprSVAcs=
