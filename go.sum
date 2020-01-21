@@ -44,6 +44,8 @@ github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV9I=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
+github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a h1:yU/FENpkHYISWsQrbr3pcZOBj0EuRjPzNc1+dTCLu44=
+github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a/go.mod h1:AEugkNu3BjBxyz958nJ5holD9PRjta6iprcoUauDbU4=
 github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-kit/kit v0.8.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
@@ -198,6 +200,8 @@ github.com/whiteblock/definition v0.0.0-20200121173938-9c17ef6924d9 h1:vUuJfSz3y
 github.com/whiteblock/definition v0.0.0-20200121173938-9c17ef6924d9/go.mod h1:+ERVIhTtgvt5h4G1+8PtLI+g1988P9ycW9HPmcjat78=
 github.com/whiteblock/definition v0.0.0-20200121180641-76e7573cb584 h1:goYOc2alzXDLkKE86TDJgHp6b+hfxN3Yb2hZyZwKVkQ=
 github.com/whiteblock/definition v0.0.0-20200121180641-76e7573cb584/go.mod h1:+ERVIhTtgvt5h4G1+8PtLI+g1988P9ycW9HPmcjat78=
+github.com/whiteblock/definition v0.0.0-20200121182504-1020ef25f197 h1:g/NbAHoIifN4M9fYwcY3AvBMtsv49TrezN2P9uMDqYk=
+github.com/whiteblock/definition v0.0.0-20200121182504-1020ef25f197/go.mod h1:+ZpDJ0daxNRAbrvMbI0bDieXLoTcc4TRZxi2pboO3dE=
 github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe/go.mod h1:DiL8S7+O7oZaiYO5wOEHtZ9+0jIjA/hawX2HrVwHutM=
 github.com/whiteblock/go.uuid v1.2.1 h1:prUjjtzVGGZ0A1Jt3yGxFIdTD69u9FGwaU3e73xqFeI=
 github.com/whiteblock/go.uuid v1.2.1/go.mod h1:J0Y9qymnDEwrdEFeIzpsul8Ye1jzfPoW3JDJVx8hdGM=
