@@ -55,6 +55,10 @@ func PrintS(depth int, v interface{}) {
 	for i := 0; i < depth; i++ {
 		indent += indentStr
 	}
+	if strger, ok := v.(fmt.Stringer); ok {
+		pprintln(indent + strger.String())
+		return
+	}
 	rv := reflect.ValueOf(v)
 	t := rv.Type()
 	if t.Kind() == reflect.Ptr && !rv.IsNil() {
@@ -101,7 +105,11 @@ func PrintKV(depth int, k interface{}, v interface{}) {
 	for i := 0; i < depth; i++ {
 		indent += indentStr
 	}
-
+	if strger, ok := v.(fmt.Stringer); ok {
+		pprint(indent+fmt.Sprint(k)+": ", color.FgYellow)
+		pprintln(indent + strger.String())
+		return
+	}
 	rv := reflect.ValueOf(v)
 	t := rv.Type()
 	if t.Kind() == reflect.Ptr && !rv.IsNil() {
