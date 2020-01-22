@@ -56,12 +56,12 @@ var runCmd = &cobra.Command{
 				dns = append(dns, strings.ToLower(randomdata.SillyName()))
 			}
 		}
-		normalizedSpec, defID, err := service.UploadFiles(args[0], data, org)
+		_, defID, err := service.UploadFiles(args[0], data, org)
 		if err != nil {
 			util.ErrorFatal(err)
 		}
 
-		testIDs, err := service.RunTest(normalizedSpec, org, defID, dns)
+		testIDs, err := service.RunTest(map[string]interface{}{}, org, defID, dns)
 		if err != nil {
 			util.ErrorFatal(err)
 		}

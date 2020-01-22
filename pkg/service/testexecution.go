@@ -154,7 +154,7 @@ func UploadFiles(filePath string, specData []byte, orgNameOrId string) ([]byte, 
 	return newSpec, fmt.Sprint(result["definitionID"]), nil
 }
 
-func RunTest(definition []byte, orgNameOrId string, definitionID string, dns []string) (out []string, err error) {
+func RunTest(meta map[string]interface{}, orgNameOrId string, definitionID string, dns []string) (out []string, err error) {
 	orgID, err := getOrgID(orgNameOrId)
 	if err != nil {
 		return
@@ -165,9 +165,14 @@ func RunTest(definition []byte, orgNameOrId string, definitionID string, dns []s
 		return
 	}
 
+	data, err := json.Marshal(meta)
+	if err != nil {
+		return
+	}
+
 	dest := conf.APIEndpoint() + fmt.Sprintf(conf.RunTestURI, orgID, definitionID)
 	log.WithField("url", dest).Debug("running test")
-	req, err := http.NewRequest("POST", dest, bytes.NewReader(definition))
+	req, err := http.NewRequest("POST", dest, bytes.NewReader(data))
 	if err != nil {
 		return nil, err
 	}
