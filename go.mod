@@ -25,7 +25,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.6.2
-	github.com/whiteblock/definition v0.0.0-20200122211204-9d75a9c46b4f
+	github.com/whiteblock/definition v0.0.0-20200124000745-69a9a44334bc
 	github.com/whiteblock/mpb v1.0.0
 	github.com/whiteblock/utility v0.0.0-20200121024402-a5fdb8d0292d
 	github.com/xeipuuv/gojsonschema v1.2.0
