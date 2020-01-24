@@ -26,12 +26,7 @@ var runCmd = &cobra.Command{
 		}
 
 		data := util.MustReadFile(args[0])
-		isCompose, err := cmd.Flags().GetBool("docker-compose")
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-
-		if isCompose {
+		if util.GetBoolFlagValue(cmd, "docker-compose") {
 			data = internal.MustSchemaYAMLFromCompose(data)
 		}
 
@@ -41,15 +36,9 @@ var runCmd = &cobra.Command{
 		}
 
 		var dns []string
-		dnsDisabled, err := cmd.Flags().GetBool("no-dns")
-		if err != nil {
-			util.ErrorFatal(err)
-		}
+		dnsDisabled := util.GetBoolFlagValue(cmd, "no-dns")
 
-		awaitDisabled, err := cmd.Flags().GetBool("no-await")
-		if err != nil {
-			util.ErrorFatal(err)
-		}
+		awaitDisabled := util.GetBoolFlagValue(cmd, "no-await")
 
 		if !dnsDisabled {
 			for range tests {
@@ -61,7 +50,9 @@ var runCmd = &cobra.Command{
 			util.ErrorFatal(err)
 		}
 
-		testIDs, err := service.RunTest(map[string]interface{}{}, org, defID, dns)
+		testIDs, err := service.RunTest(map[string]interface{}{
+			"debugMode": util.GetBoolFlagValue(cmd, "debug-mode"),
+		}, org, defID, dns)
 		if err != nil {
 			util.ErrorFatal(err)
 		}
@@ -119,5 +110,6 @@ func init() {
 	runCmd.Flags().BoolP("no-dns", "d", false, "disable assigning a DNS name to your deployment")
 	runCmd.Flags().BoolP("docker-compose", "c", false, "deploy from a docker compose file")
 	runCmd.Flags().BoolP("no-await", "a", false, "don't wait for completion, exit immediately after sending test")
+	runCmd.Flags().Bool("debug-mode", false, "wait for up to two hours before teardown on error")
 	rootCmd.AddCommand(runCmd)
 }
