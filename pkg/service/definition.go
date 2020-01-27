@@ -13,8 +13,8 @@ import (
 
 func init() {
 	v := viper.New()
-	v.Set("verbosity", "FATAL")
-	definition.ConfigureGlobalFromViper(v) //shush library
+	v.Set("verbosity", conf.Verbosity)
+	definition.ConfigureGlobalFromViper(v)
 }
 
 func parseDef(data []byte) (definition.Definition, error) {

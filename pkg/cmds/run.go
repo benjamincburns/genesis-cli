@@ -9,6 +9,7 @@ import (
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	"github.com/Pallinder/go-randomdata"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -32,6 +33,7 @@ var runCmd = &cobra.Command{
 
 		tests, def, err := service.ProcessDefinitionFromBytes(data)
 		if err != nil {
+			log.WithField("error", err).Error("failed to process definition")
 			util.ErrorFatal(err)
 		}
 
@@ -47,6 +49,7 @@ var runCmd = &cobra.Command{
 		}
 		_, defID, err := service.UploadFiles(args[0], data, org)
 		if err != nil {
+			log.WithField("error", err).Error("failed to upload files")
 			util.ErrorFatal(err)
 		}
 

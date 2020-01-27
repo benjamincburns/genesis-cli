@@ -36,8 +36,12 @@ func getSchema() ([]byte, error) {
 		return schemaFromCache()
 	}
 	data, err := ioutil.ReadAll(resp.Body)
-	if err == nil {
-		log.WithField("error", storeSchema(data)).Debug("failed to store schema locally")
+	if err != nil {
+		log.WithField("error", err).Debug("failed to store schema locally")
+	}
+	err = storeSchema(data)
+	if err != nil {
+		log.WithField("error", err).Debug("failed to store schema locally")
 	}
 	return data, err
 }

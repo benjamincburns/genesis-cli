@@ -167,6 +167,7 @@ func RunTest(meta map[string]interface{}, orgNameOrId string, definitionID strin
 
 	data, err := json.Marshal(meta)
 	if err != nil {
+		log.WithField("error", err).Trace("failed to marshal meta")
 		return
 	}
 
@@ -184,11 +185,23 @@ func RunTest(meta map[string]interface{}, orgNameOrId string, definitionID strin
 		return nil, err
 	}
 	defer resp.Body.Close()
+	data, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
 	if resp.StatusCode != 200 {
-		data, _ := ioutil.ReadAll(resp.Body)
+
 		return nil, fmt.Errorf(string(data))
 	}
-	return out, json.NewDecoder(resp.Body).Decode(&out)
+	err = json.Unmarshal(data, &out)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"error": err,
+			"data":  string(data)}).Trace("failed to unmarshal response")
+		return
+	}
+	return out, nil
 }
 
 func StopTest(id string, isDef bool) error {
