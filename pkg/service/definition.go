@@ -4,11 +4,10 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/spf13/viper"
 	"github.com/whiteblock/definition"
 	"github.com/whiteblock/definition/command"
 	"github.com/whiteblock/definition/pkg/entity"
-
-	"github.com/spf13/viper"
 )
 
 func init() {

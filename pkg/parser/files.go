@@ -1,9 +1,12 @@
 package parser
 
 import (
-	"github.com/whiteblock/definition/schema"
+	"fmt"
+	"strings"
 
-	"gopkg.in/yaml.v2"
+	"github.com/whiteblock/definition"
+	"github.com/whiteblock/definition/pkg/search"
+	"github.com/whiteblock/definition/schema"
 )
 
 func process(inputFiles []schema.InputFile) []string {
@@ -17,15 +20,25 @@ func process(inputFiles []schema.InputFile) []string {
 func ExtractFiles(specData []byte) ([]string, error) {
 
 	var root schema.RootSchema
-	err := yaml.Unmarshal(specData, &root)
+	def, err := definition.SchemaANY(specData)
 	if err != nil {
 		return nil, err
 	}
+
+	root = def.Spec
+
+	max := search.FindServiceMaxCounts(def.Spec)
 	files := map[string]bool{}
 	for _, service := range root.Services {
 		extracted := process(service.InputFiles)
 		for _, fileName := range extracted {
-			files[fileName] = true
+			if !strings.Contains(fileName, "$_n") {
+				files[fileName] = true
+				continue
+			}
+			for i := int64(0); i < max[service.Name]; i++ {
+				files[strings.Replace(fileName, "$_n", fmt.Sprint(i), -1)] = true
+			}
 		}
 	}
 

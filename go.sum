@@ -206,6 +206,14 @@ github.com/whiteblock/definition v0.0.0-20200122211204-9d75a9c46b4f h1:TZ4Iq5CKZ
 github.com/whiteblock/definition v0.0.0-20200122211204-9d75a9c46b4f/go.mod h1:+ZpDJ0daxNRAbrvMbI0bDieXLoTcc4TRZxi2pboO3dE=
 github.com/whiteblock/definition v0.0.0-20200124000745-69a9a44334bc h1:GOfoEtTs8eN7ysrhTntlyq2KeoXkU8TqGFsKyk9Ihus=
 github.com/whiteblock/definition v0.0.0-20200124000745-69a9a44334bc/go.mod h1:+ZpDJ0daxNRAbrvMbI0bDieXLoTcc4TRZxi2pboO3dE=
+github.com/whiteblock/definition v0.0.0-20200124200435-31e200d660e7 h1:IIqtcze8sTSJxyv+w9Flbuun+nMZNin9g6K0YKcIeQw=
+github.com/whiteblock/definition v0.0.0-20200124200435-31e200d660e7/go.mod h1:+ZpDJ0daxNRAbrvMbI0bDieXLoTcc4TRZxi2pboO3dE=
+github.com/whiteblock/definition v0.0.0-20200127180226-5e50288b114f h1:Z/SIDiLmhFiZeHk7x8g5XYWUDLNXIsUH6ayP/1YnjDE=
+github.com/whiteblock/definition v0.0.0-20200127180226-5e50288b114f/go.mod h1:M4u75DcNR3z4rII9mll896xquZD3JxzuG/dFZuQac/0=
+github.com/whiteblock/definition v0.0.0-20200127183129-9438973e100f h1:gu6ggO2+lKkurdSjFMk8a0vKUsq5OJBI+PpEoEEblVQ=
+github.com/whiteblock/definition v0.0.0-20200127183129-9438973e100f/go.mod h1:M4u75DcNR3z4rII9mll896xquZD3JxzuG/dFZuQac/0=
+github.com/whiteblock/definition v0.0.0-20200127185401-8037d01b44de h1:+t6BtpvoElpcIXHFwxUdUyzhIQTtrSHb+Uo+lqYFW1E=
+github.com/whiteblock/definition v0.0.0-20200127185401-8037d01b44de/go.mod h1:M4u75DcNR3z4rII9mll896xquZD3JxzuG/dFZuQac/0=
 github.com/whiteblock/go-prettyjson v0.0.0-20180920040306-f579f869bbfe/go.mod h1:DiL8S7+O7oZaiYO5wOEHtZ9+0jIjA/hawX2HrVwHutM=
 github.com/whiteblock/go.uuid v1.2.1 h1:prUjjtzVGGZ0A1Jt3yGxFIdTD69u9FGwaU3e73xqFeI=
 github.com/whiteblock/go.uuid v1.2.1/go.mod h1:J0Y9qymnDEwrdEFeIzpsul8Ye1jzfPoW3JDJVx8hdGM=
@@ -216,6 +224,8 @@ github.com/whiteblock/utility v0.0.0-20200117195942-fda69310d06f h1:vw9Ag3SwQd3+
 github.com/whiteblock/utility v0.0.0-20200117195942-fda69310d06f/go.mod h1:TIV6tbdP+rc4xf+5JpHPzo4lfouF82OMdXIQHuvkDxQ=
 github.com/whiteblock/utility v0.0.0-20200121024402-a5fdb8d0292d h1:UqqsXxo/vIyGasqqZlR8MsCGH5VfM/fLYB7KKF2hNDw=
 github.com/whiteblock/utility v0.0.0-20200121024402-a5fdb8d0292d/go.mod h1:TIV6tbdP+rc4xf+5JpHPzo4lfouF82OMdXIQHuvkDxQ=
+github.com/whiteblock/utility v0.0.0-20200127171929-dfacb2899b30 h1:zOogYgg5iRjNIA57bZ5+5DtJpG8qXGqbPsqB20wzm8o=
+github.com/whiteblock/utility v0.0.0-20200127171929-dfacb2899b30/go.mod h1:TIV6tbdP+rc4xf+5JpHPzo4lfouF82OMdXIQHuvkDxQ=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f h1:J9EGpcZtP0E/raorCMxlFGSTBrsSlaDGf3jU/qvAE2c=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
 github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 h1:EzJWgHovont7NscjpAxXsDA8S8BMYve8Y5+7cuRE7R0=
@@ -284,6 +294,8 @@ golang.org/x/sys v0.0.0-20200121082415-34d275377bf9 h1:N19i1HjUnR7TF7rMt8O4p3dLv
 golang.org/x/sys v0.0.0-20200121082415-34d275377bf9/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200122134326-e047566fdf82 h1:ywK/j/KkyTHcdyYSZNXGjMwgmDSfjglYZ3vStQ/gSCU=
 golang.org/x/sys v0.0.0-20200122134326-e047566fdf82/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20200124204421-9fbb57f87de9 h1:1/DFK4b7JH8DmkqhUk48onnSfrPzImPoVxuomtbT2nk=
+golang.org/x/sys v0.0.0-20200124204421-9fbb57f87de9/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.2 h1:tW2bmiBqwgJj/UpqtC8EpXEZVYOwU0yG4iWbprSVAcs=
@@ -314,6 +326,8 @@ google.golang.org/genproto v0.0.0-20200117163144-32f20d992d24 h1:wDju+RU97qa0FZT
 google.golang.org/genproto v0.0.0-20200117163144-32f20d992d24/go.mod h1:n3cpQtvxv34hfy77yVDNjmbRyujviMdxYliBSkLhpCc=
 google.golang.org/genproto v0.0.0-20200122232147-0452cf42e150 h1:VPpdpQkGvFicX9yo4G5oxZPi9ALBnEOZblPSa/Wa2m4=
 google.golang.org/genproto v0.0.0-20200122232147-0452cf42e150/go.mod h1:n3cpQtvxv34hfy77yVDNjmbRyujviMdxYliBSkLhpCc=
+google.golang.org/genproto v0.0.0-20200127141224-2548664c049f h1:6m4sDPwjPFCCcUjWOCBU3wa9ncagDkFn7czwM0fUAtc=
+google.golang.org/genproto v0.0.0-20200127141224-2548664c049f/go.mod h1:n3cpQtvxv34hfy77yVDNjmbRyujviMdxYliBSkLhpCc=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.20.1/go.mod h1:10oTOabMzJvdu6/UiuZezV6QK5dSlG84ov/aaiqXj38=
 google.golang.org/grpc v1.21.0/go.mod h1:oYelfM1adQP15Ek0mdvEgi9Df8B9CZIaU1084ijfRaM=
