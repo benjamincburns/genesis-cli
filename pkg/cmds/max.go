@@ -11,7 +11,7 @@ import (
 var maxCmd = &cobra.Command{
 	Use:   "max <file>",
 	Short: "Get the whiteblock provided environment vars for a test spec",
-	Long:  `Get the max count of each sevice`,
+	Long:  `Get the max count of each service`,
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
 		def, err := service.DefinitionFromFile(args[0])
