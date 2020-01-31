@@ -3,7 +3,10 @@ module github.com/whiteblock/genesis-cli
 go 1.13
 
 require (
+	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
 	github.com/Pallinder/go-randomdata v1.2.0
+	github.com/docker/cli v0.0.0-20200130152716-5d0cf8839492
+	github.com/docker/docker v1.4.2-0.20191106232431-31abc6c089eb
 	github.com/dspinhirne/netaddr-go v0.0.0-20200114144454-1f4c8303963f // indirect
 	github.com/fatih/color v1.7.0
 	github.com/ghodss/yaml v1.0.0
@@ -27,7 +30,7 @@ require (
 	github.com/spf13/viper v1.6.2
 	github.com/whiteblock/definition v0.0.0-20200127185401-8037d01b44de
 	github.com/whiteblock/mpb v1.0.0
-	github.com/whiteblock/utility v0.0.0-20200127171929-dfacb2899b30
+	github.com/whiteblock/utility v0.0.0-20200131164602-0eb6fea33e9c
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
 	golang.org/x/sys v0.0.0-20200124204421-9fbb57f87de9 // indirect

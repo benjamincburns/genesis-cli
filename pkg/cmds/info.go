@@ -18,11 +18,7 @@ var infoCmd = &cobra.Command{
 		if err != nil {
 			util.ErrorFatal(err)
 		}
-		showSpec, err := cmd.Flags().GetBool("show-spec")
-		if err != nil {
-			util.ErrorFatal(err)
-		}
-		if !showSpec {
+		if !util.GetBoolFlagValue(cmd, "show-spec") {
 			res.SpecFile = ""
 		}
 		util.PrintS(0, res)

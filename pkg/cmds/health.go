@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/whiteblock/genesis-cli/pkg/auth"
+	"github.com/whiteblock/genesis-cli/pkg/config"
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	"github.com/spf13/cobra"
@@ -43,6 +44,7 @@ var healthCmd = &cobra.Command{
 		util.CheckArguments(cmd, args, 0, 0)
 		health("registrar", "/api/v1/registrar/health")
 		health("filehandler", "/api/v1/files/status")
+		health("container-api", config.ContainerAPI+"/health")
 
 	},
 }
