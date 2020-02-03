@@ -10,16 +10,23 @@ import (
 )
 
 var execCmd = &cobra.Command{
-	Use:   "exec <test> <target> <command>",
+	Use:   "exec <target> <command>",
 	Short: "exec",
 	Long:  `exec`,
 	Run: func(cmd *cobra.Command, args []string) {
-		util.CheckArguments(cmd, args, 3, util.NoMaxArgs)
-
+		util.CheckArguments(cmd, args, 2, util.NoMaxArgs)
+		testID := util.GetStringFlagValue(cmd, "test-id")
+		if len(testID) == 0 {
+			test, err := service.GetMostRecentTest("")
+			if err != nil {
+				util.ErrorFatal(err)
+			}
+			testID = test.ID
+		}
 		info, err := service.PrepareExec(common.Exec{
-			Test:        args[0],
-			Target:      args[1],
-			Command:     args[2:],
+			Test:        testID,
+			Target:      args[0],
+			Command:     args[1:],
 			Privileged:  util.GetBoolFlagValue(cmd, "privileged"),
 			Interactive: util.GetBoolFlagValue(cmd, "interactive"),
 			TTY:         util.GetBoolFlagValue(cmd, "tty"),
@@ -51,5 +58,6 @@ func init() {
 	execCmd.Flags().BoolP("tty", "t", false, "")
 	execCmd.Flags().BoolP("detach", "d", false, "")
 	execCmd.Flags().BoolP("privileged", "p", false, "")
+	execCmd.Flags().String("test-id", "", "get from a specify test")
 	rootCmd.AddCommand(execCmd)
 }

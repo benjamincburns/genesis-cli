@@ -93,8 +93,8 @@ func PrintS(depth int, v interface{}) {
 		}
 		field := t.Field(i)
 		name := field.Name
-		if field.Tag.Get("genesis") != "" {
-			name = field.Tag.Get("genesis")
+		if field.Tag.Get("cli") != "" {
+			name = field.Tag.Get("cli")
 		}
 		PrintKV(depth, name, rv.Field(i).Interface())
 	}

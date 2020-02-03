@@ -161,7 +161,7 @@ func Attach(cmd common.ExecAttach) error {
 	}
 	if resp.StatusCode != 200 {
 		data, _ = ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("got back status %d: %s", resp.StatusCode, string(data))
+		return fmt.Errorf("got back status %d from %s: %s", resp.StatusCode, conf.AttachExecURL(cmd.Test), string(data))
 	} else {
 		log.Info("got back a 200 status code, attaching to the connection")
 	}
