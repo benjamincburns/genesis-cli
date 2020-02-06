@@ -59,5 +59,8 @@ func Get(url string, out interface{}) error {
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("got back status %d: %s", resp.StatusCode, string(data))
 	}
+	if out == nil {
+		return nil
+	}
 	return json.Unmarshal(data, out)
 }

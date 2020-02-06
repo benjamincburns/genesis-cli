@@ -12,8 +12,8 @@ import (
 
 var roleCmd = &cobra.Command{
 	Use:     "role <org>",
-	Short:   "returns your identity",
-	Long:    `returns your identity`,
+	Short:   "returns your role in the org",
+	Long:    `returns your role in the org`,
 	Aliases: []string{},
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 1, 1)
@@ -31,6 +31,35 @@ var roleCmd = &cobra.Command{
 	},
 }
 
+var roleStatusCmd = &cobra.Command{
+	Use:     "role-status <org>",
+	Short:   "returns your role in the org",
+	Long:    `returns your role in the org`,
+	Aliases: []string{},
+	Hidden:  true,
+	Run: func(cmd *cobra.Command, args []string) {
+		util.CheckArguments(cmd, args, 1, 1)
+		orgInfo, err := organization.GetOrgInfo(args[0])
+		if err != nil {
+			util.ErrorFatal(err)
+		}
+		err = auth.Get(conf.APIEndpoint()+fmt.Sprintf(conf.CheckMemberURI, orgInfo.ID), nil)
+		if err != nil {
+			util.Errorf("Org Membership... Failed")
+		} else {
+			util.Print("Org Membership... OK")
+		}
+
+		err = auth.Get(conf.APIEndpoint()+fmt.Sprintf(conf.CheckAdminURI, orgInfo.ID), nil)
+		if err != nil {
+			util.Errorf("Org Admin... Failed")
+		} else {
+			util.Print("Org Admin... OK")
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(roleCmd)
+	rootCmd.AddCommand(roleStatusCmd)
 }

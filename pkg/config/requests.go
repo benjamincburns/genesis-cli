@@ -23,6 +23,8 @@ type URI struct {
 	ListContainersURI  string `mapstructure:"-"`
 	GetSelfURI         string `mapstructure:"-"`
 	GetOrgRoleURI      string `mapstructure:"-"`
+	CheckAdminURI      string `mapstructure:"-"`
+	CheckMemberURI     string `mapstructure:"-"`
 }
 
 var (
@@ -44,9 +46,11 @@ var DefaultURI = URI{
 	CreateTestURI: TestExecutionAPI + "/run/%s",     //org
 	TestInfoURI:   TestExecutionAPI + "/info/tests/%s",
 
-	GetOrgURI:     RegistrarAPI + "/organization/%s",
-	GetSelfURI:    RegistrarAPI + "/user",                 //GET
-	GetOrgRoleURI: RegistrarAPI + "/organization/%s/user", //GET
+	GetOrgURI:      RegistrarAPI + "/organization/%s",
+	GetSelfURI:     RegistrarAPI + "/user",                 //GET
+	GetOrgRoleURI:  RegistrarAPI + "/organization/%s/user", //GET
+	CheckAdminURI:  RegistrarAPI + "/check/iam/%s",         //GET
+	CheckMemberURI: RegistrarAPI + "/check/member/%s",      //GET
 
 	MultipathUploadURI: FilesAPI + "/organizations/%s/definitions",
 
