@@ -21,6 +21,8 @@ type URI struct {
 	AttachExecURI      string `mapstructure:"-"`
 	RunDetachURI       string `mapstructure:"-"`
 	ListContainersURI  string `mapstructure:"-"`
+	GetSelfURI         string `mapstructure:"-"`
+	GetOrgRoleURI      string `mapstructure:"-"`
 }
 
 var (
@@ -42,7 +44,9 @@ var DefaultURI = URI{
 	CreateTestURI: TestExecutionAPI + "/run/%s",     //org
 	TestInfoURI:   TestExecutionAPI + "/info/tests/%s",
 
-	GetOrgURI: RegistrarAPI + "/organization/%s",
+	GetOrgURI:     RegistrarAPI + "/organization/%s",
+	GetSelfURI:    RegistrarAPI + "/user",                 //GET
+	GetOrgRoleURI: RegistrarAPI + "/organization/%s/user", //GET
 
 	MultipathUploadURI: FilesAPI + "/organizations/%s/definitions",
 
