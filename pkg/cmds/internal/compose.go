@@ -8,6 +8,7 @@ import (
 	"github.com/whiteblock/genesis-cli/pkg/util"
 
 	yamlC "github.com/ghodss/yaml"
+	"github.com/whiteblock/definition/command"
 	"github.com/whiteblock/definition/schema"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -185,9 +186,11 @@ func SchemaFromCompose(data []byte) (schema.RootSchema, error) {
 			System:      phases[0].System,
 			Description: "This was auto-generated from a docker compose file",
 		}
-		test.Timeout = test.Timeout.SetInfinite()
 		if len(phases) > 1 {
 			test.Phases = phases[1:]
+			test.Phases[len(test.Phases)-1].Duration = command.InfiniteDuration
+		} else {
+			test.WaitFor = command.InfiniteDuration
 		}
 		root.Tests = []schema.Test{test}
 	}

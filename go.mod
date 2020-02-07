@@ -28,13 +28,13 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.6.2
-	github.com/whiteblock/definition v0.0.0-20200127185401-8037d01b44de
+	github.com/whiteblock/definition v0.0.0-20200206225219-fc2e3ae195dc
 	github.com/whiteblock/mpb v1.0.0
-	github.com/whiteblock/utility v0.0.0-20200131164602-0eb6fea33e9c
+	github.com/whiteblock/utility v0.0.0-20200206152157-888bde8afec0
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
-	golang.org/x/sys v0.0.0-20200124204421-9fbb57f87de9 // indirect
-	google.golang.org/genproto v0.0.0-20200127141224-2548664c049f // indirect
-	gopkg.in/ini.v1 v1.51.1 // indirect
+	golang.org/x/sys v0.0.0-20200202164722-d101bd2416d5 // indirect
+	google.golang.org/genproto v0.0.0-20200205142000-a86caf926a67 // indirect
+	gopkg.in/ini.v1 v1.52.0 // indirect
 	gopkg.in/yaml.v2 v2.2.8
 )

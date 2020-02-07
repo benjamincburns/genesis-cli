@@ -25,6 +25,7 @@ type URI struct {
 	GetOrgRoleURI      string `mapstructure:"-"`
 	CheckAdminURI      string `mapstructure:"-"`
 	CheckMemberURI     string `mapstructure:"-"`
+	LimitsURI          string `mapstructure:"-"`
 }
 
 var (
@@ -34,7 +35,10 @@ var (
 	FilesAPI         = APIBase + "/files"
 	LogsAPI          = APIBase + "/logs"
 	ContainerAPI     = APIBase + "/container"
+	BillingAPI       = APIBase + "/billing"
 )
+
+const Product = "prod_GgJOE3a7Adfopv"
 
 var DefaultURI = URI{
 	StopTestURI:   TestExecutionAPI + "/stop/test/%s",       //testid
@@ -60,6 +64,8 @@ var DefaultURI = URI{
 	AttachExecURI:     ContainerAPI + "/%s/exec/attach", //UPGRADE {testid}
 	RunDetachURI:      ContainerAPI + "/%s/exec/run",    //POST {testid}
 	ListContainersURI: ContainerAPI + "/%s/list",        //GET {testid}
+
+	LimitsURI: BillingAPI + "/limits/%s/%s", //GET {org, product}
 }
 
 func (uri URI) PrepareExecURL(tid string) string {
