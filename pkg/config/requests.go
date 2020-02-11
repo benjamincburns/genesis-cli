@@ -26,6 +26,8 @@ type URI struct {
 	CheckAdminURI      string `mapstructure:"-"`
 	CheckMemberURI     string `mapstructure:"-"`
 	LimitsURI          string `mapstructure:"-"`
+	CreateUserURI      string `mapstructure:"-"`
+	BillingHealthURI   string `mapstructure:"-"`
 }
 
 var (
@@ -55,6 +57,7 @@ var DefaultURI = URI{
 	GetOrgRoleURI:  RegistrarAPI + "/organization/%s/user", //GET
 	CheckAdminURI:  RegistrarAPI + "/check/iam/%s",         //GET
 	CheckMemberURI: RegistrarAPI + "/check/member/%s",      //GET
+	CreateUserURI:  RegistrarAPI + "/user",                 //POST
 
 	MultipathUploadURI: FilesAPI + "/organizations/%s/definitions",
 
@@ -65,7 +68,8 @@ var DefaultURI = URI{
 	RunDetachURI:      ContainerAPI + "/%s/exec/run",    //POST {testid}
 	ListContainersURI: ContainerAPI + "/%s/list",        //GET {testid}
 
-	LimitsURI: BillingAPI + "/limits/%s/%s", //GET {org, product}
+	LimitsURI:        BillingAPI + "/limits/%s/%s", //GET {org, product}
+	BillingHealthURI: BillingAPI + "/health",
 }
 
 func (uri URI) PrepareExecURL(tid string) string {
@@ -80,3 +84,6 @@ func (uri URI) RunDetachURL(tid string) string {
 func (uri URI) ListContainersURL(tid string) string {
 	return conf.APIEndpoint() + fmt.Sprintf(uri.ListContainersURI, tid)
 }
+func (uri URI) GetSelfURL() string       { return conf.APIEndpoint() + uri.GetSelfURI }
+func (uri URI) CreateUserURL() string    { return conf.APIEndpoint() + uri.CreateUserURI }
+func (uri URI) BillingHealthURL() string { return conf.APIEndpoint() + uri.BillingHealthURI }

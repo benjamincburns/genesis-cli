@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"sync"
 
 	"github.com/whiteblock/genesis-cli/pkg/config"
 	"github.com/whiteblock/genesis-cli/pkg/oauth2-noserver"
@@ -17,9 +16,6 @@ import (
 var (
 	conf         = config.NewConfig()
 	globalClient *oauth2ns.AuthorizedClient
-
-	mux     = &sync.Mutex{}
-	oldFlag = false
 )
 
 func GetToken() *oauth2.Token {
@@ -72,23 +68,33 @@ func storeToken(client *oauth2ns.AuthorizedClient) error {
 }
 
 func Login() (*oauth2ns.AuthorizedClient, error) {
-	mux.Lock()
-	oldFlag = true
-	mux.Unlock()
 	client, err := oauth2ns.AuthenticateUser(getAuthConf())
 	if err != nil {
 		return nil, err
 	}
-	return client, storeToken(client)
+	err = storeToken(client)
+	if err != nil {
+		log.WithField("error", err).Error("failed to store token")
+	}
+	// Check that the user exists
+	err = Get(conf.GetSelfURL(), nil)
+	if err == nil {
+		return client, nil
+	}
+	globalClient = client
+	// User does not exist
+	util.Print("Setting up your account...")
+	_, err = Post(conf.CreateUserURL(), []byte(``))
+	if err != nil {
+		util.Errorf("first time setup failed: %s", err.Error())
+	}
+	return client, err
 }
 
 func GetClient() (*oauth2ns.AuthorizedClient, error) {
-	mux.Lock()
-	defer mux.Unlock()
-	if globalClient != nil && !oldFlag {
+	if globalClient != nil {
 		return globalClient, nil
 	}
-	oldFlag = false
 	authConf := getAuthConf()
 
 	var err error
@@ -98,15 +104,10 @@ func GetClient() (*oauth2ns.AuthorizedClient, error) {
 		return globalClient, nil
 	}
 
-	globalClient, err = oauth2ns.AuthenticateUser(authConf)
+	globalClient, err = Login()
 	if err != nil {
 		return nil, err
 	}
-	err = storeToken(globalClient)
-	if err != nil {
-		util.Errorf("couldn't store token: %v", err)
-	}
-
 	return globalClient, nil
 
 }

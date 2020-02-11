@@ -1,6 +1,7 @@
 package cmds
 
 import (
+	"encoding/base64"
 	"fmt"
 	"strings"
 
@@ -60,7 +61,8 @@ var runCmd = &cobra.Command{
 		}
 
 		testIDs, err := service.RunTest(map[string]interface{}{
-			"debugMode": util.GetBoolFlagValue(cmd, "debug-mode"),
+			"debugMode":  util.GetBoolFlagValue(cmd, "debug-mode"),
+			"dockerAuth": base64.StdEncoding.EncodeToString([]byte(util.GetStringFlagValue(cmd, "cred"))),
 		}, org, defID, dns)
 		if err != nil {
 			util.ErrorFatal(err)
@@ -120,6 +122,7 @@ func init() {
 	runCmd.Flags().BoolP("docker-compose", "c", false, "deploy from a docker compose file")
 	runCmd.Flags().BoolP("no-await", "a", false, "don't wait for completion, exit immediately after sending test")
 	runCmd.Flags().Bool("debug-mode", false, "wait for up to two hours before teardown on error")
+	runCmd.Flags().String("cred", "", "provide docker credentials")
 
 	// not part of the api
 	runCmd.Flags().String("first-dns-name", randomdata.SillyName(), "dns name of the first biomeset, random default")

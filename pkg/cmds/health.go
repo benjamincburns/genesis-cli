@@ -2,7 +2,6 @@ package cmds
 
 import (
 	"io/ioutil"
-	"os"
 
 	"github.com/whiteblock/genesis-cli/pkg/auth"
 	"github.com/whiteblock/genesis-cli/pkg/config"
@@ -20,7 +19,7 @@ func health(name, uri string) {
 	resp, err := client.Get(conf.APIEndpoint() + uri)
 	if err != nil {
 		util.Errorf(name+" unhealthy: %s", err.Error())
-		os.Exit(1)
+		return
 	}
 	data, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
@@ -29,7 +28,7 @@ func health(name, uri string) {
 	}
 	if resp.StatusCode != 200 {
 		util.Errorf(name+" unhealthy: %s", string(data))
-		os.Exit(1)
+		return
 	}
 	util.PrintKV(0, name, string(data))
 }
@@ -45,6 +44,7 @@ var healthCmd = &cobra.Command{
 		health("registrar", "/api/v1/registrar/health")
 		health("filehandler", "/api/v1/files/status")
 		health("container-api", config.ContainerAPI+"/health")
+		health("billing", conf.BillingHealthURI)
 
 	},
 }
