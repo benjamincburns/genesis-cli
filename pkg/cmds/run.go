@@ -103,7 +103,7 @@ var runCmd = &cobra.Command{
 				for test, errChan := range channels {
 					err := <-errChan
 					if err != nil {
-						util.Errorf("%s: %s", test, err.Error())
+						util.ErrorFatalf("%s: %s", test, err.Error())
 					}
 				}
 			} else {
