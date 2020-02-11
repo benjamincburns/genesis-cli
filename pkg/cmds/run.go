@@ -39,12 +39,18 @@ var runCmd = &cobra.Command{
 
 		var dns []string
 		dnsDisabled := util.GetBoolFlagValue(cmd, "no-dns")
+		firstDnsName := util.GetStringFlagValue(cmd, "first-dns-name")
 
 		awaitDisabled := util.GetBoolFlagValue(cmd, "no-await")
-
+		dnsName := ""
 		if !dnsDisabled {
-			for range tests {
-				dns = append(dns, strings.ToLower(randomdata.SillyName()))
+			for i := range tests {
+				if i == 0 {
+					dnsName = firstDnsName
+				} else {
+					dnsName = randomdata.SillyName()
+				}
+				dns = append(dns, strings.ToLower(dnsName))
 			}
 		}
 		_, defID, err := service.UploadFiles(args[0], data, org)
@@ -114,5 +120,10 @@ func init() {
 	runCmd.Flags().BoolP("docker-compose", "c", false, "deploy from a docker compose file")
 	runCmd.Flags().BoolP("no-await", "a", false, "don't wait for completion, exit immediately after sending test")
 	runCmd.Flags().Bool("debug-mode", false, "wait for up to two hours before teardown on error")
+
+	// not part of the api
+	runCmd.Flags().String("first-dns-name", randomdata.SillyName(), "dns name of the first biomeset, random default")
+	runCmd.Flags().MarkHidden("first-dns-name")
+
 	rootCmd.AddCommand(runCmd)
 }
