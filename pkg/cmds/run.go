@@ -1,7 +1,6 @@
 package cmds
 
 import (
-	"encoding/base64"
 	"fmt"
 	"strings"
 
@@ -12,6 +11,7 @@ import (
 	"github.com/Pallinder/go-randomdata"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/whiteblock/utility/common"
 )
 
 var runCmd = &cobra.Command{
@@ -59,10 +59,11 @@ var runCmd = &cobra.Command{
 			log.WithField("error", err).Error("failed to upload files")
 			util.ErrorFatal(err)
 		}
-
-		testIDs, err := service.RunTest(map[string]interface{}{
-			"debugMode":  util.GetBoolFlagValue(cmd, "debug-mode"),
-			"dockerAuth": base64.StdEncoding.EncodeToString([]byte(util.GetStringFlagValue(cmd, "cred"))),
+		testIDs, err := service.RunTest(common.TestMeta{
+			DebugMode:      util.GetBoolFlagValue(cmd, "debug-mode"),
+			DockerUsername: util.GetStringFlagValue(cmd, "docker-username"),
+			DockerPassword: util.GetStringFlagValue(cmd, "docker-password"),
+			DockerToken:    util.GetStringFlagValue(cmd, "docker-token"),
 		}, org, defID, dns)
 		if err != nil {
 			util.ErrorFatal(err)
@@ -122,7 +123,9 @@ func init() {
 	runCmd.Flags().BoolP("docker-compose", "c", false, "deploy from a docker compose file")
 	runCmd.Flags().BoolP("no-await", "a", false, "don't wait for completion, exit immediately after sending test")
 	runCmd.Flags().Bool("debug-mode", false, "wait for up to two hours before teardown on error")
-	runCmd.Flags().String("cred", "", "provide docker credentials")
+	runCmd.Flags().StringP("docker-username", "u", "", "provide docker credentials")
+	runCmd.Flags().StringP("docker-password", "p", "", "provide docker credentials")
+	runCmd.Flags().String("docker-token", "", "provide docker credentials")
 
 	// not part of the api
 	runCmd.Flags().String("first-dns-name", randomdata.SillyName(), "dns name of the first biomeset, random default")

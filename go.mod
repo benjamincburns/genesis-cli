@@ -30,7 +30,7 @@ require (
 	github.com/spf13/viper v1.6.2
 	github.com/whiteblock/definition v0.0.0-20200206225219-fc2e3ae195dc
 	github.com/whiteblock/mpb v1.0.0
-	github.com/whiteblock/utility v0.0.0-20200206152157-888bde8afec0
+	github.com/whiteblock/utility v0.0.0-20200212145506-608e9d9268ff
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
 	golang.org/x/sys v0.0.0-20200202164722-d101bd2416d5 // indirect

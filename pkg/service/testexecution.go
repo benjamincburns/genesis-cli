@@ -154,7 +154,7 @@ func UploadFiles(filePath string, specData []byte, orgNameOrId string) ([]byte, 
 	return newSpec, fmt.Sprint(result["definitionID"]), nil
 }
 
-func RunTest(meta map[string]interface{}, orgNameOrId string, definitionID string, dns []string) (out []string, err error) {
+func RunTest(meta common.TestMeta, orgNameOrId string, definitionID string, dns []string) (out []string, err error) {
 	orgID, err := getOrgID(orgNameOrId)
 	if err != nil {
 		return
