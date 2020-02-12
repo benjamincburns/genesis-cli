@@ -32,11 +32,13 @@ func TrackRunStatusNoTTY(id string, total int64) {
 			"steps-percentage": fmt.Sprintf("%.2f%%", (float64(total-int64(res.StepsLeft))/float64(total))*100),
 		}).Info("Progress")
 		if res.StepsLeft == 0 || res.Finished == true {
+			// if the msg is not empty, there is an error
 			if res.Message != "" {
 				logger.WithFields(log.Fields{
 					"test-id": id,
 					"result":  res.Message,
-				}).Info("Result")
+				}).Error("Result")
+				util.ErrorFatal(res.Message)
 			}
 			return
 		}
