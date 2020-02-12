@@ -10,6 +10,7 @@ import (
 	oauth2ns "github.com/whiteblock/genesis-cli/pkg/oauth2-noserver"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -17,9 +18,16 @@ import (
 var conf = config.NewConfig()
 
 type Organization struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Label string `json:"label"`
+	ID          string    `json:"id"`
+	Name        string    `json:"name"`
+	Label       string    `json:"label"`
+	CreatedAt   time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
+	Reserved    bool      `json:"reserved" db:"reserved"`
+	Summary     string    `json:"summary" db:"summary"`
+	StripeID    string    `json:"stripeID" db:"stripe_id"`
+	CTALink     string    `json:"CTALink" db:"cta_link"`
+	Description string    `json:"description" db:"description"`
 }
 
 // Get returns the stored org information if it is given an empty string
