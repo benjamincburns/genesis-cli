@@ -5,30 +5,33 @@ import (
 )
 
 type URI struct {
-	StopTestURI        string `mapstructure:"-"`
-	StopDefURI         string `mapstructure:"-"`
-	RunTestURI         string `mapstructure:"-"`
-	CreateTestURI      string `mapstructure:"-"`
-	ForkURI            string `mapstructure:"-"`
-	TestInfoURI        string `mapstructure:"-"`
-	ExecURI            string `mapstructure:"-"`
-	MultipathUploadURI string `mapstructure:"-"`
-	GetOrgURI          string `mapstructure:"-"`
-	LogsURI            string `mapstructure:"-"`
-	StatusURI          string `mapstructure:"-"`
-	TestsURI           string `mapstructure:"-"`
-	PrepareExecURI     string `mapstructure:"-"`
-	AttachExecURI      string `mapstructure:"-"`
-	RunDetachURI       string `mapstructure:"-"`
-	ListContainersURI  string `mapstructure:"-"`
-	GetSelfURI         string `mapstructure:"-"`
-	GetOrgRoleURI      string `mapstructure:"-"`
-	CheckAdminURI      string `mapstructure:"-"`
-	CheckMemberURI     string `mapstructure:"-"`
-	LimitsURI          string `mapstructure:"-"`
-	CreateUserURI      string `mapstructure:"-"`
-	BillingHealthURI   string `mapstructure:"-"`
-	FeaturedOrgsURI    string `mapstructure:"-"`
+	StopTestURI         string `mapstructure:"-"`
+	StopDefURI          string `mapstructure:"-"`
+	RunTestURI          string `mapstructure:"-"`
+	CreateTestURI       string `mapstructure:"-"`
+	ForkURI             string `mapstructure:"-"`
+	TestInfoURI         string `mapstructure:"-"`
+	ExecURI             string `mapstructure:"-"`
+	MultipathUploadURI  string `mapstructure:"-"`
+	GetOrgURI           string `mapstructure:"-"`
+	LogsURI             string `mapstructure:"-"`
+	StatusURI           string `mapstructure:"-"`
+	TestsURI            string `mapstructure:"-"`
+	PrepareExecURI      string `mapstructure:"-"`
+	AttachExecURI       string `mapstructure:"-"`
+	RunDetachURI        string `mapstructure:"-"`
+	ListContainersURI   string `mapstructure:"-"`
+	GetSelfURI          string `mapstructure:"-"`
+	GetOrgRoleURI       string `mapstructure:"-"`
+	CheckAdminURI       string `mapstructure:"-"`
+	CheckMemberURI      string `mapstructure:"-"`
+	LimitsURI           string `mapstructure:"-"`
+	CreateUserURI       string `mapstructure:"-"`
+	BillingHealthURI    string `mapstructure:"-"`
+	FeaturedOrgsURI     string `mapstructure:"-"`
+	GetOrgProfileURI    string `mapstructure:"-"`
+	UpdateOrgProfileURI string `mapstructure:"-"`
+	CreateOrgProfileURI string `mapstructure:"-"`
 }
 
 var (
@@ -53,13 +56,16 @@ var DefaultURI = URI{
 	CreateTestURI: TestExecutionAPI + "/run/%s",     //org
 	TestInfoURI:   TestExecutionAPI + "/info/tests/%s",
 
-	GetOrgURI:       RegistrarAPI + "/organization/%s",
-	GetSelfURI:      RegistrarAPI + "/user",                 //GET
-	GetOrgRoleURI:   RegistrarAPI + "/organization/%s/user", //GET
-	CheckAdminURI:   RegistrarAPI + "/check/iam/%s",         //GET
-	CheckMemberURI:  RegistrarAPI + "/check/member/%s",      //GET
-	CreateUserURI:   RegistrarAPI + "/user",                 //POST
-	FeaturedOrgsURI: RegistrarAPI + "/featured",
+	GetOrgURI:           RegistrarAPI + "/organization/%s",
+	GetSelfURI:          RegistrarAPI + "/user",                 //GET
+	GetOrgRoleURI:       RegistrarAPI + "/organization/%s/user", //GET
+	CheckAdminURI:       RegistrarAPI + "/check/iam/%s",         //GET
+	CheckMemberURI:      RegistrarAPI + "/check/member/%s",      //GET
+	CreateUserURI:       RegistrarAPI + "/user",                 //POST
+	FeaturedOrgsURI:     RegistrarAPI + "/featured",
+	GetOrgProfileURI:    RegistrarAPI + "/organization/%s/profile", //GET {org}
+	UpdateOrgProfileURI: RegistrarAPI + "/organization/%s/profile", //PUT {org}
+	CreateOrgProfileURI: RegistrarAPI + "/organization/%s/profile", //POST {org}
 
 	MultipathUploadURI: FilesAPI + "/organizations/%s/definitions",
 
@@ -90,3 +96,12 @@ func (uri URI) GetSelfURL() string       { return conf.APIEndpoint() + uri.GetSe
 func (uri URI) CreateUserURL() string    { return conf.APIEndpoint() + uri.CreateUserURI }
 func (uri URI) BillingHealthURL() string { return conf.APIEndpoint() + uri.BillingHealthURI }
 func (uri URI) FeaturedOrgsURL() string  { return conf.APIEndpoint() + uri.FeaturedOrgsURI }
+func (uri URI) GetOrgProfileURL(id string) string {
+	return conf.APIEndpoint() + fmt.Sprintf(uri.GetOrgProfileURI, id)
+}
+func (uri URI) UpdateOrgProfileURL(id string) string {
+	return conf.APIEndpoint() + fmt.Sprintf(uri.UpdateOrgProfileURI, id)
+}
+func (uri URI) CreateOrgProfileURL(id string) string {
+	return conf.APIEndpoint() + fmt.Sprintf(uri.CreateOrgProfileURI, id)
+}

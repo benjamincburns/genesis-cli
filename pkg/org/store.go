@@ -18,16 +18,14 @@ import (
 var conf = config.NewConfig()
 
 type Organization struct {
-	ID          string    `json:"id"`
-	Name        string    `json:"name"`
-	Label       string    `json:"label"`
-	CreatedAt   time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
-	Reserved    bool      `json:"reserved" db:"reserved"`
-	Summary     string    `json:"summary" db:"summary"`
-	StripeID    string    `json:"stripeID" db:"stripe_id"`
-	CTALink     string    `json:"CTALink" db:"cta_link"`
-	Description string    `json:"description" db:"description"`
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Label     string    `json:"label"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+	Reserved  bool      `json:"reserved" db:"reserved"`
+	Summary   string    `json:"summary" db:"summary"`
+	StripeID  string    `json:"stripeID" db:"stripe_id"`
 }
 
 // Get returns the stored org information if it is given an empty string
@@ -42,6 +40,14 @@ func Get(orgIdOrName string, client *oauth2ns.AuthorizedClient) (Organization, e
 		return set(legacyGet(), client)
 	}
 	return org, nil
+}
+
+func GetDefaultOrgID() string {
+	org, err := get()
+	if err != nil {
+		return ""
+	}
+	return org.ID
 }
 
 func get() (Organization, error) {
