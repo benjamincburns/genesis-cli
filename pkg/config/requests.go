@@ -28,6 +28,7 @@ type URI struct {
 	LimitsURI          string `mapstructure:"-"`
 	CreateUserURI      string `mapstructure:"-"`
 	BillingHealthURI   string `mapstructure:"-"`
+	FeaturedOrgsURI    string `mapstructure:"-"`
 }
 
 var (
@@ -52,12 +53,13 @@ var DefaultURI = URI{
 	CreateTestURI: TestExecutionAPI + "/run/%s",     //org
 	TestInfoURI:   TestExecutionAPI + "/info/tests/%s",
 
-	GetOrgURI:      RegistrarAPI + "/organization/%s",
-	GetSelfURI:     RegistrarAPI + "/user",                 //GET
-	GetOrgRoleURI:  RegistrarAPI + "/organization/%s/user", //GET
-	CheckAdminURI:  RegistrarAPI + "/check/iam/%s",         //GET
-	CheckMemberURI: RegistrarAPI + "/check/member/%s",      //GET
-	CreateUserURI:  RegistrarAPI + "/user",                 //POST
+	GetOrgURI:       RegistrarAPI + "/organization/%s",
+	GetSelfURI:      RegistrarAPI + "/user",                 //GET
+	GetOrgRoleURI:   RegistrarAPI + "/organization/%s/user", //GET
+	CheckAdminURI:   RegistrarAPI + "/check/iam/%s",         //GET
+	CheckMemberURI:  RegistrarAPI + "/check/member/%s",      //GET
+	CreateUserURI:   RegistrarAPI + "/user",                 //POST
+	FeaturedOrgsURI: RegistrarAPI + "/featured",
 
 	MultipathUploadURI: FilesAPI + "/organizations/%s/definitions",
 
@@ -87,3 +89,4 @@ func (uri URI) ListContainersURL(tid string) string {
 func (uri URI) GetSelfURL() string       { return conf.APIEndpoint() + uri.GetSelfURI }
 func (uri URI) CreateUserURL() string    { return conf.APIEndpoint() + uri.CreateUserURI }
 func (uri URI) BillingHealthURL() string { return conf.APIEndpoint() + uri.BillingHealthURI }
+func (uri URI) FeaturedOrgsURL() string  { return conf.APIEndpoint() + uri.FeaturedOrgsURI }
