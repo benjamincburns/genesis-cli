@@ -5,33 +5,35 @@ import (
 )
 
 type URI struct {
-	StopTestURI         string `mapstructure:"-"`
-	StopDefURI          string `mapstructure:"-"`
-	RunTestURI          string `mapstructure:"-"`
-	CreateTestURI       string `mapstructure:"-"`
-	ForkURI             string `mapstructure:"-"`
-	TestInfoURI         string `mapstructure:"-"`
-	ExecURI             string `mapstructure:"-"`
-	MultipathUploadURI  string `mapstructure:"-"`
-	GetOrgURI           string `mapstructure:"-"`
-	LogsURI             string `mapstructure:"-"`
-	StatusURI           string `mapstructure:"-"`
-	TestsURI            string `mapstructure:"-"`
-	PrepareExecURI      string `mapstructure:"-"`
-	AttachExecURI       string `mapstructure:"-"`
-	RunDetachURI        string `mapstructure:"-"`
-	ListContainersURI   string `mapstructure:"-"`
-	GetSelfURI          string `mapstructure:"-"`
-	GetOrgRoleURI       string `mapstructure:"-"`
-	CheckAdminURI       string `mapstructure:"-"`
-	CheckMemberURI      string `mapstructure:"-"`
-	LimitsURI           string `mapstructure:"-"`
-	CreateUserURI       string `mapstructure:"-"`
-	BillingHealthURI    string `mapstructure:"-"`
-	FeaturedOrgsURI     string `mapstructure:"-"`
-	GetOrgProfileURI    string `mapstructure:"-"`
-	UpdateOrgProfileURI string `mapstructure:"-"`
-	CreateOrgProfileURI string `mapstructure:"-"`
+	StopTestURI             string `mapstructure:"-"`
+	StopDefURI              string `mapstructure:"-"`
+	RunTestURI              string `mapstructure:"-"`
+	CreateTestURI           string `mapstructure:"-"`
+	ForkURI                 string `mapstructure:"-"`
+	TestInfoURI             string `mapstructure:"-"`
+	ExecURI                 string `mapstructure:"-"`
+	MultipathUploadURI      string `mapstructure:"-"`
+	GetOrgURI               string `mapstructure:"-"`
+	LogsURI                 string `mapstructure:"-"`
+	StatusURI               string `mapstructure:"-"`
+	TestsURI                string `mapstructure:"-"`
+	PrepareExecURI          string `mapstructure:"-"`
+	AttachExecURI           string `mapstructure:"-"`
+	RunDetachURI            string `mapstructure:"-"`
+	ListContainersURI       string `mapstructure:"-"`
+	GetSelfURI              string `mapstructure:"-"`
+	GetOrgRoleURI           string `mapstructure:"-"`
+	CheckAdminURI           string `mapstructure:"-"`
+	CheckMemberURI          string `mapstructure:"-"`
+	LimitsURI               string `mapstructure:"-"`
+	CreateUserURI           string `mapstructure:"-"`
+	BillingHealthURI        string `mapstructure:"-"`
+	FeaturedOrgsURI         string `mapstructure:"-"`
+	GetOrgProfileURI        string `mapstructure:"-"`
+	UpdateOrgProfileURI     string `mapstructure:"-"`
+	CreateOrgProfileURI     string `mapstructure:"-"`
+	UpdateOrgFeaturedURI    string `mapstructure:"-"`
+	UpdateUserSuperAdminURI string `mapstructure:"-"`
 }
 
 var (
@@ -42,6 +44,7 @@ var (
 	LogsAPI          = APIBase + "/logs"
 	ContainerAPI     = APIBase + "/container"
 	BillingAPI       = APIBase + "/billing"
+	AdminAPI         = APIBase + "/admin"
 )
 
 const Product = "prod_GgJOE3a7Adfopv"
@@ -66,6 +69,9 @@ var DefaultURI = URI{
 	GetOrgProfileURI:    RegistrarAPI + "/organization/%s/profile", //GET {org}
 	UpdateOrgProfileURI: RegistrarAPI + "/organization/%s/profile", //PUT {org}
 	CreateOrgProfileURI: RegistrarAPI + "/organization/%s/profile", //POST {org}
+
+	UpdateOrgFeaturedURI:    AdminAPI + "/organization/%s/featured", // POST|DELETE {org}
+	UpdateUserSuperAdminURI: AdminAPI + "/user/%s/admin",            // POST|DELETE {user}
 
 	MultipathUploadURI: FilesAPI + "/organizations/%s/definitions",
 
@@ -104,4 +110,10 @@ func (uri URI) UpdateOrgProfileURL(id string) string {
 }
 func (uri URI) CreateOrgProfileURL(id string) string {
 	return conf.APIEndpoint() + fmt.Sprintf(uri.CreateOrgProfileURI, id)
+}
+func (uri URI) UpdateOrgFeaturedURL(oid string) string {
+	return conf.APIEndpoint() + fmt.Sprintf(uri.UpdateOrgFeaturedURI, oid)
+}
+func (uri URI) UpdateUserSuperAdminURL(uid string) string {
+	return conf.APIEndpoint() + fmt.Sprintf(uri.UpdateUserSuperAdminURI, uid)
 }
