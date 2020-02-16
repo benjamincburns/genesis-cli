@@ -37,8 +37,6 @@ main() {
         exit 1
     fi
 
-    ignore "$_file" "$@"
-
     if [ ! -e "${_dir}/env" ]; then
         echo "export PATH=\"${_dir}/bin:$PATH\"" >> ${_dir}/env
         echo "source ${_dir}/env" >> $HOME/.bashrc
