@@ -27,7 +27,7 @@ var psCmd = &cobra.Command{
 			util.ErrorFatal(err)
 		}
 
-		util.PrintS(0, res)
+		util.PrintS(-1, res)
 	},
 }
 
