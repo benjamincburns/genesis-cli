@@ -128,7 +128,7 @@ func setViperDefaults() {
 		viper.SetDefault("schemaFile", ".dev-test-definition-format-schema")
 		viper.SetDefault("tokenFile", ".dev-auth-token")
 		viper.SetDefault("orgFile", ".dev-org-name")
-		viper.SetDefault("biomeDNSZone", "infra.whiteblock.io")
+		viper.SetDefault("biomeDNSZone", "biomes.infra.whiteblock.io")
 		viper.SetDefault("genesisBanner", "")
 	} else {
 		viper.SetDefault("authEndpoint", "auth.genesis.whiteblock.io")

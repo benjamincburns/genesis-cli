@@ -68,9 +68,12 @@ var profileSetBodyCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		util.CheckArguments(cmd, args, 0, 1)
-		data := args[0]
-		fileName := util.GetStringFlagValue(cmd, "org")
-		if fileName != "" {
+		var data string
+
+		if len(args) > 0 {
+			data = args[0]
+		} else {
+			fileName := util.GetStringFlagValue(cmd, "file")
 			f, err := os.Open(fileName)
 			if err != nil {
 				util.ErrorFatal(err)
@@ -131,11 +134,21 @@ var profileSetMainCTACmd = &cobra.Command{
 	Short: "",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		util.CheckArguments(cmd, args, 2, 2)
-		_, err := auth.Put(conf.UpdateOrgProfileURL(getOrgId(cmd)), [][]string{
-			{"main_cta_text", args[0]},
-			{"main_cta_link", args[1]},
-		})
+		util.CheckArguments(cmd, args, 0, 0)
+
+		toUpdate := [][]string{}
+
+		if cmd.Flags().Changed("icon") {
+			toUpdate = append(toUpdate, []string{"main_cta_icon", util.GetStringFlagValue(cmd, "icon")})
+		}
+		if cmd.Flags().Changed("text") {
+			toUpdate = append(toUpdate, []string{"main_cta_text", util.GetStringFlagValue(cmd, "text")})
+		}
+		if cmd.Flags().Changed("link") {
+			toUpdate = append(toUpdate, []string{"main_cta_link", util.GetStringFlagValue(cmd, "link")})
+		}
+
+		_, err := auth.Put(conf.UpdateOrgProfileURL(getOrgId(cmd)), toUpdate)
 		if err != nil {
 			util.ErrorFatal(err)
 		}
@@ -146,7 +159,9 @@ var profileSetMainCTACmd = &cobra.Command{
 func init() {
 	profileCmd.PersistentFlags().StringP("org", "o", "", "organization")
 	profileSetBodyCmd.Flags().StringP("file", "f", "", "set the body from a text file")
-
+	profileSetMainCTACmd.Flags().String("icon", "", "icon")
+	profileSetMainCTACmd.Flags().String("text", "", "text")
+	profileSetMainCTACmd.Flags().String("link", "", "link")
 	profileSetCmd.AddCommand(profileSetBodyCmd)
 	profileSetCmd.AddCommand(profileSetEmailCTACmd)
 	profileSetCmd.AddCommand(profileSetWebsiteCTACmd)
