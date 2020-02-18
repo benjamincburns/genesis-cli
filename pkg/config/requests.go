@@ -34,6 +34,7 @@ type URI struct {
 	CreateOrgProfileURI     string `mapstructure:"-"`
 	UpdateOrgFeaturedURI    string `mapstructure:"-"`
 	UpdateUserSuperAdminURI string `mapstructure:"-"`
+	ContainerLogsURI        string `mapstructure:"-"`
 }
 
 var (
@@ -81,6 +82,7 @@ var DefaultURI = URI{
 	AttachExecURI:     ContainerAPI + "/%s/exec/attach", //UPGRADE {testid}
 	RunDetachURI:      ContainerAPI + "/%s/exec/run",    //POST {testid}
 	ListContainersURI: ContainerAPI + "/%s/list",        //GET {testid}
+	ContainerLogsURI:  ContainerAPI + "/%s/logs/%s/%s",  //GET {testid, container, lines}
 
 	LimitsURI:        BillingAPI + "/limits/%s/%s", //GET {org, product}
 	BillingHealthURI: BillingAPI + "/health",
@@ -89,8 +91,13 @@ var DefaultURI = URI{
 func (uri URI) PrepareExecURL(tid string) string {
 	return conf.APIEndpoint() + fmt.Sprintf(uri.PrepareExecURI, tid)
 }
+
+func (uri URI) ContainerLogsURL(tid, cntr, lines string) string {
+	return conf.APIEndpoint() + fmt.Sprintf(uri.ContainerLogsURI, tid, cntr, lines)
+}
+
 func (uri URI) AttachExecURL(tid string) string {
-	return conf.APIEndpoint() + fmt.Sprintf(uri.AttachExecURI, tid)
+	return "http://exec-dev.whiteblock.io" + fmt.Sprintf(uri.AttachExecURI, tid)
 }
 func (uri URI) RunDetachURL(tid string) string {
 	return conf.APIEndpoint() + fmt.Sprintf(uri.RunDetachURI, tid)

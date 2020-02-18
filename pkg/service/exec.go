@@ -44,7 +44,8 @@ var onCloseHandlers []func()
 func (ch *clientHijacker) ConnectTLS(network, addr string) (net.Conn, error) {
 	log.WithFields(log.Fields{"network": network, "addr": addr}).Debug("opening a tls connection")
 	conn, err := tls.Dial(network, addr, &tls.Config{
-		ServerName: strings.Split(conf.APIHost(), ":")[0],
+		InsecureSkipVerify: true,
+		ServerName:         strings.Split(conf.APIHost(), ":")[0],
 	})
 	if err == nil {
 		ch.conn = connWrapper{Conn: conn}

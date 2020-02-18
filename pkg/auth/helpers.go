@@ -122,3 +122,30 @@ func Get(url string, out interface{}) error {
 	}
 	return json.Unmarshal(data, out)
 }
+
+func GetRaw(url string) ([]byte, error) {
+	client, err := GetClient()
+	if err != nil {
+		return nil, err
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("got back status %d: %s", resp.StatusCode, string(data))
+	}
+	return data, err
+}
