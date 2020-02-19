@@ -8,12 +8,12 @@ import (
 )
 
 var psCmd = &cobra.Command{
-	Use:     "ps [container]",
+	Use:     "ps",
 	Short:   "what is running",
 	Long:    `what is running`,
 	Aliases: []string{},
 	Run: func(cmd *cobra.Command, args []string) {
-		util.CheckArguments(cmd, args, 0, 1)
+		util.CheckArguments(cmd, args, 0, 0)
 		testID := util.GetStringFlagValue(cmd, "test-id")
 		if len(testID) == 0 {
 			test, err := service.GetMostRecentTest(util.GetStringFlagValue(cmd, "org"))
