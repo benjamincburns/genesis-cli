@@ -11,6 +11,7 @@ require (
 	github.com/fatih/color v1.7.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/gorilla/rpc v1.2.0 // indirect
+	github.com/gorilla/websocket v1.4.1
 	github.com/joonix/log v0.0.0-20190524090622-13fe31bbdd7a
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/mattn/go-isatty v0.0.11
@@ -29,10 +30,11 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.6.2
 	github.com/whiteblock/definition v0.0.0-20200206225219-fc2e3ae195dc
+	github.com/whiteblock/httputils v0.0.1
 	github.com/whiteblock/mpb v1.0.0
 	github.com/whiteblock/utility v0.0.0-20200213150802-f8c68628a3bd
 	github.com/xeipuuv/gojsonschema v1.2.0
-	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
+	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/sys v0.0.0-20200202164722-d101bd2416d5 // indirect
 	google.golang.org/genproto v0.0.0-20200205142000-a86caf926a67 // indirect
 	gopkg.in/ini.v1 v1.52.0 // indirect

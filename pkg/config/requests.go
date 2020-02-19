@@ -97,7 +97,7 @@ func (uri URI) ContainerLogsURL(tid, cntr, lines string) string {
 }
 
 func (uri URI) AttachExecURL(tid string) string {
-	return "http://exec-dev.whiteblock.io" + fmt.Sprintf(uri.AttachExecURI, tid)
+	return conf.WSEndpoint() + fmt.Sprintf(uri.AttachExecURI, tid)
 }
 func (uri URI) RunDetachURL(tid string) string {
 	return conf.APIEndpoint() + fmt.Sprintf(uri.RunDetachURI, tid)

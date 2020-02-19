@@ -1,16 +1,11 @@
 package service
 
 import (
-	"bytes"
-	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
-	"net"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/whiteblock/genesis-cli/pkg/auth"
 
@@ -18,49 +13,13 @@ import (
 	"github.com/docker/docker/pkg/ioutils"
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/docker/pkg/term"
+	"github.com/gorilla/websocket"
 	log "github.com/sirupsen/logrus"
+	"github.com/whiteblock/httputils/websockets"
 	"github.com/whiteblock/utility/common"
 )
 
-type connWrapper struct {
-	net.Conn
-}
-
-func (cw connWrapper) Close() error {
-	log.Info("blocking connection close")
-	return nil
-}
-
-type clientHijacker struct {
-	conn net.Conn
-}
-
-func (ch *clientHijacker) Conn() net.Conn {
-	return ch.conn
-}
-
 var onCloseHandlers []func()
-
-func (ch *clientHijacker) ConnectTLS(network, addr string) (net.Conn, error) {
-	log.WithFields(log.Fields{"network": network, "addr": addr}).Debug("opening a tls connection")
-	conn, err := tls.Dial(network, addr, &tls.Config{
-		InsecureSkipVerify: true,
-		ServerName:         strings.Split(conf.APIHost(), ":")[0],
-	})
-	if err == nil {
-		ch.conn = connWrapper{Conn: conn}
-	}
-	return ch.conn, err
-}
-
-func (ch *clientHijacker) Connect(network, addr string) (net.Conn, error) {
-	log.WithFields(log.Fields{"network": network, "addr": addr}).Debug("opening a tls connection")
-	conn, err := net.Dial(network, addr)
-	if err == nil {
-		ch.conn = connWrapper{Conn: conn}
-	}
-	return ch.conn, err
-}
 
 func ListContainers(testID string) (out []string, err error) {
 	return out, auth.Get(conf.ListContainersURL(testID), &out)
@@ -87,7 +46,7 @@ func RunDetach(cmd common.ExecAttach) error {
 	_, err = auth.Post(conf.RunDetachURL(cmd.Test), data)
 	return err
 }
-func handleIn(conn net.Conn, tty bool) <-chan error {
+func handleIn(conn io.ReadWriter, tty bool) <-chan error {
 	out := make(chan error)
 	go func() {
 		if tty {
@@ -111,7 +70,7 @@ func handleIn(conn net.Conn, tty bool) <-chan error {
 	return out
 }
 
-func handleOut(conn net.Conn, tty bool) <-chan error {
+func handleOut(conn io.ReadWriter, tty bool) <-chan error {
 	out := make(chan error)
 	go func() {
 		if tty {
@@ -138,40 +97,25 @@ func Attach(cmd common.ExecAttach) error {
 	if token == nil {
 		return fmt.Errorf("not logged in")
 	}
-	hijacker := &clientHijacker{}
-	client := &http.Client{
-		Transport: &http.Transport{
-			DialTLS: hijacker.ConnectTLS,
-			Dial:    hijacker.Connect,
-		},
-	}
-	data, err := json.Marshal(cmd)
-	if err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest("UPGRADE", conf.AttachExecURL(cmd.Test), bytes.NewReader(data))
-	if err != nil {
-		return err
-	}
+	req := &http.Request{Header: http.Header{}}
 	token.SetAuthHeader(req)
 
-	resp, err := client.Do(req)
+	dialer := &websocket.Dialer{}
+	raw, _, err := dialer.Dial(conf.AttachExecURL(cmd.Test),
+		http.Header{"Authorization": req.Header["Authorization"]})
 	if err != nil {
 		return err
 	}
-	if resp.StatusCode != 200 {
-		data, _ = ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("got back status %d from %s: %s", resp.StatusCode, conf.AttachExecURL(cmd.Test), string(data))
-	} else {
-		log.Info("got back a 200 status code, attaching to the connection")
+	err = raw.WriteJSON(cmd)
+	if err != nil {
+		return err
 	}
-	conn := hijacker.Conn()
 	defer func() {
 		for _, fn := range onCloseHandlers {
 			fn()
 		}
 	}()
+	conn := websockets.Wrapper{Conn: raw}
 	if !cmd.Interactive {
 		return <-handleOut(conn, cmd.TTY)
 	}
