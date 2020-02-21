@@ -55,6 +55,13 @@ func (c Config) APIEndpoint() string {
 	return c.WBHost
 }
 
+func (c Config) WSEndpoint() string {
+	if !strings.HasPrefix(c.WBHost, "ws") {
+		return "wss://" + c.WBHost
+	}
+	return c.WBHost
+}
+
 func (c Config) APIHost() string {
 	if !strings.HasPrefix(c.WBHost, "http") {
 		return c.WBHost + ":80"
