@@ -24,6 +24,17 @@ func GetStringFlagValue(cmd *cobra.Command, flag string) string {
 	return out
 }
 
+func GetStringSliceFlagValue(cmd *cobra.Command, flag string) []string {
+	out, err := cmd.Flags().GetStringSlice(flag)
+	if err != nil {
+		out, err = cmd.PersistentFlags().GetStringSlice(flag)
+		if err != nil {
+			ErrorFatal(err)
+		}
+	}
+	return out
+}
+
 func GetIntFlagValue(cmd *cobra.Command, flag string) int {
 	out, err := cmd.Flags().GetInt(flag)
 	if err != nil {
