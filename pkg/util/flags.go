@@ -43,7 +43,7 @@ func GetIntFlagValue(cmd *cobra.Command, flag string) int {
 	return out
 }
 
-func GetInt64FlagValue(cmd *cobra.Command, flag string) string {
+func GetInt64FlagValue(cmd *cobra.Command, flag string) int64 {
 	out, err := cmd.Flags().GetInt64(flag)
 	if err != nil {
 		out, err = cmd.PersistentFlags().GetInt64(flag)
