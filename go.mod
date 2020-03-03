@@ -34,7 +34,7 @@ require (
 	github.com/spf13/viper v1.6.2
 	github.com/vbauerster/mpb v3.4.0+incompatible // indirect
 	github.com/vbauerster/mpb/v4 v4.11.2 // indirect
-	github.com/whiteblock/definition v0.0.0-20200303210242-86bdcec8f9f5
+	github.com/whiteblock/definition v0.0.0-20200303214556-8bbc0c5800ee
 	github.com/whiteblock/httputils v0.0.1
 	github.com/whiteblock/mpb v3.4.0+incompatible
 	github.com/whiteblock/utility v0.0.0-20200213150802-f8c68628a3bd
