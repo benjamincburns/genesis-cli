@@ -1,4 +1,3 @@
-Genesis CLI
 ======
 
 ## Installation
